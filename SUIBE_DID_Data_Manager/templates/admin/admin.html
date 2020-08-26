@@ -2,6 +2,8 @@
 {% from 'bootstrap/form.html' import render_form %}
 
 {% block content %}
+
+<div class="container">
     <h5>{{ users|length }} messages
         <small class="float-right">
             <a href="#bottom" title="Go Bottom">&darr;</a>
@@ -38,4 +40,5 @@
         <a href="{{ url_for('admin.cancle_all_active') }}"><button>Cancel ALL Active</button></a>
 
     </div>
+</div>
 {% endblock %}
