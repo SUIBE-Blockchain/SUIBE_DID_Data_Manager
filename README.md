@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 python manager.py init_db
 # init db
-python manger.py runserver 
+python manager.py runserver 
 # 运行服务
 ~~~
 
