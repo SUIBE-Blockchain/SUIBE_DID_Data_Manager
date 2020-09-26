@@ -1,10 +1,9 @@
 import requests
 import logging
 from pprint import pprint
-from Base import Base
+from .Base import Base
 
 LOG = logging.getLogger(__name__)
-
 
 class weidentityService(Base):
     def __init__(self, host, port=None, version="1.0.0"):
@@ -191,14 +190,3 @@ class weidentityService(Base):
           "signedNonce": signedNonce
         }
         return self.post("/weid/api/authorize/fetch-data", data=data)
-
-
-weid = weidentityService("http://192.168.80.140:6001")
-create_weid = weid.create_weidentity_did()
-print(create_weid)
-we_id = create_weid['respBody']
-print("\n======================================\n")
-get_weid = weid.get_weidentity_did(we_id)
-pprint(get_weid)
-
-

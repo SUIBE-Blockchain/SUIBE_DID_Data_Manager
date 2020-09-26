@@ -1,7 +1,7 @@
 import requests
 import logging
 from pprint import pprint
-from Base import Base
+from .Base import Base
 
 LOG = logging.getLogger(__name__)
 
@@ -123,13 +123,3 @@ class weidentityClient(Base):
             "v": self.version
         }
         return self.post("/weid/api/encode", data=data)
-
-
-weid = weidentityClient("http://192.168.80.140:6001")
-create_1 = weid.create_weidentity_did_first(publicKey="712679236821355231513532168231727831978932132185632517152735621683128", nonce="1474800601011307365506121304576347479508653499989424346408343855615822146039")
-pprint(create_1)
-create_2 = weid.create_weidentity_did_second(nonce="1474800601011307365506121304576347479508653499989424346408343855615822146039", data="809812638256c1235b1231000e000000001231287bacf213c", signedMessage="HEugP13uDVBg2G0kmmwbTkQXobsrWNqtGQJW6BoHU2Q2VQpwVhK382dArRMFN6BDq7ogozYBRC15QR8ueX5G3t8=")
-pprint(create_2)
-
-create_f = weid.create_weidentity_did(publicKey="712679236821355231513532168231727831978932132185632517152735621683128", nonce="1474800601011307365506121304576347479508653499989424346408343855615822146039", data="809812638256c1235b1231000e000000001231287bacf213c", signedMessage="HEugP13uDVBg2G0kmmwbTkQXobsrWNqtGQJW6BoHU2Q2VQpwVhK382dArRMFN6BDq7ogozYBRC15QR8ueX5G3t8=")
-pprint(create_f)
