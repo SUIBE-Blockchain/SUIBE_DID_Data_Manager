@@ -16,14 +16,20 @@ from SUIBE_DID_Data_Manager.forms import RegisterForm, LoginForm
 from SUIBE_DID_Data_Manager.models import User
 from SUIBE_DID_Data_Manager.utils import flash_errors, redirect_back
 from SUIBE_DID_Data_Manager.extensions import db
+from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
+from SUIBE_DID_Data_Manager.weidentity.weidentityService import weidentityService
 
 public_bp = Blueprint("public", __name__, static_folder="../static")
-
 
 @public_bp.route("/", methods=["GET", "POST"])
 def home():
     """Home page."""
-    return  render_template("public/home.html")
+    weclient = weidentityClient("http://121.196.24.230:6001")
+    weserver = weidentityService("http://121.196.24.230:6001")
+    did = weserver.create_weidentity_did()
+    print(did)
+    
+    return render_template("public/home.html", did=did)
 
 
 @public_bp.route("/logout/")
