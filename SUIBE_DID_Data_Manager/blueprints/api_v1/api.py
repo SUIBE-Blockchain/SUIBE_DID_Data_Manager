@@ -24,7 +24,7 @@ def create_weid_local_func():
         "weid": {
             "errorCode": 0,
             "errorMessage": "success",
-            # "privateKey ": account["payload"]["priv"],
+            "privateKey ": account["payload"]["priv"],
             "publicKey": account["payload"]["pubv"],
             "respBody": weid,
         }
