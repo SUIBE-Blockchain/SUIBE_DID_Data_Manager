@@ -35,7 +35,6 @@ class weidentityClient(Base):
             "functionName": "createWeId",
             "v": self.version
         }
-        print(data_dict)
         return self.post("/weid/api/transact", data=data_dict)
 
     def create_weidentity_did(self, publicKey, nonce, data, signedMessage):

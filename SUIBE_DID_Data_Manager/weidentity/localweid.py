@@ -80,6 +80,4 @@ def base64_encode(bytes_data):
     :return:
     """
     base_data = base64.b64encode(bytes_data)
-    return str(base_data)
-
-# def SignSignature(hashedMsg, privateKeyBytes):
+    return bytes.decode(base_data)
