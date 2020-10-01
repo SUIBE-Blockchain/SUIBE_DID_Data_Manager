@@ -1,0 +1,160 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+        <script
+          src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+          crossorigin="anonymous"
+        ></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+          crossorigin="anonymous"
+        ></script>
+        <script
+          src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+          crossorigin="anonymous"
+        ></script>
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous"
+        />
+        <title>证书模板_Bootstrap Version</title>
+    </head>
+    <body>
+        <div id="main">
+            <br>
+            <div id="cert_div" v-bind:style="cert_div_style">    
+                <table class="table" id="cert_table" v-bind:style="cert_table_style">
+                    <thead>
+                        <tr class="bg-info">
+                            <th scope="col" colspan="2" ><center>{{cert_exp.cert_name}}</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(value, name) in cert_exp.claim">
+                          <td v-bind:style="cert_table_td_style">{{name}}: </td>
+                          <td>{{value}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b><center>&gt;&gt;&gt;Other Infomation&lt;&lt;&lt;</center></b></td>
+                        </tr>
+                        <tr>
+                          <td>发行者:</td>
+                          <td>{{cert_exp.issuer}}</td>
+                        </tr>
+                        <tr>
+                          <td>发行时间: </td>
+                          <td>{{cert_exp.issued}}</td>
+                        </tr>
+                      </tbody>
+                      <tbody v-for="(payload, name) in cert_exp.signature">
+                        <tr>
+                            <th scope="col" colspan="2" ><center>signature {{name}}</center></th>
+                        </tr>
+                        <tr v-for="(value, payload_name) in payload">
+                            <td>{{payload_name}}: </td>
+                            <td  v-bind:style="cert_table_td_content_style">{{value}}</td>
+                        </tr>
+                      </tbody>
+                </table>
+            </div>
+            
+        </div>
+        <script>
+            var vue_things=new Vue({
+                el:'#main',
+                data:
+                {
+                    // styles
+                    cert_div_style :{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    },
+                    cert_table_style: {
+                        width: '50%',
+
+                    },
+                    cert_table_td_style: {
+                        width: '10%',
+                    },
+                    cert_table_td_content_style: {
+                        wordWrap: "break-word",
+                        wordBreak: "break-all",
+                    },
+                    // infos
+                    cert_exp: {
+  "@context": "https://weidentity.webank.com/vc/v1",
+  "id": "dsfewr23sdcsdfeqeddadfd",
+  "type": ["Credential", "cpt100"],
+  "issuer": "did:weid:1:2323e3e3dweweewew2",
+  "issued": "2010-01-01T21:19:10Z",
+  "cert_name": "获奖证书",
+  "claim": {
+    "primeNumberIdx":"1234",
+    "name": "Handsome boy",
+    "sex": "female"
+    //the other properties in this structure varied according to different CPT
+  },
+  "revocation": {
+    "id": "did:weid:1:2323e3e3dweweewew2",
+    "type": "SimpleRevocationList2017"
+  },
+  "signature": [{
+    "type": "LinkedDataSignature2015",
+    "created": "2016-06-18T21:19:10Z",
+    "creator": "did:weid:1:2323e3e3dweweewew2",
+    "domain": "www.diriving_card.com",
+    "nonce": "598c63d6",
+    "signatureValue": "BavEll0/I1zpYw8XNi1bgVg/sCneO4Jugez8RwDg/+MCRVpjOboDoe4SxxKjkCOvKiCHGDvc4krqi6Z1n0UfqzxGfmatCuFibcC1wpsPRdW+gGsutPTLzvueMWmFhwYmfIFpbBu95t501+rSLHIEuujM/+PXr9Cky6Ed+W3JT24="
+  }]
+},
+                },
+                methods:
+                {
+                    a_get:function()
+                    {
+                        axios(
+                            {
+                                method:'get',
+                                url:'http://127.0.0.1:5000/',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                }                                
+                            })
+                            .then(function(response){
+                            })
+                            .catch(function(error){
+                            })
+                    },
+                    a_post:function()
+                    {
+                        axios({
+                            method:'post',
+                            url:'http://45.32.51.110:1234/get_title',
+                            params:
+                            {
+                                name:"小王",
+                            },
+                            headers:
+                            {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            }                             
+                        })
+                        .then(function(response){
+                            console.log(response.data)
+                        })
+                        .catch(function(error){
+
+                        })
+                    },
+                }
+            })
+            vue_things.a_post();
+        </script>   
+    </body>
+<html>
