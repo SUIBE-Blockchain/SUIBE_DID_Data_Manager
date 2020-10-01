@@ -25,7 +25,7 @@ class weidentityClient(Base):
 
     def create_weidentity_did_second(self, nonce, data, signedMessage):
         # 创建WeIdentity DID
-        data = {
+        data_dict = {
             "functionArg": {},
             "transactionArg": {
                 "nonce": nonce,
@@ -35,7 +35,7 @@ class weidentityClient(Base):
             "functionName": "createWeId",
             "v": self.version
         }
-        return self.post("/weid/api/transact", data=data)
+        return self.post("/weid/api/transact", data=data_dict)
 
     def create_weidentity_did(self, publicKey, nonce, data, signedMessage):
         self.create_weidentity_did_first(publicKey, nonce)
