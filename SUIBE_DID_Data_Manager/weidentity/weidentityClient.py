@@ -11,7 +11,7 @@ class weidentityClient(Base):
 
     def create_weidentity_did_first(self, publicKey, nonce):
         # 创建WeIdentity DID
-        data = {
+        data_dict = {
             "functionArg": {
                 "publicKey": publicKey
             },
@@ -21,7 +21,7 @@ class weidentityClient(Base):
             "functionName": "createWeId",
             "v": self.version
         }
-        return self.post("/weid/api/encode", data=data)
+        return self.post("/weid/api/encode", data=data_dict)
 
     def create_weidentity_did_second(self, nonce, data, signedMessage):
         # 创建WeIdentity DID
@@ -35,6 +35,7 @@ class weidentityClient(Base):
             "functionName": "createWeId",
             "v": self.version
         }
+        print(data_dict)
         return self.post("/weid/api/transact", data=data_dict)
 
     def create_weidentity_did(self, publicKey, nonce, data, signedMessage):
@@ -43,7 +44,7 @@ class weidentityClient(Base):
 
     def register_authority_issuer_first(self, name, weId, nonce):
         # 注册Authority Issuer
-        data = {
+        data_dict = {
             "functionArg": {
                 "name": name,
                 "weId": weId
@@ -54,11 +55,11 @@ class weidentityClient(Base):
             "functionName": "registerAuthorityIssuer",
             "v": self.version
         }
-        return self.post("/weid/api/encode", data=data)
+        return self.post("/weid/api/encode", data=data_dict)
 
     def register_authority_issuer_second(self, nonce, data, signedMessage):
         # 注册Authority Issuer
-        data = {
+        data_dict = {
             "functionArg": {},
             "transactionArg": {
                 "nonce": nonce,
@@ -68,7 +69,7 @@ class weidentityClient(Base):
             "functionName": "registerAuthorityIssuer",
             "v": self.version
         }
-        return self.post("/weid/api/transact", data=data)
+        return self.post("/weid/api/transact", data=data_dict)
 
     def register_authority_issuer(self, name, weId, nonce, data, signedMessage):
         self.register_authority_issuer_first(name, weId, nonce)
@@ -76,7 +77,7 @@ class weidentityClient(Base):
 
     def create_cpt_first(self, weId, cptJsonSchema, cptSignature, nonce):
         # 创建CPT
-        data = {
+        data_dict = {
             "functionArg": {
                 "weId": weId,
                 "cptJsonSchema": cptJsonSchema,
@@ -88,11 +89,11 @@ class weidentityClient(Base):
             "functionName": "registerCpt",
             "v": self.version
         }
-        return self.post("/weid/api/encode", data=data)
+        return self.post("/weid/api/encode", data=data_dict)
 
     def create_cpt_second(self, nonce, data, signedMessage):
         # 创建CPT
-        data = {
+        data_dict = {
             "functionArg": {},
             "transactionArg": {
                 "nonce": nonce,
@@ -102,7 +103,7 @@ class weidentityClient(Base):
             "functionName": "registerCpt",
             "v": self.version
         }
-        return self.post("/weid/api/transact", data=data)
+        return self.post("/weid/api/transact", data=data_dict)
 
     def create_cpt(self, name, weId, nonce, data, signedMessage):
         self.register_authority_issuer_first(name, weId, nonce)
@@ -110,7 +111,7 @@ class weidentityClient(Base):
 
     def create_credential_pojo(self, cptId, issuer_weid, expirationDate, claim):
         # 创建CredentialPojo
-        data = {
+        data_dict = {
             "functionArg": {
                 "cptId": cptId,
                 "issuer": issuer_weid,
@@ -122,4 +123,4 @@ class weidentityClient(Base):
             "functionName": "createCredentialPojo",
             "v": self.version
         }
-        return self.post("/weid/api/encode", data=data)
+        return self.post("/weid/api/encode", data=data_dict)

@@ -11,17 +11,17 @@ class weidentityService(Base):
 
     def create_weidentity_did(self, function_arg={}, transaction_arg={}):
         # 创建WeIdentity DID
-        data = {
+        data_dict = {
             "functionArg": function_arg,
             "transactionArg": transaction_arg,
             "functionName": "createWeId",
             "v": self.version
         }
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def get_weidentity_did(self, weId):
         # 获取WeIdentity DID Document
-        data = {
+        data_dict = {
             "functionArg": {
                 "weId": weId
             },
@@ -29,11 +29,11 @@ class weidentityService(Base):
             "functionName": "getWeIdDocument",
             "v": self.version
         }
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def create_authority_issuer(self, weId, orgName, invokerWeId):
         # 创建AuthorityIssuer
-        data = {
+        data_dict = {
             "functionArg": {
                 "weid": weId,
                 "name": orgName
@@ -44,11 +44,11 @@ class weidentityService(Base):
             "functionName": "registerAuthorityIssuer",
             "v": self.version
         }
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def get_authority_issuer(self, weId, orgName, invokerWeId):
         # 查询AuthorityIssuer
-        data = {
+        data_dict = {
             "functionArg": {
                "weId": weId
             },
@@ -57,11 +57,11 @@ class weidentityService(Base):
             "functionName": "queryAuthorityIssuer",
             "v": self.version
         }
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def create_cpt(self, weId, invokerWeId, cptJsonSchema):
         # 创建CPT
-        data = {
+        data_dict = {
           "functionArg": {
               "weId": weId,
               "cptJsonSchema": cptJsonSchema
@@ -73,11 +73,11 @@ class weidentityService(Base):
           "v": self.version
         }
 
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def get_cpt(self, cptId):
         # 查询CPT
-        data = {
+        data_dict = {
             "functionArg": {
                 "cptId": cptId,
             },
@@ -87,11 +87,11 @@ class weidentityService(Base):
             "v": self.version
         }
 
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def create_credential(self, cptId, issuerWeId, expirationDate, claim, invokerWeId):
         # 创建Credential
-        data = {
+        data_dict = {
             "functionArg": {
                 "cptId": cptId,
                 "issuer": issuerWeId,
@@ -105,11 +105,11 @@ class weidentityService(Base):
             "v": self.version
         }
 
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def verify_credential(self, cptId, uuid, issuerWeId, expirationDate, issuranceDate, claim, context, proof):
         # 验证Credential
-        data = {
+        data_dict = {
             "functionArg": {
               "@context": context,
               "claim": claim,
@@ -126,12 +126,12 @@ class weidentityService(Base):
             "v": self.version
         }
 
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
 
     def create_credentialpojo(self, cptId, issuerWeId, expirationDate, claim,invokerWeId):
         # 创建CredentialPojo
-        data = {
+        data_dict = {
             "functionArg": {
                 "cptId": cptId,
                 "issuer": issuerWeId,
@@ -145,11 +145,11 @@ class weidentityService(Base):
             "v": self.version
         }
 
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def verify_credentialpojo(self, cptId, issuanceDate, context, claim, uuid, proof, issuerWeId, expirationDate):
         # 验证CredentialPojo
-        data = {
+        data_dict = {
             "functionArg": {
               "cptId": cptId,
               "issuanceDate": issuanceDate,
@@ -170,7 +170,7 @@ class weidentityService(Base):
             "v": self.version
         }
 
-        return self.post("/weid/api/invoke", data=data)
+        return self.post("/weid/api/invoke", data=data_dict)
 
     def get_registered_endpoint(self):
         # 获取所有已注册的Endpoint信息
@@ -178,15 +178,15 @@ class weidentityService(Base):
 
     def get_endpoint(self, body):
         # 进行Endpoint调用
-        data = {
+        data_dict = {
             "body": body
         }
 
-        return self.post("/weid/api/endpoint", data=data)
+        return self.post("/weid/api/endpoint", data=data_dict)
 
     def get_authorize_fetch_data(self, authToken, signedNonce):
-        data = {
+        data_dict = {
           "authToken": authToken,
           "signedNonce": signedNonce
         }
-        return self.post("/weid/api/authorize/fetch-data", data=data)
+        return self.post("/weid/api/authorize/fetch-data", data=data_dict)
