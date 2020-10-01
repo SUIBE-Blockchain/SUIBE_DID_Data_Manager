@@ -45,12 +45,14 @@ def create_weid_local_server():
     # 获取 nonce
     nonce = str(random.randint(1, 999999999999999999999999999999))
     respBody = weid.create_weidentity_did_first(publicKey, nonce)
-    # pprint(a)
     encode_transaction = respBody['respBody']['encodedTransaction']
+    # base64解密
     transaction = base64_decode(encode_transaction)
+    # 计算hash
     hashedMsg = Hash(transaction)
-
+    # 签名
     signature = signning_key.sign(bytes(hashedMsg, "utf-8"))
+    # base加密
     transaction_encode = base64_encode(signature)
     weid_second = weid.create_weidentity_did_second(nonce, data=respBody['respBody']['data'],
                                                     signedMessage=transaction_encode)
