@@ -1,5 +1,6 @@
 import requests
 import logging
+LOG = logging.getLogger(__name__)
 class Base(object):
     def __init__(self, host, port, version):
 
