@@ -3,20 +3,23 @@ from flask_login import login_required, current_user, login_user, logout_user
 
 from SUIBE_DID_Data_Manager.weidentity.localweid import generate_addr, create_privkey, base64_decode, base64_encode, Hash
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
+from SUIBE_DID_Data_Manager.weidentity.weidentityService import weidentityService
 from SUIBE_DID_Data_Manager.config import Config
 
 import random
 from ecdsa import SigningKey, SECP256k1
 from pprint import pprint
 
-api_v1 = Blueprint('api_v1', __name__)
+did_engine = Blueprint('did_engine', __name__)
 
 
-@api_v1.route("/create_weid_local_func")
+@did_engine.route("/create_weid_local_func")
 @login_required
 def create_weid_local_func():
     # 通过get的方式传送一个privkey data。
     privkey = request.args.get("privkey", None)
+    if privkey == None:
+        privkey = create_privkey()
     account = generate_addr(priv=privkey.hex())
     addr = account["payload"]["addr"]
     # 拼接weid，这里CHAIN_ID是留给上链用的。
@@ -32,8 +35,23 @@ def create_weid_local_func():
     }
     return jsonify(data)
 
-@api_v1.route("/create_weid_local_server")
+
+@did_engine.route("/create_weid_server")
+def create_weid_server():
+    weid = weidentityService(Config.get("LOCAL_WEID_URL"))
+    weid_result = weid.create_weidentity_did()
+    item = weid_result["respBody"].split(":")
+    item[2] = "CHAIN_ID"
+    weid_return = ":".join(item)
+    return jsonify({"weid": weid_return})
+
+
+@did_engine.route("/create_weid_local_server")
 def create_weid_local_server():
+    """
+    TODO: 签名存在问题
+    :return:
+    """
     weid = weidentityClient(Config.get("LOCAL_WEID_URL"))
     # 创建私钥
     signning_key = SigningKey.generate(curve=SECP256k1)

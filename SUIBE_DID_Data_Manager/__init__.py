@@ -8,7 +8,8 @@ from flask_cors import CORS
 from SUIBE_DID_Data_Manager.blueprints.public.public import public_bp
 from SUIBE_DID_Data_Manager.blueprints.user.user import user_bp
 from SUIBE_DID_Data_Manager.blueprints.admin.admin import admin_bp
-from SUIBE_DID_Data_Manager.blueprints.api_v1.api import api_v1
+from SUIBE_DID_Data_Manager.blueprints.did_engine.did_engine import did_engine
+from SUIBE_DID_Data_Manager.blueprints.data_manager.data_manager import data_manager
 
 from SUIBE_DID_Data_Manager.extensions import (
     bcrypt,
@@ -59,7 +60,8 @@ def register_blueprints(app):
     app.register_blueprint(public_bp)
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(admin_bp, url_prefix='/admin')
-    app.register_blueprint(api_v1, url_prefix='/api/v1')
+    app.register_blueprint(did_engine, url_prefix='/did_engine')
+    app.register_blueprint(data_manager, url_prefix="/data_manager")
 
 
 def register_errorhandlers(app):
