@@ -3,11 +3,9 @@ import os
 
 from eth_account import Account
 import sha3
-import secp256k1prp
 import base64
 import hashlib
 from ecdsa import SigningKey, SECP256k1
-import ecdsa
 def create_privkey():
     return os.urandom(32)
 

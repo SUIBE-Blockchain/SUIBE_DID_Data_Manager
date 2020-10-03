@@ -23,7 +23,6 @@ transaction = base64_decode(respBody['respBody']['encodedTransaction'])
 # 获取hash
 hashedMsg = Hash(transaction)
 
-# signning_key = SigningKey.generate(curve=SECP256k1)
 signature = signning_key.sign(bytes(hashedMsg, "utf-8"))
 transaction_encode = base64_encode(signature)
 print(transaction_encode)
