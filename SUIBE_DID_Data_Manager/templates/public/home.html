@@ -35,11 +35,6 @@
                 <br>
                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">Generate!</a>
                 </p>
-
-
-
-
-
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">DID</span>
@@ -49,35 +44,87 @@
 
                 <a  class="btn btn-info" target="_blank" href=""><i class="fa fa-book" aria-hidden="true"></i> DID生成过程</a>
             </div>
-        </div>                 <!-- /.row -->
-            <br>
+        </div><!-- /.row -->
 
-                <div class = "row">
-                    <div class="col-lg-8">
-                        <a class="no_type_a"><h3><i class="fa fa-flask"></i> 数据验签</h3></a>
-                        <br>
-                        <div class="form-group">
-                            <div>
-                                <input type="file" id="btn_file" style="display:none">
-                                <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击上传数据文件</button>
-                            </div>
+        <br>
 
-                            <!--                    <br>-->
-                            <!--                    <a class="btn btn-outline-secondary" v-on:click="generate_mock_data(mock_type)">点击上传数据文件</a>-->
-                            <!--                    <br>-->
-                            <br>
+        <div class = "row">
+            <div class="col-lg-8">
+                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID识别</h3></a>
 
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">验签结果：</span>
-                                </div>
-                                <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
-                            </div>
-
+                <div class="form-group">
+                    <br>
+                    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">识别</a>
+                    </p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">DID：</span>
                         </div>
+                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
                     </div>
-                </div><!-- /.row -->
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">识别结果：</span>
+                        </div>
+                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                    </div>
+
+                </div>
             </div>
+        </div><!-- /.row -->
+
+        <br>
+
+        <div class = "row">
+            <div class="col-lg-8">
+                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID数据解析</h3></a>
+                <br>
+                <div class="form-group">
+                    <div>
+                        <input type="file" id="btn_file" style="display:none">
+                        <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击上传数据(JSON)文件</button>
+                    </div>
+
+                    <br>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">解析结果：</span>
+                        </div>
+                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+        <br>
+
+        <div class = "row">
+            <div class="col-lg-8">
+                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID Document解析</h3></a>
+                <br>
+                <div class="form-group">
+                    <div>
+                        <input type="file" id="btn_file" style="display:none">
+                        <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击上传 DID Document 文件</button>
+                    </div>
+
+                    <br>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">解析结果：</span>
+                        </div>
+                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+
 </div>
 
 <script>
