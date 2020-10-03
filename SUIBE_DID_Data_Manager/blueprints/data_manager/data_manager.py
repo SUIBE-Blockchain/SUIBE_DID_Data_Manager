@@ -11,3 +11,7 @@ def members():
     """List members."""
     return jsonify({"result": "test"})
 
+@data_manager.route("/input_data")
+@login_required
+def input_data():
+    return jsonify({"result": "input_data"})
