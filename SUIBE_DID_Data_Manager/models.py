@@ -17,7 +17,7 @@ from SUIBE_DID_Data_Manager.extensions import bcrypt
 
 class Role(SurrogatePK, Model):
     """A role for a user."""
-
+    __bind_key__ = 'userserver'
     __tablename__ = "roles"
     name = Column(db.String(80), unique=True, nullable=False)
     user_id = reference_col("users", nullable=True)
@@ -34,7 +34,7 @@ class Role(SurrogatePK, Model):
 
 class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
-
+    __bind_key__ = 'userserver'
     __tablename__ = "users"
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
