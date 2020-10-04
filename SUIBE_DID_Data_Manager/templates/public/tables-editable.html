@@ -1,18 +1,10 @@
-<!doctype html>
-<html class="fixed">
-<head>
 
-	<!-- Basic -->
-	<meta charset="UTF-8">
-
-	<title>Editable Tables | Okler Themes | Porto-Admin</title>
-	<meta name="keywords" content="HTML5 Admin Template" />
-	<meta name="description" content="Porto Admin - Responsive HTML5 Template">
-	<meta name="author" content="okler.net">
-
-	<!-- Mobile Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+{% extends "layout.html" %}
+{% from 'bootstrap/form.html' import render_form %}
+{% block page_title %}
+Editable Tables | Okler Themes | Porto-Admin
+{% endblock %}
+{% block css_file %}
 	<link
 			rel="stylesheet"
 			type="text/css"
@@ -25,29 +17,16 @@
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
 	<!-- Vendor CSS -->
-	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css" />
-	<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.css" />
-	<link rel="stylesheet" href="assets/vendor/magnific-popup/magnific-popup.css" />
-	<link rel="stylesheet" href="assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
 
-	<!-- Specific Page Vendor CSS -->
-	<link rel="stylesheet" href="assets/vendor/select2/select2.css" />
-	<link rel="stylesheet" href="assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
-
-	<!-- Theme CSS -->
-	<link rel="stylesheet" href="assets/stylesheets/theme.css" />
-
-<!--	 Skin CSS -->
-	<link rel="stylesheet" href="assets/stylesheets/skins/default.css" />
-
-<!--	 Theme Custom CSS-->
-	<link rel="stylesheet" href="assets/stylesheets/theme-custom.css">
-
-
-
-	<!-- Head Libs -->
-	<script src="assets/vendor/modernizr/modernizr.js"></script>
-
+{#	<link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/vendor/bootstrap/css/bootstrap.css')}}" />#}
+	<link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/vendor/font-awesome/css/font-awesome.css')}}" />
+    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/vendor/magnific-popup/magnific-popup.css')}}"/>
+    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/vendor/bootstrap-datepicker/css/datepicker3.css')}}"/>
+    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/vendor/select2/select2.css')}}"/>
+    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css')}}"/>
+{#    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/stylesheets/theme.css')}}"/>#}
+    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/stylesheets/skins/default.css')}}"/>
+    <link rel="stylesheet" href="{{ static_url_for('static', filename='build/assets/stylesheets/theme-custom.css')}}"/>
 	<style>
 		.bg-dark {
 			background-color: #343a40 !important;
@@ -88,52 +67,133 @@
 			list-style: none;
 		}
 	</style>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
-	<a class="navbar-brand" href="/">
-		SUIBE DID Data Manager
-	</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-			aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
-				<a class="nav-link" href="/">DID引擎
-					<span class="sr-only">(current)</span>
-				</a>
-			</li>
 
 
+  <link
+          rel="stylesheet"
+          type="text/css"
+          href="{{ static_url_for('static', filename='build/main_css.bundle.css') }}"
+  />
+
+  <style>
+    .no_type_a:link {
+      color: black !important;
+      text-decoration: none;
+    }
+    .no_type_a:visited {
+      color: black !important;
+      text-decoration: none;
+    }
+    .no_type_a:hover {
+      color: black !important;
+      text-decoration: none;
+    }
 
 
-			<li class="nav-item">
-				<a class="nav-link" href="/about/">区块链</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/about/">身份管理</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/about/">数据管理</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/about/">数据共享</a>
-			</li>
+    /**
+    * Tooltip Styles
+    */
 
+    /* Add this attribute to the element that needs a tooltip */
+    [data-tooltip] {
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+    }
 
+    /* Hide the tooltip content by default */
+    [data-tooltip]:before,
+    [data-tooltip]:after {
+      visibility: hidden;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+      filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+      opacity: 0;
+      pointer-events: none;
+    }
 
+    /* Position tooltip above the element */
+    [data-tooltip]:before {
+      position: absolute;
+      bottom: 150%;
+      left: 50%;
+      margin-bottom: 5px;
+      margin-left: -80px;
+      padding: 7px;
+      width: 160px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background-color: #000;
+      background-color: hsla(0, 0%, 20%, 0.9);
+      color: #fff;
+      content: attr(data-tooltip);
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.2;
+    }
 
-		</ul>
+    /* Triangle hack to make tooltip look like a speech bubble */
+    [data-tooltip]:after {
+      position: absolute;
+      bottom: 150%;
+      left: 50%;
+      margin-left: -5px;
+      width: 0;
+      border-top: 5px solid #000;
+      border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: " ";
+      font-size: 0;
+      line-height: 0;
+    }
 
+    /* Show tooltip content on hover */
+    [data-tooltip]:hover:before,
+    [data-tooltip]:hover:after {
+      visibility: visible;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+      filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+      opacity: 1;
+    }
 
-	</div><!-- /.navbar-collapse -->
-</nav>
+    .button {
 
-<header></header>
-<main role="main">
+      text-align:center;
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+    }
+
+    .panel{margin-bottom:20px;background-color:#fff;border:1px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}.panel-body{padding:15px}.panel-heading{padding:10px 15px;border-bottom:1px solid transparent;border-top-left-radius:3px;border-top-right-radius:3px}.panel-heading>.dropdown .dropdown-toggle{color:inherit}.panel-title{margin-top:0;margin-bottom:0;font-size:16px;color:inherit}.panel-title>.small,.panel-title>.small>a,.panel-title>a,.panel-title>small,.panel-title>small>a{color:inherit}.panel-footer{padding:10px 15px;background-color:#f5f5f5;border-top:1px solid #ddd;border-bottom-right-radius:3px;border-bottom-left-radius:3px}.panel>.list-group,.panel>.panel-collapse>.list-group{margin-bottom:0}.panel>.list-group .list-group-item,.panel>.panel-collapse>.list-group .list-group-item{border-width:1px 0;border-radius:0}.panel>.list-group:first-child .list-group-item:first-child,.panel>.panel-collapse>.list-group:first-child .list-group-item:first-child{border-top:0;border-top-left-radius:3px;border-top-right-radius:3px}.panel>.list-group:last-child .list-group-item:last-child,.panel>.panel-collapse>.list-group:last-child .list-group-item:last-child{border-bottom:0;border-bottom-right-radius:3px;border-bottom-left-radius:3px}.panel>.panel-heading+.panel-collapse>.list-group .list-group-item:first-child{border-top-left-radius:0;border-top-right-radius:0}.panel-heading+.list-group .list-group-item:first-child{border-top-width:0}.list-group+.panel-footer{border-top-width:0}.panel>.panel-collapse>.table,.panel>.table,.panel>.table-responsive>.table{margin-bottom:0}.panel>.panel-collapse>.table caption,.panel>.table caption,.panel>.table-responsive>.table caption{padding-right:15px;padding-left:15px}.panel>.table-responsive:first-child>.table:first-child,.panel>.table:first-child{border-top-left-radius:3px;border-top-right-radius:3px}.panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child,.panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child,.panel>.table:first-child>tbody:first-child>tr:first-child,.panel>.table:first-child>thead:first-child>tr:first-child{border-top-left-radius:3px;border-top-right-radius:3px}.panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:first-child,.panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:first-child,.panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:first-child,.panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:first-child,.panel>.table:first-child>tbody:first-child>tr:first-child td:first-child,.panel>.table:first-child>tbody:first-child>tr:first-child th:first-child,.panel>.table:first-child>thead:first-child>tr:first-child td:first-child,.panel>.table:first-child>thead:first-child>tr:first-child th:first-child{border-top-left-radius:3px}.panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:last-child,.panel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:last-child,.panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:last-child,.panel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:last-child,.panel>.table:first-child>tbody:first-child>tr:first-child td:last-child,.panel>.table:first-child>tbody:first-child>tr:first-child th:last-child,.panel>.table:first-child>thead:first-child>tr:first-child td:last-child,.panel>.table:first-child>thead:first-child>tr:first-child th:last-child{border-top-right-radius:3px}.panel>.table-responsive:last-child>.table:last-child,.panel>.table:last-child{border-bottom-right-radius:3px;border-bottom-left-radius:3px}.panel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child,.panel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child,.panel>.table:last-child>tbody:last-child>tr:last-child,.panel>.table:last-child>tfoot:last-child>tr:last-child{border-bottom-right-radius:3px;border-bottom-left-radius:3px}.panel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child td:first-child,.panel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child th:first-child,.panel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child td:first-child,.panel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child th:first-child,.panel>.table:last-child>tbody:last-child>tr:last-child td:first-child,.panel>.table:last-child>tbody:last-child>tr:last-child th:first-child,.panel>.table:last-child>tfoot:last-child>tr:last-child td:first-child,.panel>.table:last-child>tfoot:last-child>tr:last-child th:first-child{border-bottom-left-radius:3px}.panel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child td:last-child,.panel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child th:last-child,.panel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child td:last-child,.panel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child th:last-child,.panel>.table:last-child>tbody:last-child>tr:last-child td:last-child,.panel>.table:last-child>tbody:last-child>tr:last-child th:last-child,.panel>.table:last-child>tfoot:last-child>tr:last-child td:last-child,.panel>.table:last-child>tfoot:last-child>tr:last-child th:last-child{border-bottom-right-radius:3px}.panel>.panel-body+.table,.panel>.panel-body+.table-responsive,.panel>.table+.panel-body,.panel>.table-responsive+.panel-body{border-top:1px solid #ddd}.panel>.table>tbody:first-child>tr:first-child td,.panel>.table>tbody:first-child>tr:first-child th{border-top:0}.panel>.table-bordered,.panel>.table-responsive>.table-bordered{border:0}.panel>.table-bordered>tbody>tr>td:first-child,.panel>.table-bordered>tbody>tr>th:first-child,.panel>.table-bordered>tfoot>tr>td:first-child,.panel>.table-bordered>tfoot>tr>th:first-child,.panel>.table-bordered>thead>tr>td:first-child,.panel>.table-bordered>thead>tr>th:first-child,.panel>.table-responsive>.table-bordered>tbody>tr>td:first-child,.panel>.table-responsive>.table-bordered>tbody>tr>th:first-child,.panel>.table-responsive>.table-bordered>tfoot>tr>td:first-child,.panel>.table-responsive>.table-bordered>tfoot>tr>th:first-child,.panel>.table-responsive>.table-bordered>thead>tr>td:first-child,.panel>.table-responsive>.table-bordered>thead>tr>th:first-child{border-left:0}.panel>.table-bordered>tbody>tr>td:last-child,.panel>.table-bordered>tbody>tr>th:last-child,.panel>.table-bordered>tfoot>tr>td:last-child,.panel>.table-bordered>tfoot>tr>th:last-child,.panel>.table-bordered>thead>tr>td:last-child,.panel>.table-bordered>thead>tr>th:last-child,.panel>.table-responsive>.table-bordered>tbody>tr>td:last-child,.panel>.table-responsive>.table-bordered>tbody>tr>th:last-child,.panel>.table-responsive>.table-bordered>tfoot>tr>td:last-child,.panel>.table-responsive>.table-bordered>tfoot>tr>th:last-child,.panel>.table-responsive>.table-bordered>thead>tr>td:last-child,.panel>.table-responsive>.table-bordered>thead>tr>th:last-child{border-right:0}.panel>.table-bordered>tbody>tr:first-child>td,.panel>.table-bordered>tbody>tr:first-child>th,.panel>.table-bordered>thead>tr:first-child>td,.panel>.table-bordered>thead>tr:first-child>th,.panel>.table-responsive>.table-bordered>tbody>tr:first-child>td,.panel>.table-responsive>.table-bordered>tbody>tr:first-child>th,.panel>.table-responsive>.table-bordered>thead>tr:first-child>td,.panel>.table-responsive>.table-bordered>thead>tr:first-child>th{border-bottom:0}.panel>.table-bordered>tbody>tr:last-child>td,.panel>.table-bordered>tbody>tr:last-child>th,.panel>.table-bordered>tfoot>tr:last-child>td,.panel>.table-bordered>tfoot>tr:last-child>th,.panel>.table-responsive>.table-bordered>tbody>tr:last-child>td,.panel>.table-responsive>.table-bordered>tbody>tr:last-child>th,.panel>.table-responsive>.table-bordered>tfoot>tr:last-child>td,.panel>.table-responsive>.table-bordered>tfoot>tr:last-child>th{border-bottom:0}.panel>.table-responsive{margin-bottom:0;border:0}.panel-group{margin-bottom:20px}.panel-group .panel{margin-bottom:0;border-radius:4px}.panel-group .panel+.panel{margin-top:5px}.panel-group .panel-heading{border-bottom:0}.panel-group .panel-heading+.panel-collapse>.list-group,.panel-group .panel-heading+.panel-collapse>.panel-body{border-top:1px solid #ddd}.panel-group .panel-footer{border-top:0}.panel-group .panel-footer+.panel-collapse .panel-body{border-bottom:1px solid #ddd}.panel-default{border-color:#ddd}.panel-default>.panel-heading{color:#333;background-color:#f5f5f5;border-color:#ddd}.panel-default>.panel-heading+.panel-collapse>.panel-body{border-top-color:#ddd}.panel-default>.panel-heading .badge{color:#f5f5f5;background-color:#333}.panel-default>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#ddd}.panel-primary{border-color:#337ab7}.panel-primary>.panel-heading{color:#fff;background-color:#337ab7;border-color:#337ab7}.panel-primary>.panel-heading+.panel-collapse>.panel-body{border-top-color:#337ab7}.panel-primary>.panel-heading .badge{color:#337ab7;background-color:#fff}.panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#337ab7}.panel-success{border-color:#d6e9c6}.panel-success>.panel-heading{color:#3c763d;background-color:#dff0d8;border-color:#d6e9c6}.panel-success>.panel-heading+.panel-collapse>.panel-body{border-top-color:#d6e9c6}.panel-success>.panel-heading .badge{color:#dff0d8;background-color:#3c763d}.panel-success>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#d6e9c6}.panel-info{border-color:#bce8f1}.panel-info>.panel-heading{color:#31708f;background-color:#d9edf7;border-color:#bce8f1}.panel-info>.panel-heading+.panel-collapse>.panel-body{border-top-color:#bce8f1}.panel-info>.panel-heading .badge{color:#d9edf7;background-color:#31708f}.panel-info>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#bce8f1}.panel-warning{border-color:#faebcc}.panel-warning>.panel-heading{color:#8a6d3b;background-color:#fcf8e3;border-color:#faebcc}.panel-warning>.panel-heading+.panel-collapse>.panel-body{border-top-color:#faebcc}.panel-warning>.panel-heading .badge{color:#fcf8e3;background-color:#8a6d3b}.panel-warning>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#faebcc}.panel-danger{border-color:#ebccd1}.panel-danger>.panel-heading{color:#a94442;background-color:#f2dede;border-color:#ebccd1}.panel-danger>.panel-heading+.panel-collapse>.panel-body{border-top-color:#ebccd1}.panel-danger>.panel-heading .badge{color:#f2dede;background-color:#a94442}.panel-danger>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#ebccd1}
+  </style>
+{% endblock%}
+{##}
+{##}
+{% block js_file %}
+<script src="{{ static_url_for('static', filename='build/assets/vendor/jquery/jquery.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/bootstrap/js/bootstrap.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/nanoscroller/nanoscroller.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/magnific-popup/magnific-popup.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/jquery-placeholder/jquery.placeholder.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/select2/select2.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/javascripts/theme.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/javascripts/theme.custom.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/javascripts/theme.init.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/javascripts/tables/examples.datatables.editable.js')}}"></script>
+<script src="{{ static_url_for('static', filename='build/assets/vendor/modernizr/modernizr.js')}}"></script>
+{% endblock %}
+{% block content %}
+
 	<div class="jumbotron">
 		<div class="container">
 
@@ -896,9 +956,12 @@
 		</div>
 	</aside>
 </section>
-</main>
 
-<div id="dialog" class="modal-block mfp-hide">
+
+
+
+{% endblock %}
+    <div id="dialog" class="modal-block mfp-hide">
 	<section class="panel">
 		<header class="panel-heading">
 			<h2 class="panel-title">Are you sure?</h2>
@@ -920,32 +983,3 @@
 		</footer>
 	</section>
 </div>
-
-<!-- Vendor -->
-<script src="assets/vendor/jquery/jquery.js"></script>
-<script src="assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="assets/vendor/nanoscroller/nanoscroller.js"></script>
-<script src="assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="assets/vendor/magnific-popup/magnific-popup.js"></script>
-<script src="assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
-
-<!-- Specific Page Vendor -->
-<script src="assets/vendor/select2/select2.js"></script>
-<script src="assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-<script src="assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-
-<!-- Theme Base, Components and Settings -->
-<script src="assets/javascripts/theme.js"></script>
-
-<!-- Theme Custom -->
-<script src="assets/javascripts/theme.custom.js"></script>
-
-<!-- Theme Initialization Files -->
-<script src="assets/javascripts/theme.init.js"></script>
-
-
-<!-- Examples -->
-<script src="assets/javascripts/tables/examples.datatables.editable.js"></script>
-</body>
-</html>
