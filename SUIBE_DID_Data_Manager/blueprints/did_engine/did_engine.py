@@ -20,7 +20,13 @@ def create_weid_local_func():
     privkey = request.args.get("privkey", None)
     if privkey == None:
         privkey = create_privkey()
-    account = generate_addr(priv=privkey.hex())
+        account = generate_addr(priv=privkey.hex())
+    else:
+        if privkey[:2] == "0x":
+            account = generate_addr(priv=privkey[2:])
+        else:
+            account = generate_addr(priv=hex(int(privkey))[2:])
+
     addr = account["payload"]["addr"]
     # 拼接weid，这里CHAIN_ID是留给上链用的。
     weid = "did:weid:CHAIN_ID:{addr}".format(addr=addr)
@@ -28,8 +34,10 @@ def create_weid_local_func():
         "weid": {
             "errorCode": 0,
             "errorMessage": "success",
-            "privateKey ": account["payload"]["priv"],
-            "publicKey": account["payload"]["pubv"],
+            "privateKeyHex": account["payload"]["priv"],
+            "publicKeyHex": account["payload"]["pubv"],
+            "privateKeyInt": str(int(account["payload"]["priv"], 16)),
+            "publicKeyInt": str(int(account["payload"]["pubv"], 16)),
             "respBody": weid,
         }
     }
