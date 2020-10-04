@@ -40,7 +40,7 @@ def generate_addr(priv=None):
             "payload":
                 {"addr": account.address,
                  "priv": account.privateKey.hex(),
-                 "pubv": str(account._key_obj.public_key)
+                 "pubv": str(account._key_obj.public_key).lower()
                  }}
 
 def Hash(msg):
