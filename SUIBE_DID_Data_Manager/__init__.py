@@ -30,14 +30,16 @@ def create_app(config_object="SUIBE_DID_Data_Manager.settings"):
     :param config_object: The configuration object to use.
     """
     app = Flask('SUIBE_DID_Data_Manager')
-    CORS(app)
-    app.config.from_object(config_object)
-    register_extensions(app)
-    register_blueprints(app)
-    register_errorhandlers(app)
-    register_shellcontext(app)
-    # register_commands(app)
-    configure_logger(app)
+    with app.app_context():
+        CORS(app)
+        app.config.from_object(config_object)
+        configure_models()
+        register_extensions(app)
+        register_blueprints(app)
+        register_errorhandlers(app)
+        register_shellcontext(app)
+        # register_commands(app)
+        configure_logger(app)
     return app
 
 
@@ -53,6 +55,11 @@ def register_extensions(app):
     flask_static_digest.init_app(app)
     bootstrap.init_app(app)
 
+
+def configure_models():
+    import SUIBE_DID_Data_Manager.blueprints.data_manager.models
+    import SUIBE_DID_Data_Manager.blueprints.did_engine.models
+    import SUIBE_DID_Data_Manager.blueprints.public.models
 
 def register_blueprints(app):
     """Register Flask blueprints."""

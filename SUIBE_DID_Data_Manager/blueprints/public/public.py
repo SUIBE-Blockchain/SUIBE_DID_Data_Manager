@@ -12,8 +12,8 @@ from flask import (
 from flask_login import login_required, login_user, logout_user, current_user
 
 from SUIBE_DID_Data_Manager.extensions import login_manager
-from SUIBE_DID_Data_Manager.forms import RegisterForm, LoginForm
-from SUIBE_DID_Data_Manager.models import User
+from SUIBE_DID_Data_Manager.blueprints.public.forms import RegisterForm, LoginForm
+from SUIBE_DID_Data_Manager.blueprints.public.models import User
 from SUIBE_DID_Data_Manager.utils import flash_errors, redirect_back
 from SUIBE_DID_Data_Manager.extensions import db
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
