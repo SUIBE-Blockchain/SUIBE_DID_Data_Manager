@@ -123,3 +123,7 @@ def sdk_config():
     form=form,
     crypto_type=crypto_type,
     )
+
+@public_bp.route("/tables")
+def tables():
+    return render_template("public/tables-editable.html")
