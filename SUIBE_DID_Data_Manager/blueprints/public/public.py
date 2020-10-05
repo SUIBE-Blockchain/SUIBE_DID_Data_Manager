@@ -126,4 +126,4 @@ def sdk_config():
 
 @public_bp.route("/tables")
 def tables():
-    return render_template("public/tables-editable.html")
+    return render_template("public/tables-did.html")
