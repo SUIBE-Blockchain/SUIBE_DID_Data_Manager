@@ -1,7 +1,6 @@
 alembic==1.4.2
 appdirs==1.4.3
 appnope==0.1.0
-attrdict==2.0.1
 attrs==19.3.0
 backcall==0.1.0
 base58==2.0.0
@@ -14,7 +13,6 @@ certifi==2020.4.5.1
 cffi==1.14.0
 chardet==3.0.4
 click==7.1.1
-cytoolz==0.10.1
 decorator==4.4.2
 entrypoints==0.3
 environs==7.3.1
@@ -128,13 +126,7 @@ attrdict
 bumpversion<1,>=0.5.3
 configobj
 cytoolz
-lru-dict
-parsimonious
-pycryptodome
 cryptography
-requests
-toolz
-
 hypothesis>=3.6.1
 argcomplete
 pymitter
