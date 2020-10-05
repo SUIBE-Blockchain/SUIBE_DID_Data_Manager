@@ -124,6 +124,6 @@ def sdk_config():
     crypto_type=crypto_type,
     )
 
-@public_bp.route("/tables")
+@public_bp.route("/ManageDid/")
 def tables():
-    return render_template("public/tables-editable.html")
+    return render_template("public/tables-did.html")
