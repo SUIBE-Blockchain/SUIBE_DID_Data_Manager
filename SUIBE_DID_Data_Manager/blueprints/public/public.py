@@ -106,8 +106,6 @@ def register():
             return redirect(url_for('public.login'))
     return render_template('public/register.html', form=form)
 
-
-
 @public_bp.route("/about/")
 def about():
     """About page."""
@@ -130,6 +128,6 @@ def sdk_config():
     crypto_type=crypto_type,
     )
 
-@public_bp.route("/tables")
+@public_bp.route("/ManageDid/")
 def tables():
-    return render_template("public/tables-editable.html")
+    return render_template("public/Identity_manager.html")

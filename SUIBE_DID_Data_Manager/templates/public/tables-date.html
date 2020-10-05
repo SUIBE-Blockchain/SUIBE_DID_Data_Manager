@@ -98,21 +98,6 @@
 		}
 
 	</style>
-
-     <script src="../../static/build/jquery.min.js"></script>
-     <script>
-     jQuery(document).ready(function($) {
-	    $('.theme-login').click(function(){
-		$('.theme-popover-mask').fadeIn(100);
-		$('.theme-popover').slideDown(200);
-	    })
-	    $('.theme-poptit .close').click(function(){
-		$('.theme-popover-mask').fadeOut(100);
-		$('.theme-popover').slideUp(200);
-	    })
-
-        })
-    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
@@ -126,7 +111,7 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item">
+			<li class="nav-item ">
 				<a class="nav-link" href="/">DID引擎</a>
 			</li>
 			<li class="nav-item active">
@@ -174,72 +159,109 @@
 						<a href="#" class="fa fa-times"></a>
 					</div>
 
-					<h2 class="panel-title">DID身份管理</h2>
+					<h2 class="panel-title">Weid:0xF0311be2ccE44a9430AD6d86c6AAB97D5d1058bD 所管理数据</h2>
 				</header>
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="mb-md">
+                                <input type="file" id="btn_file" style="display:none">
+								<button  type="button" class="btn btn-primary" onclick="F_Open_dialog()">导入数据 <i class="fa fa-plus"></i></button>
+                                <button  class="btn btn-primary" >导出Document <i class="fa fa-minus"></i></button>
+                                <a  class="btn btn-primary" href="Identity_manager.html">返回 <i class="fa fa-forward"></i></a>
+							</div>
 
-                                <a class="btn btn-primary btn-large theme-login" href="javascript:;">导入DID</a>
-
-                             <div class="theme-popover">
-                                <div class="theme-poptit">
-                                     <a href="javascript:;" title="关闭" class="close">×</a>
-                                    <h3>DID导入</h3>
-                                </div>
-                                <div class="theme-popbod dform">
-                                    <form class="theme-signin" name="loginform" action="" method="post">
-                                         <ol>
-                                             <li><strong>PublicKey:</strong><input class="ipt" type="text" name="log" value="sc.chinaz.com" size="20" /></li>
-                                             <li><strong>PrivateKey:</strong><input class="ipt" type="password" name="pwd" value="***" size="20" /></li>
-                                             <li><input class="btn btn-primary" type="submit" name="submit" value=" 导入 " /></li>
-                                         </ol>
-                                    </form>
-                                </div>
-                             </div>
-                           </div>
 						</div>
+
 					</div>
 					<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 						<thead>
 						<tr>
-							<th>DID</th>
-							<th>PublicKey</th>
-							<th>State</th>
+							<th>ID</th>
+							<th>Type</th>
+							<th>Issue Time</th>
 							<th>Actions</th>
 						</tr>
 						</thead>
 						<tbody>
-
-						<tr class="gradeA">
-							<td>weid:0xF0311be2...</td>
-							<td>0xF0311be2...</td>
-							<td>未上链</td>
+						<tr class="gradeX">
+							<td>1</td>
+							<td>金融比赛证书</td>
+							<td>2020-06-09</td>
 							<td class="actions">
-                                <a class="btn btn-outline-secondary" href="tables-date.html">详情</a>
+								 <a class="btn btn-outline-secondary" href="../certificate_style_normal.html">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
 								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
 							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
-						<tr class="gradeA">
-							<td>weid:0xJ0213bf2...</td>
-							<td>0xJ0213bf2...</td>
-							<td>已上链</td>
+						<tr class="gradeC">
+							<td>2</td>
+							<td>创新大赛证书</td>
+							<td>2020-07-10</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
 							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
+						<tr class="gradeA">
+							<td>3</td>
+							<td>教员认证证书
+							</td>
+							<td>2020-01-03</td>
+							<td class="actions">
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
+							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
+                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
+								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+							</td>
+						</tr>
+						<tr class="gradeA">
+							<td>4</td>
+							<td>英语六级证书
+							</td>
+							<td>2020-06-08</td>
+							<td class="actions">
+							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
+							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
+                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
+								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+							</td>
+						</tr>
+						<tr class="gradeA">
+							<td>5</td>
+							<td>奥林匹克竞赛证书</td>
+							<td>2020-07-08</td>
+							<td class="actions">
+							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
+							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
+                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
+								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+							</td>
+						</tr>
+
 
 						</tbody>
 					</table>
@@ -276,7 +298,12 @@
 		</footer>
 	</section>
 </div>
-
+<script>
+     function F_Open_dialog()
+    {
+        document.getElementById("btn_file").click();
+    }
+</script>
 <!-- Vendor -->
 <script src="../../static/build/assets/vendor/jquery/jquery.js"></script>
 <script src="../../static/build/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
