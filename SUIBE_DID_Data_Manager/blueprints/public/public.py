@@ -114,6 +114,12 @@ def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
 
+@public_bp.route("/Identity_manager/")
+def Identity_manager():
+    """About page."""
+    form = LoginForm(request.form)
+    return render_template("public/Identity_manager.html", form=form)
+
 @public_bp.route("/sdk_config/")
 def sdk_config():
     """About page."""

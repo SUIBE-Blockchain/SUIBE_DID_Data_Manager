@@ -1,0 +1,72 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+<div id="context">
+    <div class="jumbotron">
+        <div class="container">
+
+            <h4 class="display-4">欢迎访问<br>SUIBE DID Data Manager！</h4>
+
+            <p><a href="" class="btn btn-primary btn-large">查看 Github 源码……</a></p>
+        </div>
+    </div><!-- /.jumbotron -->
+<div class="container">
+            <div class = "row">
+            <div class="col-lg-8">
+                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID 数据导入</h3></a>
+                <br>
+                <div class="form-group">
+                    <div>
+                        <input type="file" id="btn_file" style="display:none">
+                        <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击上传 DID 文件</button>
+                    </div>
+
+                    <br>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">导入结果：</span>
+                        </div>
+                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.row -->
+    <div class = "row">
+            <div class="col-lg-8">
+                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID 数据导出</h3></a>
+                <br>
+                <div class="form-group">
+                    <div>
+                        <input type="file" id="btn_file" style="display:none">
+                        <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击导出</button>
+                    </div>
+
+                    <br>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">导出结果：</span>
+                        </div>
+                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.row -->
+            <div class="row">
+            <div class="col-lg-8">
+                <a class="no_type_a" target="_blank"><h3><i class="fa fa-angellist"></i> 身份查看</h3></a>
+                <br>
+                <p>
+                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">生成数据树</a>
+                </p>
+            </div>
+        </div><!-- /.row -->
+
+        <br>
+</div>
+</div>
+{% endblock %}
