@@ -1,11 +1,19 @@
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
+from SUIBE_DID_Data_Manager.weidentity.weidentityService import weidentityService
 from SUIBE_DID_Data_Manager.config import Config
+
 import random
 from ecdsa import SigningKey, SECP256k1
 from eth_account import Account
 
 from pprint import pprint
 from SUIBE_DID_Data_Manager.weidentity.localweid import base64_decode, base64_encode, Hash
+
+weid = weidentityService(Config.get("SERVER_WEID_URL"))
+a = weid.create_weidentity_did()
+print(a['respBody'])
+b = weid.get_weidentity_did(a['respBody'])
+pprint(b)
 
 weid = weidentityClient(Config.get("LOCAL_WEID_URL"))
 # 创建私钥

@@ -22,7 +22,7 @@ bootstrap = Bootstrap()
 
 @login_manager.user_loader
 def load_user(user_id):
-    from SUIBE_DID_Data_Manager.models import User
+    from SUIBE_DID_Data_Manager.blueprints.public.models import User
     if User.query.get(int(user_id)) is not None:
         user = User.query.get(int(user_id))
         return user
