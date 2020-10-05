@@ -98,6 +98,21 @@
 		}
 
 	</style>
+
+     <script src="../../static/build/jquery.min.js"></script>
+     <script>
+     jQuery(document).ready(function($) {
+	    $('.theme-login').click(function(){
+		$('.theme-popover-mask').fadeIn(100);
+		$('.theme-popover').slideDown(200);
+	    })
+	    $('.theme-poptit .close').click(function(){
+		$('.theme-popover-mask').fadeOut(100);
+		$('.theme-popover').slideUp(200);
+	    })
+
+        })
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
@@ -165,8 +180,25 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="mb-md">
-								<button id="addToTable" class="btn btn-primary">导入DID <i class="fa fa-plus"></i></button>
-							</div>
+
+                                <a class="btn btn-primary btn-large theme-login" href="javascript:;">导入DID</a>
+
+                             <div class="theme-popover">
+                                <div class="theme-poptit">
+                                     <a href="javascript:;" title="关闭" class="close">×</a>
+                                    <h3>DID导入</h3>
+                                </div>
+                                <div class="theme-popbod dform">
+                                    <form class="theme-signin" name="loginform" action="" method="post">
+                                         <ol>
+                                             <li><strong>PublicKey:</strong><input class="ipt" type="text" name="log" value="sc.chinaz.com" size="20" /></li>
+                                             <li><strong>PrivateKey:</strong><input class="ipt" type="password" name="pwd" value="***" size="20" /></li>
+                                             <li><input class="btn btn-primary" type="submit" name="submit" value=" 导入 " /></li>
+                                         </ol>
+                                    </form>
+                                </div>
+                             </div>
+                           </div>
 						</div>
 					</div>
 					<table class="table table-bordered table-striped mb-none" id="datatable-editable">
@@ -179,44 +211,13 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr class="gradeX">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 4.0
-							</td>
-							<td>Win 95+</td>
-							<td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-							</td>
-						</tr>
-						<tr class="gradeC">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 5.0
-							</td>
-							<td>Win 95+</td>
-							<td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-							</td>
-						</tr>
+
 						<tr class="gradeA">
-							<td>0xF0311be2...</td>
+							<td>weid:0xF0311be2...</td>
 							<td>0xF0311be2...</td>
 							<td>未上链</td>
 							<td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
+                                <a class="btn btn-outline-secondary" href="./tables-date.html">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
 								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
@@ -226,11 +227,9 @@
 							</td>
 						</tr>
 						<tr class="gradeA">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 6
-							</td>
-							<td>Win 98+</td>
+							<td>weid:0xJ0213bf2...</td>
+							<td>0xJ0213bf2...</td>
+							<td>已上链</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->

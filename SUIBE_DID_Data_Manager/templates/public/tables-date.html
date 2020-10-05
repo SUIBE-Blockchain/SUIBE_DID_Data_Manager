@@ -165,8 +165,10 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="mb-md">
-								<button id="addToTable" class="btn btn-primary">导入数据 <i class="fa fa-plus"></i></button>
-                                <button id="addToTable" class="btn btn-primary">导出Document <i class="fa fa-minus"></i></button>
+                                <input type="file" id="btn_file" style="display:none">
+								<button  type="button" class="btn btn-primary" onclick="F_Open_dialog()">导入数据 <i class="fa fa-plus"></i></button>
+                                <button  class="btn btn-primary" >导出Document <i class="fa fa-minus"></i></button>
+                                <a  class="btn btn-primary" href="./tables-did.html">返回 <i class="fa fa-forward"></i></a>
 							</div>
 
 						</div>
@@ -183,13 +185,11 @@
 						</thead>
 						<tbody>
 						<tr class="gradeX">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 4.0
-							</td>
-							<td>Win 95+</td>
+							<td>1</td>
+							<td>金融比赛证书</td>
+							<td>2020-06-09</td>
 							<td class="actions">
-								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
+								 <a class="btn btn-outline-secondary" href="../certificate_style_normal.html">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
 								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
@@ -200,11 +200,9 @@
 							</td>
 						</tr>
 						<tr class="gradeC">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 5.0
-							</td>
-							<td>Win 95+</td>
+							<td>2</td>
+							<td>创新大赛证书</td>
+							<td>2020-07-10</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
@@ -217,11 +215,10 @@
 							</td>
 						</tr>
 						<tr class="gradeA">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 5.5
+							<td>3</td>
+							<td>教员认证证书
 							</td>
-							<td>Win 95+</td>
+							<td>2020-01-03</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
@@ -234,11 +231,10 @@
 							</td>
 						</tr>
 						<tr class="gradeA">
-							<td>Trident</td>
-							<td>Internet
-								Explorer 6
+							<td>4</td>
+							<td>英语六级证书
 							</td>
-							<td>Win 98+</td>
+							<td>2020-06-08</td>
 							<td class="actions">
 							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
@@ -251,9 +247,9 @@
 							</td>
 						</tr>
 						<tr class="gradeA">
-							<td>Trident</td>
-							<td>Internet Explorer 7</td>
-							<td>Win XP SP2+</td>
+							<td>5</td>
+							<td>奥林匹克竞赛证书</td>
+							<td>2020-07-08</td>
 							<td class="actions">
 							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
@@ -265,66 +261,7 @@
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
-						<tr class="gradeA">
-							<td>Trident</td>
-							<td>AOL browser (AOL desktop)</td>
-							<td>Win XP</td>
-							<td class="actions">
-							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-							</td>
-						</tr>
-						<tr class="gradeA">
-							<td>Gecko</td>
-							<td>Firefox 1.0</td>
-							<td>Win 98+ / OSX.2+</td>
-							<td class="actions">
-							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-							</td>
-						</tr>
-						<tr class="gradeA">
-							<td>Gecko</td>
-							<td>Firefox 1.5</td>
-							<td>Win 98+ / OSX.2+</td>
-							<td class="actions">
-							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-							</td>
-						</tr>
-						<tr class="gradeA">
-							<td>Gecko</td>
-							<td>Firefox 2.0</td>
-							<td>Win 98+ / OSX.2+</td>
-							<td class="actions">
-							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-							</td>
-						</tr>
+
 
 						</tbody>
 					</table>
@@ -361,7 +298,12 @@
 		</footer>
 	</section>
 </div>
-
+<script>
+     function F_Open_dialog()
+    {
+        document.getElementById("btn_file").click();
+    }
+</script>
 <!-- Vendor -->
 <script src="../../static/build/assets/vendor/jquery/jquery.js"></script>
 <script src="../../static/build/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
