@@ -118,6 +118,6 @@ def Identity_manager():
     form = LoginForm(request.form)
     return render_template("public/Identity_manager.html", form=form)
 
-@public_bp.route("/ManageDid/")
-def tables():
-    return render_template("public/Identity_manager.html")
+@public_bp.route("/tables_data")
+def tables_data():
+    return render_template("public/tables-date.html")

@@ -6,11 +6,29 @@ import sha3
 import base64
 import hashlib
 from ecdsa import SigningKey, SECP256k1
+DID_TYPE = ["weid"]
 def create_privkey():
     return os.urandom(32)
 
 def create_ecdsa_privkey():
     return SigningKey.generate(curve=SECP256k1)
+
+def create_random_weid():
+    # 通过get的方式传送一个privkey data。
+    privkey = create_privkey()
+    account = generate_addr(priv=privkey.hex())
+
+    addr = account["payload"]["addr"]
+    # 拼接weid，这里CHAIN_ID是留给上链用的。
+    weid = "did:weid:CHAIN_ID:{addr}".format(addr=addr)
+    data = {
+        "privateKeyHex": account["payload"]["priv"],
+        "publicKeyHex": account["payload"]["pubv"],
+        "privateKeyInt": str(int(account["payload"]["priv"], 16)),
+        "publicKeyInt": str(int(account["payload"]["pubv"], 16)),
+        "weId": weid,
+    }
+    return data
 
 def create_weid_by_privkey(privkey, chain_id):
     if privkey[:2] == "0x":
@@ -44,6 +62,20 @@ def generate_addr(priv=None):
                  "priv": account.privateKey.hex(),
                  "pubv": str(account._key_obj.public_key).lower()
                  }}
+
+
+def verify_did(did):
+    verify_data = did.split(":")
+
+    if verify_data[0] != "did":
+        return "请提供正确的did。"
+    if verify_data[1] not in DID_TYPE:
+        return "请提供正确的DID Type。"
+    if verify_data[2] == "CHAIN_ID":
+        return "请指定正确的chain id。"
+    if verify_data[3][:2] != "0x":
+        return "请输入正确的did。"
+    return True
 
 def Hash(msg):
     k = sha3.keccak_256()

@@ -137,42 +137,4 @@ def get_did_doc_by_weid_view():
     }
     return jsonify(data_dict)
 
-
-@did_engine.route("/get_did_doc_by_privkey_view")
-def get_did_doc_by_privkey_view():
-    weid = request.args.get("privkey")
-    if not weid:
-        return jsonify({"result": "can not found privkey."})
-    data_dict = {
-      "data": {
-        "errorCode": 0,
-        "errorMessage": "success",
-        "respBody": {
-          "@context": "https://github.com/WeBankFinTech/WeIdentity/blob/master/context/v1",
-          "authentication": [
-            {
-              "publicKey": "did:weid:1:0x0c8a7279207606838b16053cd526fd49c6c560c0#keys-0",
-              "revoked": "false",
-              "type": "Secp256k1"
-            }
-          ],
-          "created": 1601910139,
-          "id": weid,
-          "publicKey": [
-            {
-              "id": "{weid}#keys-0".format(weid=weid),
-              "owner": weid,
-              "publicKey": "1HaqOCf1kgOvAzBeZdOoFp/G+Rl53nsqt28L5IcRnGotuExd4//+N7sHI6yUks2r4iH9yqXnpbEK6ZgvPtkA8Q==",
-              "revoked": "false",
-              "type": "Secp256k1"
-            }
-          ],
-          "service": [
-
-          ],
-          "updated": "null"
-        }
-      }
-    }
-    return jsonify(data_dict)
-
+# @did_engine.route("/")
