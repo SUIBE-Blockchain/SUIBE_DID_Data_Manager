@@ -12,21 +12,23 @@ def create_privkey():
 def create_ecdsa_privkey():
     return SigningKey.generate(curve=SECP256k1)
 
-class ECDSA():
-    def __init__(self):
+def create_weid_by_privkey(privkey, chain_id):
+    if privkey[:2] == "0x":
+        account = generate_addr(priv=privkey[2:])
+    else:
+        account = generate_addr(priv=hex(int(privkey))[2:])
 
-        self.private_key = SigningKey.generate(curve=SECP256k1)
-        # self.private_key = self.private_key.to_string()bre
-        self.public_key = self.private_key.get_verifying_key()
-    def Sign(self, message):
-        if isinstance(message, str):
-            message = bytes(message, 'utf-8')
-        return self.private_key.sign(message, hashfunc=hashlib.sha256)
-    def Verify(self, signature, message):
-        if isinstance(message, str):
-            message = bytes(message, 'utf-8')
-        return self.public_key.verify(signature, message)
-
+    addr = account["payload"]["addr"]
+    # 拼接weid，这里CHAIN_ID是留给上链用的。
+    weid = "did:weid:{chain_id}:{addr}".format(chain_id=chain_id, addr=addr)
+    data = {
+        "privateKeyHex": account["payload"]["priv"],
+        "publicKeyHex": account["payload"]["pubv"],
+        "privateKeyInt": str(int(account["payload"]["priv"], 16)),
+        "publicKeyInt": str(int(account["payload"]["pubv"], 16)),
+        "weid": weid,
+    }
+    return data
 
 def generate_addr(priv=None):
     if priv == None:
