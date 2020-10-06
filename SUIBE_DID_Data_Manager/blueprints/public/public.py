@@ -118,16 +118,6 @@ def Identity_manager():
     form = LoginForm(request.form)
     return render_template("public/Identity_manager.html", form=form)
 
-@public_bp.route("/sdk_config/")
-def sdk_config():
-    """About page."""
-    form = LoginForm(request.form)
-    crypto_type = ['ECDSA','GM']
-    return render_template("public/sdk_config.html", 
-    form=form,
-    crypto_type=crypto_type,
-    )
-
 @public_bp.route("/ManageDid/")
 def tables():
     return render_template("public/Identity_manager.html")
