@@ -18,7 +18,7 @@ mv .envrc SUIBE_DID_Data_Manager/.env
 
 pip install -r requirements.txt
 
-python manager.py init_db
+python manager.py reset_local_db
 # init db
 python manager.py runserver 
 # 运行服务
@@ -30,16 +30,5 @@ python manager.py runserver
 
 
 
-**\* manager.py 启动脚本命令**
 
-~~~bash
-python manager.py init_db
-# init db
-python manager.py reset_db
-# reset db
-python manager.py set_user <username> <email> <password> <active>
-# add user
-python manger.py runserver 
-# 运行服务
-~~~
 
