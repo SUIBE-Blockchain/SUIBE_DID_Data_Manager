@@ -121,3 +121,7 @@ def Identity_manager():
 @public_bp.route("/tables_data")
 def tables_data():
     return render_template("public/tables-date.html")
+
+@public_bp.route("/certificate")
+def certificate():
+    return render_template("certificate_style_normal.html")
