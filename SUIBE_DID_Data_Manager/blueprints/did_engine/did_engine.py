@@ -128,9 +128,7 @@ def get_did_doc_by_weid_view():
               "type": "Secp256k1"
             }
           ],
-          "service": [
-
-          ],
+          "service": [],
           "updated": "null"
         }
       }
