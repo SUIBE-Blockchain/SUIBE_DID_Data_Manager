@@ -5,12 +5,12 @@ from flask_login import login_required
 
 data_manager = Blueprint('data_manager', __name__)
 
-@data_manager.route("/credential")
+@data_manager.route("/credential/<string:id>", methods=["GET", "POST"])
 @login_required
-def credential():
+def credential(id):
     data_dict = {
       "@context": "https://weidentity.webank.com/vc/v1",
-      "id": "dsfewr23sdcsdfeqeddadfd",
+      "id": id,
       "type": ["Credential", "cpt100"],
       "issuer": "did:weid:1:0x2323e3e3dweweewew2www124151251",
       "issued": "2010-01-01T21:19:10Z",

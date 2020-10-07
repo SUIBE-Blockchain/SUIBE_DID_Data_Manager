@@ -99,9 +99,8 @@ def did_doc():
     return jsonify({"data": weid_result})
 
 
-@did_engine.route("/get_did_doc_by_weid_view")
-def get_did_doc_by_weid_view():
-    weid = request.args.get("weid")
+@did_engine.route("/get_did_doc_by_weid_view/<string:weid>")
+def get_did_doc_by_weid_view(weid):
     if not weid:
         return jsonify({"result": "can not found weid."})
     data_dict = {
