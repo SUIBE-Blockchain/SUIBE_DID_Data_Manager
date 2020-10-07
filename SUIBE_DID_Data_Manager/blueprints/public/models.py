@@ -36,6 +36,7 @@ class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
     __bind_key__ = 'userserver'
     __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password

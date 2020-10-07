@@ -3,13 +3,14 @@
 import logging
 import sys
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from flask_cors import CORS
 from SUIBE_DID_Data_Manager.blueprints.public.public import public_bp
 from SUIBE_DID_Data_Manager.blueprints.user.user import user_bp
 from SUIBE_DID_Data_Manager.blueprints.admin.admin import admin_bp
 from SUIBE_DID_Data_Manager.blueprints.did_engine.did_engine import did_engine
 from SUIBE_DID_Data_Manager.blueprints.data_manager.data_manager import data_manager
+from SUIBE_DID_Data_Manager.blueprints.auth_manager.auth_manager import auth_manager
 
 from SUIBE_DID_Data_Manager.extensions import (
     bcrypt,
@@ -30,14 +31,17 @@ def create_app(config_object="SUIBE_DID_Data_Manager.settings"):
     :param config_object: The configuration object to use.
     """
     app = Flask('SUIBE_DID_Data_Manager')
-    CORS(app)
-    app.config.from_object(config_object)
-    register_extensions(app)
-    register_blueprints(app)
-    register_errorhandlers(app)
-    register_shellcontext(app)
-    # register_commands(app)
-    configure_logger(app)
+    with app.app_context():
+        CORS(app)
+        app.config.from_object(config_object)
+        configure_models()
+        register_extensions(app)
+        register_blueprints(app)
+        register_errorhandlers(app)
+        register_shellcontext(app)
+        # register_commands(app)
+        configure_logger(app)
+        g.index_add_counter = 0
     return app
 
 
@@ -54,6 +58,11 @@ def register_extensions(app):
     bootstrap.init_app(app)
 
 
+def configure_models():
+    import SUIBE_DID_Data_Manager.blueprints.data_manager.models
+    import SUIBE_DID_Data_Manager.blueprints.did_engine.models
+    import SUIBE_DID_Data_Manager.blueprints.public.models
+
 def register_blueprints(app):
     """Register Flask blueprints."""
     
@@ -62,7 +71,7 @@ def register_blueprints(app):
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(did_engine, url_prefix='/did_engine')
     app.register_blueprint(data_manager, url_prefix="/data_manager")
-
+    app.register_blueprint(auth_manager, url_prefix="/auth_manager")
 
 def register_errorhandlers(app):
     """Register error handlers."""

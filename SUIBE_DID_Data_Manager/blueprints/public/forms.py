@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
-from SUIBE_DID_Data_Manager.models import User
+from SUIBE_DID_Data_Manager.blueprints.public.models import User
 
 
 class LoginForm(FlaskForm):

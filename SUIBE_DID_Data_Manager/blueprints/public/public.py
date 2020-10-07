@@ -12,8 +12,8 @@ from flask import (
 from flask_login import login_required, login_user, logout_user, current_user
 
 from SUIBE_DID_Data_Manager.extensions import login_manager
-from SUIBE_DID_Data_Manager.forms import RegisterForm, LoginForm
-from SUIBE_DID_Data_Manager.models import User
+from SUIBE_DID_Data_Manager.blueprints.public.forms import RegisterForm, LoginForm
+from SUIBE_DID_Data_Manager.blueprints.public.models import User
 from SUIBE_DID_Data_Manager.utils import flash_errors, redirect_back
 from SUIBE_DID_Data_Manager.extensions import db
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
@@ -112,7 +112,7 @@ def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
 
-@public_bp.route("/Identity_manager/")
+@public_bp.route("/Identity_manager/", methods=["GET", "POST"])
 def Identity_manager():
     """Identity_manager page."""
     form = LoginForm(request.form)
@@ -134,6 +134,11 @@ def sdk_config():
     crypto_type=crypto_type,
     )
 
-@public_bp.route("/ManageDid/")
-def tables():
-    return render_template("public/Identity_manager.html")
+@public_bp.route("/tables_data")
+def tables_data():
+    return render_template("public/tables-date.html")
+
+
+@public_bp.route("/certificate")
+def certificate():
+    return render_template("certificate_style_normal.html")

@@ -1,7 +1,7 @@
   
 from SUIBE_DID_Data_Manager import create_app
 from SUIBE_DID_Data_Manager.extensions import db
-from SUIBE_DID_Data_Manager.models import User
+from SUIBE_DID_Data_Manager.blueprints.public.models import User
 
 from flask_script import Manager, Server, Shell
 import click
@@ -29,15 +29,69 @@ def make_shell_context():
 manager.add_command("runserver", Server(host="0.0.0.0", port=5000, use_debugger=True))
 manager.add_command("shell", Shell(banner=banner, make_context=make_shell_context))
 
+@manager.command
+def reset_local_db():
+    """Reset local databases."""
+    click.confirm('This operation will delete the local database, do you want to continue?', abort=True)
+    db.drop_all(bind=None)
+    click.echo('Drop local tables.')
+    db.create_all(bind=None)
+    click.echo('Success create local databases.')
+
+@manager.command
+def reset_server_db():
+    """Reset server databases."""
+    click.confirm('This operation will delete the server database, do you want to continue?', abort=True)
+    db.drop_all(bind="userserver")
+    click.echo('Drop local tables.')
+    db.create_all(bind="userserver")
+    click.echo('Success create server databases.')
+    click.echo('Reset all database.')
+    admin = User(
+        username='admin',
+        email='admin@admin.com',
+        is_admin=True,
+        active=True,
+    )
+    admin.set_password('admin')
+    db.session.add(admin)
+    db.session.commit()
+    click.echo('Success Add Admin Count.')
+
 
 @manager.command
 def reset_db():
-    """Initialize the database."""
-        
-    click.confirm('This operation will delete the database, do you want to continue?', abort=True)
+    """Reset all databases."""
+    click.confirm('This operation will delete all database, do you want to continue?', abort=True)
     db.drop_all()
-    click.echo('Drop tables.')
+    click.echo('Drop all tables.')
     db.create_all()
+    click.echo('Reset all database.')
+    admin = User(
+        username='admin',
+        email='admin@admin.com',
+        is_admin=True,
+        active=True,
+    )
+    admin.set_password('admin')
+    db.session.add(admin)
+    db.session.commit()
+    click.echo('Success Add Admin Count.')
+
+
+
+@manager.command
+def init_local_db():
+    """Initialized local databases."""
+    db.create_all(bind=None)
+    click.echo('Initialized database.')
+    click.echo('Success Add Admin Count.')
+
+
+@manager.command
+def init_server_db():
+    """Initialized server databases."""
+    db.create_all(bind="userserver")
     click.echo('Initialized database.')
     admin = User(
         username='admin',
@@ -52,6 +106,7 @@ def reset_db():
 
 @manager.command
 def init_db():
+    """Initialized all databases."""
     db.create_all()
     click.echo('Initialized database.')
     admin = User(

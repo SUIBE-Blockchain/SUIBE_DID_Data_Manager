@@ -31,14 +31,14 @@ def create_weid_local_func():
     # 拼接weid，这里CHAIN_ID是留给上链用的。
     weid = "did:weid:CHAIN_ID:{addr}".format(addr=addr)
     data = {
-        "weid": {
+        "data": {
             "errorCode": 0,
             "errorMessage": "success",
             "privateKeyHex": account["payload"]["priv"],
             "publicKeyHex": account["payload"]["pubv"],
             "privateKeyInt": str(int(account["payload"]["priv"], 16)),
             "publicKeyInt": str(int(account["payload"]["pubv"], 16)),
-            "respBody": weid,
+            "weId": weid,
         }
     }
     return jsonify(data)
@@ -87,3 +87,52 @@ def create_weid_local_server():
         "weid": weid_second
     }
     return jsonify(data)
+
+
+@did_engine.route("/did_doc")
+def did_doc():
+    weid = request.args.get("weid")
+    if not weid:
+        raise TypeError("weid can not be None.")
+    weidentity = weidentityService(Config.get("SERVER_WEID_URL"))
+    weid_result = weidentity.get_weidentity_did(weid)
+    return jsonify({"data": weid_result})
+
+
+@did_engine.route("/get_did_doc_by_weid_view")
+def get_did_doc_by_weid_view():
+    weid = request.args.get("weid")
+    if not weid:
+        return jsonify({"result": "can not found weid."})
+    data_dict = {
+      "data": {
+        "errorCode": 0,
+        "errorMessage": "success",
+        "respBody": {
+          "@context": "https://github.com/WeBankFinTech/WeIdentity/blob/master/context/v1",
+          "authentication": [
+            {
+              "publicKey": "did:weid:1:0x0c8a7279207606838b16053cd526fd49c6c560c0#keys-0",
+              "revoked": "false",
+              "type": "Secp256k1"
+            }
+          ],
+          "created": 1601910139,
+          "id": weid,
+          "publicKey": [
+            {
+              "id": "{weid}#keys-0".format(weid=weid),
+              "owner": weid,
+              "publicKey": "1HaqOCf1kgOvAzBeZdOoFp/G+Rl53nsqt28L5IcRnGotuExd4//+N7sHI6yUks2r4iH9yqXnpbEK6ZgvPtkA8Q==",
+              "revoked": "false",
+              "type": "Secp256k1"
+            }
+          ],
+          "service": [],
+          "updated": "null"
+        }
+      }
+    }
+    return jsonify(data_dict)
+
+# @did_engine.route("/")

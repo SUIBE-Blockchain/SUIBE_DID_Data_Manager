@@ -6,10 +6,11 @@ from SUIBE_DID_Data_Manager.database import (
     db,
 )
 
-class Data(Model):
+class Did(Model):
     """A user of the app."""
 
-    __tablename__ = "datas"
+    __tablename__ = "did"
+    id = db.Column(db.Integer, primary_key=True)
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
