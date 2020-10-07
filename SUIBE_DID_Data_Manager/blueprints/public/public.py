@@ -114,9 +114,15 @@ def about():
 
 @public_bp.route("/Identity_manager/")
 def Identity_manager():
-    """About page."""
+    """Identity_manager page."""
     form = LoginForm(request.form)
     return render_template("public/Identity_manager.html", form=form)
+
+@public_bp.route("/Visualization_tools/")
+def Visualization_tools():
+    """Visualization_tools page."""
+    form = LoginForm(request.form)
+    return render_template("public/Visualization_tools.html", form=form)
 
 @public_bp.route("/sdk_config/")
 def sdk_config():
