@@ -19,7 +19,6 @@
 			href="../../static/build/main_css.bundle.css"
 	/>
 
-<!--	<link rel="stylesheet" href="../../static/build/index.css" />-->
 
 	<!-- Web Fonts  -->
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
@@ -127,28 +126,32 @@
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="/">DID引擎</a>
+				<a class="nav-link" href="/">DID工具</a>
 			</li>
 			<li class="nav-item active">
 				<a class="nav-link" href="/about/">DID身份数据管理</a>
                 <span class="sr-only">(current)</span>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/about/">可视化功能</a>
-			</li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">可视化功能</a>
+            </li>
 			<li class="nav-item">
 				<a class="nav-link" href="/about/">数据共享</a>
 			</li>
-
-
-
-
 		</ul>
-
+        <ul class="navbar-nav my-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/user/">Logged in as admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout/">
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </li>
+        </ul>
 
 	</div><!-- /.navbar-collapse -->
 </nav>
-
 <header></header>
 <main role="main">
 	<div class="jumbotron">
@@ -161,9 +164,6 @@
 	</div><!-- /.jumbotron -->
 <section class="body">
 
-
-
-
 <div class="container">
 
 			<!-- start: page -->
@@ -171,7 +171,6 @@
 				<header class="panel-heading">
 					<div class="panel-actions">
 						<a href="#" class="fa fa-caret-down"></a>
-						<a href="#" class="fa fa-times"></a>
 					</div>
 
 					<h2 class="panel-title">DID身份管理</h2>
@@ -185,17 +184,69 @@
 
                              <div class="theme-popover">
                                 <div class="theme-poptit">
-                                     <a href="javascript:;" title="关闭" class="close">×</a>
+                                     <a id="target" href="javascript:;" title="关闭" class="close">×</a>
                                     <h3>DID导入</h3>
                                 </div>
                                 <div class="theme-popbod dform">
-                                    <form class="theme-signin" name="loginform" action="" method="post">
+                                    <div class="theme-signin" name="daoru"  >
                                          <ol>
-                                             <li><strong>PublicKey:</strong><input class="ipt" type="text" name="log" value="sc.chinaz.com" size="20" /></li>
-                                             <li><strong>PrivateKey:</strong><input class="ipt" type="password" name="pwd" value="***" size="20" /></li>
-                                             <li><input class="btn btn-primary" type="submit" name="submit" value=" 导入 " /></li>
+                                             <li><strong>ChainID:</strong><input class="ipt" type="text" name="log" value="" size="20" /></li>
+                                             <li><strong>PrivateKey:</strong><input class="ipt" type="password" name="pwd" value="" size="20" /></li>
+                                             <li><button class="btn btn-primary"  onclick="daoru()"  />导入</li>
+                                             <script>
+                                                 function daoru() {
+                                                     setTimeout(function () {
+                                                         if (confirm("DID数据正确，是否确认添加!")) {
+
+                                                             document.getElementById("demo").innerHTML = "<tr class=\"gradeA\">\n" +
+                                                                 "\t\t\t\t\t\t\t<td>weid:0xF0311be2...</td>\n" +
+                                                                 "\t\t\t\t\t\t\t<td>0xae578789...</td>\n" +
+                                                                 "\t\t\t\t\t\t\t<td>未上链</td>\n" +
+                                                                 "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.tables_data') }}\">详情</a>\n" +
+                                                                 "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
+                                                                 "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                                                                 "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                                                                 "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
+                                                                 "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                                                                 "\t\t\t\t\t\t\t</td>\n" +
+                                                                 "\t\t\t\t\t\t</tr>\n" +
+                                                                 "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+                                                                 "\t\t\t\t\t\t\t<td>weid:0xJ0213bf2...</td>\n" +
+                                                                 "\t\t\t\t\t\t\t<td>0x4fabbff2...</td>\n" +
+                                                                 "\t\t\t\t\t\t\t<td>已上链</td>\n" +
+                                                                 "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                                                                 "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
+                                                                 "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                                                                 "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                                                                 "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
+                                                                 "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                                                                 "\t\t\t\t\t\t\t</td>\n" +
+                                                                 "\t\t\t\t\t\t</tr>\n" +
+                                                                 "                        <tr class=\"gradeA\">\n" +
+                                                                 "                            <td>weid:0xCH921bg2...</td>\n" +
+                                                                 "                            <td>0xCH921bg2...</td>\n" +
+                                                                 "                            <td>未上链</td>\n" +
+                                                                 "                            <td class=\"actions\">\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                                                                 "                                <!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                                                                 "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                                                                 "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                                                                 "                                <!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
+                                                                 "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                                                                 "                            </td>\n" +
+                                                                 "                        </tr>"
+                                                         }
+                                                     }, 100);
+
+                                                 }
+                                             </script>
                                          </ol>
-                                    </form>
+                                    </div>
                                 </div>
                              </div>
                            </div>
@@ -210,17 +261,69 @@
 							<th>Actions</th>
 						</tr>
 						</thead>
-						<tbody>
+						<tbody id="demo">
+
 
 						<tr class="gradeA">
 							<td>weid:0xF0311be2...</td>
-							<td>0xF0311be2...</td>
+							<td>0xae578789...</td>
 							<td>未上链</td>
 							<td class="actions">
-                                <a class="btn btn-outline-secondary" href="./tables-date.html">详情</a>
+                                <a class="btn btn-outline-secondary" href="{{ url_for('public.tables_data') }}">详情</a>
 							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+								 <a class="btn btn-outline-secondary" onclick="uploadChain()">上链</a>
+                                <button class="btn btn-outline-secondary" onclick="download()">导出</button>
+                                <script>
+                                    function download() {
+                                        let blob = new Blob([], {type: ''}),
+                                            fileName = 'did.json'; // 文件名称
+                                        const link = document.createElement('a'); // 创建a标签
+                                        link.href = window.URL.createObjectURL(blob);
+                                        link.download = fileName;
+                                        link.click(); // 模拟点击a标签
+                                        window.URL.revokeObjectURL(link.href);
+                                    }
+                                    function uploadChain() {
+                                         alert("上链成功！\n" +
+                                             "交易详情：\n"+
+                                             " \"errorCode\": 0, \n" +
+                                             " \"errorMessage\": \"success\", \n" +
+                                             " \"privateKeyHex\": \"0x4fabbf5e596f3d37fb5b589c77d523aa62f3d7500efd95ad07a7dbd7b839c9dd\", \n" +
+                                             " \"privateKeyInt\": \"36036166663360927196286692907073039830942617245923719975690185900868029237725\", \n" +
+                                             " \"publicKeyHex\": \"0xae578789ef877204698ae57878f816f9d66d0eb379faef35e85b2a764e2d3f0c9708770f4f3d5b3f5c90413175114fed237b2af7b8b61f0d0c9d6604d503093\", \n" +
+                                             " \"publicKeyInt\": \"10867231154130152278048993979276314526467708307382395206027382754637955719744174758071986682320327192984916588173144660038140617813327289829167584980775059\", \n" +
+                                             " \"weId\": \"did:weid:CHAIN_ID:0xF0311be2437672e42190767A8Dc53e5E88a03767\"")
+                                        document.getElementById("demo").innerHTML = "<tr class=\"gradeA\">\n" +
+                                            "\t\t\t\t\t\t\t<td>weid:0xF0311be2...</td>\n" +
+                                            "\t\t\t\t\t\t\t<td>0xae578789...</td>\n" +
+                                            "\t\t\t\t\t\t\t<td>已上链</td>\n" +
+                                            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                                            "                                <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.tables_data') }}\">详情</a>\n" +
+                                            "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
+                                            "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                                            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                                            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                                            "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
+                                            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                                            "\t\t\t\t\t\t\t</td>\n" +
+                                            "\t\t\t\t\t\t</tr>\n" +
+                                            "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+                                            "\t\t\t\t\t\t\t<td>weid:0xJ0213bf2...</td>\n" +
+                                            "\t\t\t\t\t\t\t<td>0x4fabbff2...</td>\n" +
+                                            "\t\t\t\t\t\t\t<td>已上链</td>\n" +
+                                            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                                            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                                            "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
+                                            "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                                            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                                            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                                            "\t\t\t\t\t\t\t<!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
+                                            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                                            "\t\t\t\t\t\t\t</td>\n" +
+                                            "\t\t\t\t\t\t</tr>\n"
+
+                                    }
+                                </script>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
 							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
@@ -228,7 +331,7 @@
 						</tr>
 						<tr class="gradeA">
 							<td>weid:0xJ0213bf2...</td>
-							<td>0xJ0213bf2...</td>
+							<td>0x4fabbff2...</td>
 							<td>已上链</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
@@ -241,6 +344,8 @@
 							</td>
 						</tr>
 
+
+
 						</tbody>
 					</table>
 				</div>
@@ -248,8 +353,6 @@
 			<!-- end: page -->
 
 </div>
-
-
 
 </section>
 </main>
@@ -276,6 +379,7 @@
 		</footer>
 	</section>
 </div>
+
 
 <!-- Vendor -->
 <script src="../../static/build/assets/vendor/jquery/jquery.js"></script>

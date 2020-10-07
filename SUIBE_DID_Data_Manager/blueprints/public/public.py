@@ -8,12 +8,13 @@ from flask import (
     render_template,
     request,
     url_for,
+    render_template_string
 )
 from flask_login import login_required, login_user, logout_user, current_user
 
 from SUIBE_DID_Data_Manager.extensions import login_manager
-from SUIBE_DID_Data_Manager.forms import RegisterForm, LoginForm
-from SUIBE_DID_Data_Manager.models import User
+from SUIBE_DID_Data_Manager.blueprints.public.forms import RegisterForm, LoginForm
+from SUIBE_DID_Data_Manager.blueprints.public.models import User
 from SUIBE_DID_Data_Manager.utils import flash_errors, redirect_back
 from SUIBE_DID_Data_Manager.extensions import db
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
@@ -106,24 +107,28 @@ def register():
             return redirect(url_for('public.login'))
     return render_template('public/register.html', form=form)
 
-
-
 @public_bp.route("/about/")
 def about():
     """About page."""
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
 
-@public_bp.route("/sdk_config/")
-def sdk_config():
-    """About page."""
+@public_bp.route("/Identity_manager/", methods=["GET", "POST"])
+def Identity_manager():
+    """Identity_manager page."""
     form = LoginForm(request.form)
-    crypto_type = ['ECDSA','GM']
-    return render_template("public/sdk_config.html", 
-    form=form,
-    crypto_type=crypto_type,
-    )
+    return render_template("public/Identity_manager.html", form=form)
 
-@public_bp.route("/ManageDid/")
-def tables():
-    return render_template("public/tables-did.html")
+@public_bp.route("/tables_data", methods=["GET", "POST"])
+def tables_data():
+    return render_template("public/tables_data.html")
+
+@public_bp.route("/certificate", methods=["GET", "POST"])
+def certificate():
+    return render_template("public/certificate.html")
+
+@public_bp.route("/Visualization_tools/")
+def Visualization_tools():
+    """Visualization_tools page."""
+    form = LoginForm(request.form)
+    return render_template("public/Visualization_tools.html", form=form)

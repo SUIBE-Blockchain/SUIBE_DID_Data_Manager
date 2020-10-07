@@ -118,9 +118,9 @@
 				<a class="nav-link" href="/about/">DID身份数据管理</a>
                 <span class="sr-only">(current)</span>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/about/">可视化功能</a>
-			</li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">可视化功能</a>
+            </li>
 			<li class="nav-item">
 				<a class="nav-link" href="/about/">数据共享</a>
 			</li>
@@ -129,7 +129,16 @@
 
 
 		</ul>
-
+        <ul class="navbar-nav my-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/user/">Logged in as admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout/">
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </li>
+        </ul>
 
 	</div><!-- /.navbar-collapse -->
 </nav>
@@ -167,8 +176,8 @@
 							<div class="mb-md">
                                 <input type="file" id="btn_file" style="display:none">
 								<button  type="button" class="btn btn-primary" onclick="F_Open_dialog()">导入数据 <i class="fa fa-plus"></i></button>
-                                <button  class="btn btn-primary" >导出Document <i class="fa fa-minus"></i></button>
-                                <a  class="btn btn-primary" href="./tables-did.html">返回 <i class="fa fa-forward"></i></a>
+                                <button  class="btn btn-primary" onclick="downloadDoc()">导出 Document<i class="fa fa-inbox "></i></button>
+                                <a  class="btn btn-primary" href="{{ url_for('public.Identity_manager') }}">返回 <i class="fa fa-forward"></i></a>
 							</div>
 
 						</div>
@@ -179,38 +188,37 @@
 						<tr>
 							<th>ID</th>
 							<th>Type</th>
+                            <th>State</th>
 							<th>Issue Time</th>
 							<th>Actions</th>
 						</tr>
 						</thead>
-						<tbody>
-						<tr class="gradeX">
+						<tbody id="demo">
+						<tr class="gradeX" >
 							<td>1</td>
 							<td>金融比赛证书</td>
+                            <td>未上链</td>
 							<td>2020-06-09</td>
+
 							<td class="actions">
-								 <a class="btn btn-outline-secondary" href="../certificate_style_normal.html">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-								 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
+
+								 <a class="btn btn-outline-secondary" href="{{ url_for('public.certificate') }}" target="_blank">详情</a>
+								 <a class="btn btn-outline-secondary" onclick="uploadChain()">上链</a>
+                                <button class="btn btn-outline-secondary" onclick="download()">导出</button>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
 						<tr class="gradeC">
 							<td>2</td>
 							<td>创新大赛证书</td>
+                            <td>已上链</td>
 							<td>2020-07-10</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
@@ -218,15 +226,13 @@
 							<td>3</td>
 							<td>教员认证证书
 							</td>
+                            <td>已上链</td>
 							<td>2020-01-03</td>
 							<td class="actions">
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
@@ -234,33 +240,42 @@
 							<td>4</td>
 							<td>英语六级证书
 							</td>
+                            <td>未上链</td>
 							<td>2020-06-08</td>
 							<td class="actions">
 							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
 						<tr class="gradeA">
 							<td>5</td>
 							<td>奥林匹克竞赛证书</td>
+                            <td>未上链</td>
 							<td>2020-07-08</td>
 							<td class="actions">
 							    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-							<!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
                                 <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">验签</a>
                                 <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-							<!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
 								<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
+                        <tr class="gradeA">
+                            <td>6</td>
+                            <td>教师资格证书</td>
+                            <td>未上链</td>
+                            <td>2020-01-05</td>
+                            <td class="actions">
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
+                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
+                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
 
 
 						</tbody>
@@ -270,7 +285,115 @@
 			<!-- end: page -->
 
 </div>
+<script>
+    function uploadChain() {
+        alert("上链成功！\n" +
+            "交易详情：\n"+
+            "      \"@context\": \"https://weidentity.webank.com/vc/v1\",\n" +
+            "      \"id\": \"dsfewr23sdcsdfeqeddadfd\",\n" +
+            "      \"type\": [\"Credential\", \"cpt100\"],\n" +
+            "      \"issuer\": \"did:weid:1:0x2323e3e3dweweewew2www124151251\",\n" +
+            "      \"issued\": \"2010-01-01T21:19:10Z\",\n" +
+            "      \"claim\": {\n" +
+            "        \"primeNumberIdx\":\"1234\"\n" +
+            "      },\n" +
+            "      \"revocation\": {\n" +
+            "        \"id\": \"did:weid:1:2323e3e3dweweewew2\",\n" +
+            "        \"type\": \"SimpleRevocationList2017\"\n" +
+            "      },\n" +
+            "      \"signature\": [{\n" +
+            "        \"type\": \"LinkedDataSignature2015\",\n" +
+            "        \"created\": \"2016-06-18T21:19:10Z\",\n" +
+            "        \"creator\": \"did:weid:1:2323e3e3dweweewew2\",\n" +
+            "        \"domain\": \"www.diriving_card.com\",\n" +
+            "        \"nonce\": \"598c63d6\",\n" +
+            "        \"signatureValue\": \"BavEll0/I1zpYw8XNi1bgVg/sCneO4Jugez8RwDg/+MCRVpjOboDoe4SxxKjkCOvKiCHGDvc4krqi6Z1n0UfqzxGfmatCuFibcC1wpsPRdW+gGsutPTLzvueMWmFhwYmfIFpbBu95t501+rSLHIEuujM/+PXr9Cky6Ed+W3JT24=\""
+           )
+        document.getElementById("demo").innerHTML ="<tr class=\"gradeX\" >\n" +
+            "\t\t\t\t\t\t\t<td>1</td>\n" +
+            "\t\t\t\t\t\t\t<td>金融比赛证书</td>\n" +
+            "                            <td>已上链</td>\n" +
+            "\t\t\t\t\t\t\t<td>2020-06-09</td>\n" +
+            "\n" +
+            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+            "\n" +
+            "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.certificate') }}\" target=\"_blank\">详情</a>\n" +
+            "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" onclick=\"uploadChain()\">上链</a>\n" +
+            "                                <button class=\"btn btn-outline-secondary\" onclick=\"download()\">导出</button>\n" +
+            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t<tr class=\"gradeC\">\n" +
+            "\t\t\t\t\t\t\t<td>2</td>\n" +
+            "\t\t\t\t\t\t\t<td>创新大赛证书</td>\n" +
+            "                            <td>已上链</td>\n" +
+            "\t\t\t\t\t\t\t<td>2020-07-10</td>\n" +
+            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+            "\t\t\t\t\t\t\t<td>3</td>\n" +
+            "\t\t\t\t\t\t\t<td>教员认证证书\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "                            <td>已上链</td>\n" +
+            "\t\t\t\t\t\t\t<td>2020-01-03</td>\n" +
+            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+            "\t\t\t\t\t\t\t<td>4</td>\n" +
+            "\t\t\t\t\t\t\t<td>英语六级证书\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "                            <td>未上链</td>\n" +
+            "\t\t\t\t\t\t\t<td>2020-06-08</td>\n" +
+            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+            "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+            "\t\t\t\t\t\t\t<td>5</td>\n" +
+            "\t\t\t\t\t\t\t<td>奥林匹克竞赛证书</td>\n" +
+            "                            <td>未上链</td>\n" +
+            "\t\t\t\t\t\t\t<td>2020-07-08</td>\n" +
+            "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+            "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+            "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+            "\t\t\t\t\t\t\t</td>\n" +
+            "\t\t\t\t\t\t</tr>\n" +
+            "                        <tr class=\"gradeA\">\n" +
+            "                            <td>6</td>\n" +
+            "                            <td>教师资格证书</td>\n" +
+            "                            <td>未上链</td>\n" +
+            "                            <td>2020-01-05</td>\n" +
+            "                            <td class=\"actions\">\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+            "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+            "                            </td>\n" +
+            "                        </tr>"
 
+    }
+</script>
 
 
 </section>
@@ -302,7 +425,110 @@
      function F_Open_dialog()
     {
         document.getElementById("btn_file").click();
+
+        setTimeout(function () {
+            if (confirm("数据验签正确，是否确认添加!")) {
+                document.getElementById("demo").innerHTML ="<tr class=\"gradeX\" >\n" +
+                    "\t\t\t\t\t\t\t<td>1</td>\n" +
+                    "\t\t\t\t\t\t\t<td>金融比赛证书</td>\n" +
+                    "\t\t\t\t\t\t\t<td>2020-06-09</td>\n" +
+                    "\n" +
+                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                    "\n" +
+                    "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.certificate') }}\">详情</a>\n" +
+                    "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                    "                                <button class=\"btn btn-outline-secondary\" onclick=\"download()\">导出</button>\n" +
+                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t</tr>\n" +
+                    "\t\t\t\t\t\t<tr class=\"gradeC\">\n" +
+                    "\t\t\t\t\t\t\t<td>2</td>\n" +
+                    "\t\t\t\t\t\t\t<td>创新大赛证书</td>\n" +
+                    "\t\t\t\t\t\t\t<td>2020-07-10</td>\n" +
+                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t</tr>\n" +
+                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+                    "\t\t\t\t\t\t\t<td>3</td>\n" +
+                    "\t\t\t\t\t\t\t<td>教员认证证书\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t\t<td>2020-01-03</td>\n" +
+                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t</tr>\n" +
+                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+                    "\t\t\t\t\t\t\t<td>4</td>\n" +
+                    "\t\t\t\t\t\t\t<td>英语六级证书\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t\t<td>2020-06-08</td>\n" +
+                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                    "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t</tr>\n" +
+                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
+                    "\t\t\t\t\t\t\t<td>5</td>\n" +
+                    "\t\t\t\t\t\t\t<td>奥林匹克竞赛证书</td>\n" +
+                    "\t\t\t\t\t\t\t<td>2020-07-08</td>\n" +
+                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
+                    "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                    "\t\t\t\t\t\t\t</td>\n" +
+                    "\t\t\t\t\t\t</tr>\n" +
+                    "                        <tr class=\"gradeA\">\n" +
+                    "                            <td>6</td>\n" +
+                    "                            <td>教师资格证书</td>\n" +
+                    "                            <td>2020-01-05</td>\n" +
+                    "                            <td class=\"actions\">\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
+                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
+                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
+                    "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+                    "                            </td>\n" +
+                    "                        </tr> "
+            }
+        }, 5000);
     }
+
+
+     function download() {
+         let blob = new Blob([], {type: ''}),
+             fileName = 'credential.json'; // 文件名称
+         const link = document.createElement('a'); // 创建a标签
+         link.href = window.URL.createObjectURL(blob);
+         link.download = fileName;
+         link.click(); // 模拟点击a标签
+         window.URL.revokeObjectURL(link.href);
+     }
+     function downloadDoc() {
+         let blob = new Blob([], {type: ''}),
+             fileName = 'Document.json'; // 文件名称
+         const link = document.createElement('a'); // 创建a标签
+         link.href = window.URL.createObjectURL(blob);
+         link.download = fileName;
+         link.click(); // 模拟点击a标签
+         window.URL.revokeObjectURL(link.href);
+     }
+
+
 </script>
 <!-- Vendor -->
 <script src="../../static/build/assets/vendor/jquery/jquery.js"></script>

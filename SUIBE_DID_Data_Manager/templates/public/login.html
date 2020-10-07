@@ -3,6 +3,14 @@
 {% from 'bootstrap/form.html' import render_form %}
 
 {% block content %}
+    <div class="jumbotron">
+        <div class="container">
+
+            <h4 class="display-4">欢迎访问<br>SUIBE DID Data Manager！</h4>
+
+            <p><a href="" class="btn btn-primary btn-large">查看 Github 源码……</a></p>
+        </div>
+    </div><!-- /.jumbotron -->
 <div class="container h-100">
         <div class="row h-100 page-header justify-content-center align-items-center">
             <h1>Log in</h1>
@@ -10,5 +18,5 @@
         <div class="row h-100 justify-content-center align-items-center">
             {{ render_form(form, extra_classes='col-6', action=request.full_path, method='post') }}
         </div>
-    </div>
+</div>
 {% endblock %}

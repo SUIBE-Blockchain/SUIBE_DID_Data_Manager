@@ -29,11 +29,12 @@
                             {% for item in key_type %}
                             <option value={{item}}>{{item}}</option>
                             {% endfor %}
+                        <option>WeID</option>
                         </select>
                     </div>
                 </div>
                 <br>
-                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">Generate!</a>
+                <a class="btn btn-outline-secondary" v-on:click="get_addr()">Generate!</a>
                 </p>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -54,13 +55,13 @@
 
                 <div class="form-group">
                     <br>
-                    <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">识别</a>
+                    <a class="btn btn-outline-secondary" v-on:click="DistinDID()">识别</a>
                     </p>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">DID：</span>
                         </div>
-                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
+                        <input  type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
                     </div>
 
                     <div class="input-group mb-3">
@@ -76,53 +77,7 @@
 
         <br>
 
-        <div class = "row">
-            <div class="col-lg-8">
-                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID数据解析</h3></a>
-                <br>
-                <div class="form-group">
-                    <div>
-                        <input type="file" id="btn_file" style="display:none">
-                        <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击上传数据(JSON)文件</button>
-                    </div>
 
-                    <br>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">解析结果：</span>
-                        </div>
-                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
-                    </div>
-
-                </div>
-            </div>
-        </div><!-- /.row -->
-
-        <br>
-
-        <div class = "row">
-            <div class="col-lg-8">
-                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID Document解析</h3></a>
-                <br>
-                <div class="form-group">
-                    <div>
-                        <input type="file" id="btn_file" style="display:none">
-                        <button type="button" class="btn btn-outline-secondary" onclick="F_Open_dialog()">点击上传 DID Document 文件</button>
-                    </div>
-
-                    <br>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">解析结果：</span>
-                        </div>
-                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
-                    </div>
-
-                </div>
-            </div>
-        </div><!-- /.row -->
 
 
 </div>
@@ -145,7 +100,7 @@
         data:
             {
                 DID: "",
-                key_type:"",
+                key_type:"WeID",
                 result:"",
 
             },
@@ -161,51 +116,27 @@
                         console.log(IsBitcoin)
                     }
                 }   ,
-                get_addr:function(key_type) {
-                    if (key_type == "ethereum") {
+                DistinDID:function (){
+                    this.result="WeId"
+                },
+                get_addr:function() {
 
                         axios(
                             {
                                 method: 'get',
-                                url: '/api/v1/generate_addr',
+                                url: '/did_engine/create_weid_local_func',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
                                 }
                             })
                             .then(function (response) {
-
-                                context.priv = response.data.payload.priv;
-                                context.addr = response.data.payload.addr;
-                                context.pubv = response.data.payload.pubv;
-                                localStorage.setItem(context.priv, context.addr);
-
-
+                                context.DID=response.data.data.weId
+                                console.log(response.data.data.weId)
                             })
                             .catch(function (error) {
                             })
 
-                    }
-                    else {
-                        axios(
-                            {
-                                method: 'get',
-                                url: '/api/v1/generate_btcAddr',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                }
-                            })
-                            .then(function (response) {
 
-                                context.priv = response.data.payload.priv;
-                                context.addr = response.data.payload.addr;
-                                context.pubv = response.data.payload.pubv;
-                                localStorage.setItem(context.priv, context.addr);
-
-
-                            })
-                            .catch(function (error) {
-                            })
-                    }
                 },
                 get_addr_by_priv:function(priv,key_type)
                 {
