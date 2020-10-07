@@ -39,6 +39,27 @@ def reset_local_db():
     click.echo('Success create local databases.')
 
 @manager.command
+def reset_server_db():
+    """Reset server databases."""
+    click.confirm('This operation will delete the server database, do you want to continue?', abort=True)
+    db.drop_all(bind="userserver")
+    click.echo('Drop local tables.')
+    db.create_all(bind="userserver")
+    click.echo('Success create server databases.')
+    click.echo('Reset all database.')
+    admin = User(
+        username='admin',
+        email='admin@admin.com',
+        is_admin=True,
+        active=True,
+    )
+    admin.set_password('admin')
+    db.session.add(admin)
+    db.session.commit()
+    click.echo('Success Add Admin Count.')
+
+
+@manager.command
 def reset_db():
     """Reset all databases."""
     click.confirm('This operation will delete all database, do you want to continue?', abort=True)
@@ -57,8 +78,35 @@ def reset_db():
     db.session.commit()
     click.echo('Success Add Admin Count.')
 
+
+
+@manager.command
+def init_local_db():
+    """Initialized local databases."""
+    db.create_all(bind=None)
+    click.echo('Initialized database.')
+    click.echo('Success Add Admin Count.')
+
+
+@manager.command
+def init_server_db():
+    """Initialized server databases."""
+    db.create_all(bind="userserver")
+    click.echo('Initialized database.')
+    admin = User(
+        username='admin',
+        email='admin@admin.com',
+        is_admin=True,
+        active=True,
+    )
+    admin.set_password('admin')
+    db.session.add(admin)
+    db.session.commit()
+    click.echo('Success Add Admin Count.')
+
 @manager.command
 def init_db():
+    """Initialized all databases."""
     db.create_all()
     click.echo('Initialized database.')
     admin = User(
