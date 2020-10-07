@@ -20,15 +20,12 @@ pip install -r requirements.txt
 
 python manager.py init_local_db
 # init local db
+
 python manager.py runserver 
 # 运行服务
 ~~~
-
 -----------------
 
-
-
-**\* manager.py 启动脚本命令**
 
 ~~~bash
 positional arguments:
