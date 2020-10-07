@@ -32,41 +32,42 @@
                 <table class="table" id="cert_table" v-bind:style="cert_table_style">
                     <thead>
                         <tr class="bg-info">
-                            <th scope="col" colspan="2" ><center>{{cert_exp.cert_name}}</center></th>
+                            <th scope="col" colspan="2" ><center>{[cert_exp.cert_name]}</center></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(value, name) in cert_exp.claim">
-                          <td v-bind:style="cert_table_td_style">{{name}}: </td>
-                          <td>{{value}}</td>
+                          <td v-bind:style="cert_table_td_style">{[name]}: </td>
+                          <td>{[value]}</td>
                         </tr>
                         <tr>
                             <td colspan="2"><b><center>&gt;&gt;&gt;Other Infomation&lt;&lt;&lt;</center></b></td>
                         </tr>
                         <tr>
                           <td>发行者:</td>
-                          <td>{{cert_exp.issuer}}</td>
+                          <td>{[cert_exp.issuer]}</td>
                         </tr>
                         <tr>
                           <td>发行时间: </td>
-                          <td>{{cert_exp.issued}}</td>
+                          <td>{[cert_exp.issued]}</td>
                         </tr>
                       </tbody>
                       <tbody v-for="(payload, name) in cert_exp.signature">
                         <tr>
-                            <th scope="col" colspan="2" ><center>signature {{name}}</center></th>
+                            <th scope="col" colspan="2" ><center>signature {[name]}</center></th>
                         </tr>
                         <tr v-for="(value, payload_name) in payload">
-                            <td>{{payload_name}}: </td>
-                            <td  v-bind:style="cert_table_td_content_style">{{value}}</td>
+                            <td>{[payload_name]}: </td>
+                            <td  v-bind:style="cert_table_td_content_style">{[value]}</td>
                         </tr>
                       </tbody>
                 </table>
             </div>
-            
+
         </div>
         <script>
             var vue_things=new Vue({
+                delimiters: ['{[', ']}'],
                 el:'#main',
                 data:
                 {

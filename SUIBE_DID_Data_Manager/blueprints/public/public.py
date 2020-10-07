@@ -8,6 +8,7 @@ from flask import (
     render_template,
     request,
     url_for,
+    render_template_string
 )
 from flask_login import login_required, login_user, logout_user, current_user
 
@@ -118,10 +119,10 @@ def Identity_manager():
     form = LoginForm(request.form)
     return render_template("public/Identity_manager.html", form=form)
 
-@public_bp.route("/tables_data")
+@public_bp.route("/tables_data", methods=["GET", "POST"])
 def tables_data():
-    return render_template("public/tables-date.html")
+    return render_template("public/tables_data.html")
 
-@public_bp.route("/certificate")
+@public_bp.route("/certificate", methods=["GET", "POST"])
 def certificate():
-    return render_template("certificate_style_normal.html")
+    return render_template("public/certificate.html")
