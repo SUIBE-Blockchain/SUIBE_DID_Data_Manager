@@ -126,7 +126,6 @@ def tables_data():
 @public_bp.route("/certificate", methods=["GET", "POST"])
 def certificate():
     return render_template("public/certificate.html")
-
 @public_bp.route("/Visualization_tools/")
 def Visualization_tools():
     """Visualization_tools page."""
