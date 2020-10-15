@@ -113,3 +113,17 @@ def base64_encode(bytes_data):
     """
     base_data = base64.b64encode(bytes_data)
     return bytes.decode(base_data)
+
+
+def binary_to_list(bin):
+    list = []
+    for idx, val in enumerate(bin):
+        list.append(val)
+    return list
+
+
+def list_to_binary(list):
+    bin = b''
+    for i in list:
+        bin += bytes([i])
+    return bin

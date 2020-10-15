@@ -135,4 +135,14 @@ def get_did_doc_by_weid_view():
     }
     return jsonify(data_dict)
 
-# @did_engine.route("/")
+@did_engine.route("/inttohex")
+def inttohex():
+    int_data = request.args.get("intdata")
+    hex_data = hex(int(int_data))
+    return jsonify({"intData": int_data, "hexData": hex_data})
+
+@did_engine.route("/hextoint")
+def hextoint():
+    hex_data = request.args.get("hexdata")
+    int_data = int(hex_data, 16)
+    return jsonify({"intData": int_data, "hexData": hex_data})

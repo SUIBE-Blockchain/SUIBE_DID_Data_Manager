@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required
 
 data_manager = Blueprint('data_manager', __name__)
@@ -32,3 +32,10 @@ def credential():
     }
 
     return jsonify(data_dict)
+
+
+
+@data_manager.route("/load_weid")
+@login_required
+def load_weid():
+    data_json = request.get_json()
