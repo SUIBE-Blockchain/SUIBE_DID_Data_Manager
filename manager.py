@@ -8,14 +8,14 @@ import click
 app = create_app()
 
 banner = r"""
- ______     ________      ______       ______       ______          _______       ______       ______       ______      
-/_____/\   /_______/\    /_____/\     /_____/\     /_____/\       /_______/\     /_____/\     /_____/\     /_____/\     
-\::::_\/_  \__.::._\/    \::::_\/_    \:::__\/     \:::_ \ \      \::: _  \ \    \:::__\/     \:::_ \ \    \::::_\/_    
- \:\/___/\    \::\ \      \:\/___/\    \:\ \  __    \:\ \ \ \      \::(_)  \/_    \:\ \  __    \:\ \ \ \    \:\/___/\   
-  \:::._\/    _\::\ \__    \_::._\:\    \:\ \/_/\    \:\ \ \ \      \::  _  \ \    \:\ \/_/\    \:\ \ \ \    \_::._\:\  
-   \:\ \     /__\::\__/\     /____\:\    \:\_\ \ \    \:\_\ \ \      \::(_)  \ \    \:\_\ \ \    \:\_\ \ \     /____\:\ 
-    \_\/     \________\/     \_____\/     \_____\/     \_____\/       \_______\/     \_____\/     \_____\/     \_____\/ 
-                
+ __ __ __       ______       ________      ______       ______       ___   __       _________   ________      _________   __  __
+/_//_//_/\     /_____/\     /_______/\    /_____/\     /_____/\     /__/\ /__/\    /________/\ /_______/\    /________/\ /_/\/_/\
+\:\\:\\:\ \    \::::_\/_    \__.::._\/    \:::_ \ \    \::::_\/_    \::\_\\  \ \   \__.::.__\/ \__.::._\/    \__.::.__\/ \ \ \ \ \
+ \:\\:\\:\ \    \:\/___/\      \::\ \      \:\ \ \ \    \:\/___/\    \:. `-\  \ \     \::\ \      \::\ \        \::\ \    \:\_\ \ \
+  \:\\:\\:\ \    \::___\/_     _\::\ \__    \:\ \ \ \    \::___\/_    \:. _    \ \     \::\ \     _\::\ \__      \::\ \    \::::_\/
+   \:\\:\\:\ \    \:\____/\   /__\::\__/\    \:\/.:| |    \:\____/\    \. \`-\  \ \     \::\ \   /__\::\__/\      \::\ \     \::\ \
+    \_______\/     \_____\/   \________\/     \____/_/     \_____\/     \__\/ \__\/      \__\/   \________\/       \__\/      \__\/
+
 """
 
 manager = Manager(app)
@@ -36,7 +36,7 @@ def reset_local_db():
     db.drop_all(bind=None)
     click.echo('Drop local tables.')
     db.create_all(bind=None)
-    click.echo('Success create local databases.')
+    click.echo('Reset local database.')
 
 @manager.command
 def reset_server_db():
@@ -46,7 +46,7 @@ def reset_server_db():
     click.echo('Drop local tables.')
     db.create_all(bind="userserver")
     click.echo('Success create server databases.')
-    click.echo('Reset all database.')
+    click.echo('Reset server database.')
     admin = User(
         username='admin',
         email='admin@admin.com',
@@ -84,15 +84,14 @@ def reset_db():
 def init_local_db():
     """Initialized local databases."""
     db.create_all(bind=None)
-    click.echo('Initialized database.')
-    click.echo('Success Add Admin Count.')
+    click.echo('Initialized local database.')
 
 
 @manager.command
 def init_server_db():
     """Initialized server databases."""
     db.create_all(bind="userserver")
-    click.echo('Initialized database.')
+    click.echo('Initialized server database.')
     admin = User(
         username='admin',
         email='admin@admin.com',
@@ -108,7 +107,7 @@ def init_server_db():
 def init_db():
     """Initialized all databases."""
     db.create_all()
-    click.echo('Initialized database.')
+    click.echo('Initialized all database.')
     admin = User(
         username='admin',
         email='admin@admin.com',
