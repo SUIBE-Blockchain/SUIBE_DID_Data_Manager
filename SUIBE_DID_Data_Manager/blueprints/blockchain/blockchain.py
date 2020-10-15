@@ -7,7 +7,7 @@ from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
 from SUIBE_DID_Data_Manager.config import Config
 from SUIBE_DID_Data_Manager.weidentity.localweid import Hash, base64_decode, base64_encode, generate_addr
 from SUIBE_DID_Data_Manager.blueprints.blockchain.models import CredentialPojo
-from SUIBE_DID_Data_Manager.extensions import db
+from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 
 import random
 
@@ -108,7 +108,8 @@ def register_cpt(weId):
     return jsonify(weid_second)
 
 
-@blockchain.route("/load_credential_pojo/", methods=["GET", "POST"])
+@csrf_protect.exempt
+@blockchain.route("/load_credential_pojo/", methods=["POST"])
 def load_credential_pojo():
     data_msg = request.get_json()
     if data_msg is None:
@@ -132,7 +133,7 @@ def load_credential_pojo():
         return jsonify({"result": "load credential pojo failed!", "code": "400"}), 400
 
 
-@blockchain.route("/get_credential_pojo/<int:cptId>", methods=["GET", "POST"])
+@blockchain.route("/get_credential_pojo/<int:cptId>")
 def get_credential_pojo(cptId):
     """
     获取本地数据库存储的credential pojo信息
@@ -157,7 +158,7 @@ def get_credential_pojo(cptId):
     return jsonify({"result": credential_pojo_all})
 
 
-@blockchain.route("/create_credential_pojo/<int:cptId>", methods=["GET", "POST"])
+@blockchain.route("/create_credential_pojo/<int:cptId>")
 @login_required
 def create_credential_pojo(cptId):
     credentials_pojo = CredentialPojo.query.filter_by(cptId=cptId).all()
