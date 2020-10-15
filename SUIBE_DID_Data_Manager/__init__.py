@@ -11,6 +11,7 @@ from SUIBE_DID_Data_Manager.blueprints.admin.admin import admin_bp
 from SUIBE_DID_Data_Manager.blueprints.did_engine.did_engine import did_engine
 from SUIBE_DID_Data_Manager.blueprints.data_manager.data_manager import data_manager
 from SUIBE_DID_Data_Manager.blueprints.auth_manager.auth_manager import auth_manager
+from SUIBE_DID_Data_Manager.blueprints.blockchain.blockchain import blockchain
 
 from SUIBE_DID_Data_Manager.extensions import (
     bcrypt,
@@ -62,6 +63,7 @@ def configure_models():
     import SUIBE_DID_Data_Manager.blueprints.data_manager.models
     import SUIBE_DID_Data_Manager.blueprints.did_engine.models
     import SUIBE_DID_Data_Manager.blueprints.public.models
+    import SUIBE_DID_Data_Manager.blueprints.blockchain.models
 
 def register_blueprints(app):
     """Register Flask blueprints."""
@@ -72,6 +74,7 @@ def register_blueprints(app):
     app.register_blueprint(did_engine, url_prefix='/did_engine')
     app.register_blueprint(data_manager, url_prefix="/data_manager")
     app.register_blueprint(auth_manager, url_prefix="/auth_manager")
+    app.register_blueprint(blockchain, url_prefix="/blockchain")
 
 def register_errorhandlers(app):
     """Register error handlers."""

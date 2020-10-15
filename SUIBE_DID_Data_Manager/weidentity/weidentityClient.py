@@ -1,7 +1,7 @@
 import requests
 import logging
-from pprint import pprint
 from .Base import Base
+import time
 
 LOG = logging.getLogger(__name__)
 
@@ -110,6 +110,8 @@ class weidentityClient(Base):
 
     def create_credential_pojo(self, cptId, issuer_weid, expirationDate, claim):
         # 创建CredentialPojo
+        if isinstance(expirationDate, int):
+            expirationDate = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime(expirationDate))
         data_dict = {
             "functionArg": {
                 "cptId": cptId,

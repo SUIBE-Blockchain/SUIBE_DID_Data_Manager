@@ -8,11 +8,30 @@ from eth_account import Account
 
 from pprint import pprint
 from SUIBE_DID_Data_Manager.weidentity.localweid import base64_decode, base64_encode, Hash
-
-
-
+import time
 
 weid = weidentityClient(Config.get("LOCAL_WEID_URL"))
+cptId = 11
+issuer_weid = "did:weid:0xfd28ad212a2de77fee518b4914b8579a40c601fa"
+# expirationDate = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime(time.time()))
+expirationDate = "2021-04-18T21:12:33Z"
+
+claim = {
+            "name": "zhang san",
+            "gender": "F",
+            "age": 18
+        }
+
+# respBody = weid.create_credential_pojo(cptId, issuer_weid, expirationDate, claim)
+# pprint(respBody)
+
+
+
+weidentity = weidentityService(Config.get("LOCAL_WEID_URL"))
+# expirationDate, claim, invokerWeId):
+resp = weidentity.create_credential(cptId, issuerWeId=issuer_weid, expirationDate=expirationDate, claim=claim, invokerWeId=issuer_weid)
+pprint(resp)
+
 # 创建私钥
 signning_key = SigningKey.generate(curve=SECP256k1)
 privkey = signning_key.to_string()
