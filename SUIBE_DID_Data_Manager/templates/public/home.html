@@ -1,478 +1,387 @@
-
 {% extends "layout.html" %}
 {% block content %}
     <!--js填充处-->
     <div id="context">
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <div class="container">
 
-            <h4 class="display-4">欢迎访问<br>SUIBE DID Data Manager！</h4>
+                <h4 class="display-4">欢迎访问<br>SUIBE DID Data Manager！</h4>
 
-            <p><a href="" class="btn btn-primary btn-large">查看 Github 源码……</a></p>
-        </div>
-    </div><!-- /.jumbotron -->
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <a class="no_type_a" target="_blank" data-tooltip="点击查看 API 文档" href="https://github.com/SUIBE-Blockchain/FISCO_BCOS_Toolbox/wiki/%E6%8E%A5%E5%8F%A3-v1.0#1-generate-address"><h3><i class="fa fa-angellist"></i>生成DID</h3></a>
-                <br>
-                <p>
-                    <label class="control-label">选择你要生成的DID类型：</label>
-                    <br>
-                <div class="selectContainer">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
-                        <select  v-model="key_type" v-on:change="change_key_type(key_type)"  name="select-key-type" class="form-control selectpicker" >
-                            {% for item in key_type %}
-                                <option value={{item}}>{{item}}</option>
-                            {% endfor %}
-
-                            <option>WeID</option>
-
-                            <option>WeID</option>
-                            <option>MicrosoftDID</option>
-                            <option>uPort</option>
-
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <a class="btn btn-outline-secondary" v-on:click="get_addr()">Generate!</a>
-                </p>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">DID</span>
-                    </div>
-                    <input v-model="DID" type="text" class="form-control" placeholder="DID"  aria-describedby="basic-addon1">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">PrivKey</span>
-                    </div>
-                    <input v-model="PrivKey" type="text" class="form-control" placeholder="PrivKey"  aria-describedby="basic-addon1">
-                </div>
-
-                <a  class="btn btn-info" target="_blank" href=""><i class="fa fa-book" aria-hidden="true"></i> DID生成过程</a>
+                <p><a href="" class="btn btn-primary btn-large">查看 Github 源码……</a></p>
             </div>
-        </div><!-- /.row -->
+        </div><!-- /.jumbotron -->
 
-        <br>
-
-        <div class = "row">
-            <div class="col-lg-8">
-                <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID识别</h3></a>
-
-                <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <a class="no_type_a" target="_blank" data-tooltip="点击查看 API 文档" href="https://github.com/SUIBE-Blockchain/FISCO_BCOS_Toolbox/wiki/%E6%8E%A5%E5%8F%A3-v1.0#1-generate-address"><h3><i class="fa fa-angellist"></i>生成DID</h3></a>
                     <br>
-                    <a class="btn btn-outline-secondary" v-on:click="DistinDID()">识别</a>
+                    <p>
+                        <label class="control-label">选择你要生成的DID类型：</label>
+                        <br>
+                    <div class="selectContainer">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                            <select  v-model="key_type" v-on:change="change_key_type(key_type)"  name="select-key-type" class="form-control selectpicker" >
+                                {% for item in key_type %}
+                                    <option value={{item}}>{{item}}</option>
+                                {% endfor %}
+                                <option>WeID</option>
+                                <option>MicrosoftDID</option>
+                                <option>uPort</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <a class="btn btn-outline-secondary" v-on:click="get_addr()">Generate!</a>
                     </p>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">DID：</span>
+                            <span class="input-group-text" id="basic-addon1">DID</span>
                         </div>
-                        <input  type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
+                        <input v-model="DID" type="text" class="form-control" placeholder="DID"  aria-describedby="basic-addon1">
                     </div>
-
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">识别结果：</span>
+                            <span class="input-group-text" id="basic-addon1">PrivKey</span>
                         </div>
-                        <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                        <input v-model="PrivKey" type="text" class="form-control" placeholder="PrivKey"  aria-describedby="basic-addon1">
                     </div>
 
+                    <a  class="btn btn-info" target="_blank" href=""><i class="fa fa-book" aria-hidden="true"></i> DID生成过程</a>
                 </div>
-            </div>
-        </div><!-- /.row -->
+            </div><!-- /.row -->
 
-        <br>
+            <br>
 
-        <<<<<<< Updated upstream
+            <div class = "row">
+                <div class="col-lg-8">
+                    <a class="no_type_a"><h3><i class="fa fa-flask"></i> DID识别</h3></a>
 
+                    <div class="form-group">
+                        <br>
+                        <a class="btn btn-outline-secondary" v-on:click="DistinDID()">识别</a>
+                        </p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">DID：</span>
+                            </div>
+                            <input  type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
+                        </div>
 
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">识别结果：</span>
+                            </div>
+                            <input v-model="result" type="text" class="form-control"   aria-describedby="basic-addon1">
+                        </div>
 
-    </div>
+                    </div>
+                </div>
+            </div><!-- /.row -->
 
-    <script>
-
-
-        function F_Open_dialog()
-        {
-            document.getElementById("btn_file").click();
-        }
-
-        function btn_clear() {
-            localStorage.clear();
-            location.reload();
-        }
-
-        var context=new Vue({
-            el: "#context",
-            data:
-                {
-                    DID: "",
-                    key_type:"WeID",
-                    result:"",
-
-                },
-            methods:
-                {
-
-                    change_key_type:function (key_type){
-                        if (key_type == "ethereum") {
-                            IsBitcoin=false
-                            console.log(IsBitcoin)
-                        }else{
-                            IsBitcoin=true
-                            console.log(IsBitcoin)
-                        }
-                    }   ,
-                    DistinDID:function (){
-                        this.result="WeId"
-                    },
-                    get_addr:function() {
-
-                        axios(
-                            {
-                                method: 'get',
-                                url: '/did_engine/create_weid_local_func',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                }
-                            })
-                            .then(function (response) {
-                                context.DID=response.data.data.weId
-                                console.log(response.data.data.weId)
-                            })
-                            .catch(function (error) {
-                            })
+            <br>
 
 
-                    },
-                    get_addr_by_priv:function(priv,key_type)
+
+
+        </div>
+
+        <script>
+
+
+            function F_Open_dialog()
+            {
+                document.getElementById("btn_file").click();
+            }
+
+            function btn_clear() {
+                localStorage.clear();
+                location.reload();
+            }
+
+            var context=new Vue({
+                el: "#context",
+                data:
                     {
-                        if(key_type=="ethereum") {
+                        DID: "",
+                        key_type:"WeID",
+                        result:"",
+                        PrivKey:""
+
+                    },
+                methods:
+                    {
+
+                        change_key_type:function (key_type){
+                            if (key_type == "ethereum") {
+                                IsBitcoin=false
+                                console.log(IsBitcoin)
+                            }else{
+                                IsBitcoin=true
+                                console.log(IsBitcoin)
+                            }
+                        }   ,
+                        DistinDID:function (){
+                            this.result="WeId"
+                        },
+                        get_addr:function() {
+
+                            axios(
+                                {
+                                    method: 'get',
+                                    url: '/did_engine/create_weid_local_func',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                    }
+                                })
+                                .then(function (response) {
+                                    context.DID=response.data.data.weId
+                                    context.PrivKey=response.data.data.privateKeyHex
+                                    console.log(response.data.data.weId)
+                                })
+                                .catch(function (error) {
+                                })
+
+
+                        },
+                        get_addr_by_priv:function(priv,key_type)
+                        {
+                            if(key_type=="ethereum") {
+                                axios({
+                                    method: 'post',
+                                    url: 'api/v1/generate_addr',
+                                    data:
+                                        {
+                                            priv: priv,
+                                        },
+                                    headers:
+                                        {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        }
+                                })
+                                    .then(function (response) {
+                                        context.priv = response.data.payload.priv;
+                                        context.addr = response.data.payload.addr;
+                                        context.pubv = response.data.payload.pubv;
+                                        console.log(context.pubv)
+                                        localStorage.setItem(context.priv, context.addr);
+
+
+                                    })
+                                    .catch(function (error) {
+                                        console.log(error)
+                                    })
+                            }
+                            else{
+                                axios(
+                                    {
+                                        method: 'post',
+                                        url: '/api/v1/generate_btcAddr',
+                                        data:
+                                            {
+                                                priv: priv,
+                                            },
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        }
+                                    })
+                                    .then(function (response) {
+
+                                        context.priv = response.data.payload.priv;
+                                        context.addr = response.data.payload.addr;
+                                        context.pubv = response.data.payload.pubv;
+                                        localStorage.setItem(context.priv, context.addr);
+
+
+                                    })
+                                    .catch(function (error) {
+                                    })
+                            }
+                        },
+
+                        get_sdk_config_w3:function(
+                            crypto_type,
+                            contract_info_file,
+                            account_keyfile_path,
+                            logdir,
+                            account_keyfile,
+                            account_password,
+                            gm_account_keyfile,
+                            gm_account_password,
+                            fiscoChainId,
+                            groupid,
+                            client_protocol,
+                            remote_rpcurl,
+                            channel_host,
+                            channel_port,
+                            channel_ca,
+                            channel_node_cert,
+                            channel_node_key,
+                            solc_path,
+                            gm_solc_path,
+                            solcjs_path,
+                        )
+                        {
+                            const link = document.createElement('a')
                             axios({
-                                method: 'post',
-                                url: 'api/v1/generate_addr',
+                                method:'post',
+                                url:'api/v1/get_sdk_config',
                                 data:
                                     {
-                                        priv: priv,
+                                        'crypto_type':crypto_type,
+                                        'contract_info_file':contract_info_file,
+                                        account_keyfile_path:account_keyfile_path,
+                                        logdir:logdir,
+                                        account_keyfile:account_keyfile,
+                                        account_password:account_password,
+                                        gm_account_keyfile:gm_account_keyfile,
+                                        gm_account_password:gm_account_password,
+                                        fiscoChainId:fiscoChainId,
+                                        groupid:groupid,
+                                        client_protocol:client_protocol,
+                                        remote_rpcurl:remote_rpcurl,
+                                        channel_host:channel_host,
+                                        channel_port:channel_port,
+                                        channel_ca:channel_ca,
+                                        channel_node_cert:channel_node_cert,
+                                        channel_node_key:channel_node_key,
+                                        solc_path:solc_path,
+                                        gm_solc_path:gm_solc_path,
+                                        solcjs_path:solcjs_path,
                                     },
                                 headers:
                                     {
                                         'Content-Type': 'application/x-www-form-urlencoded',
                                     }
                             })
-                                .then(function (response) {
-                                    context.priv = response.data.payload.priv;
-                                    context.addr = response.data.payload.addr;
-                                    context.pubv = response.data.payload.pubv;
-                                    console.log(context.pubv)
-                                    localStorage.setItem(context.priv, context.addr);
-                                =======
-
-
-
-                                </div>
-
-                                    <script>
-
-
-                                    function F_Open_dialog()
+                                .then(function(response){
+                                    console.log('[+]oh is ok!')
+                                    let blob = new Blob([response.data], {type: "application/x-www-form-urlencoded"});  // res就是接口返回的文件流了
+                                    let objectUrl = URL.createObjectURL(blob);
+                                    link.href=objectUrl
+                                    link.download='client_config.py'
+                                    link.click()
+                                    // window.location.href = objectUrl;
+                                })
+                                .catch(function(error){
+                                    console.log(error)
+                                })
+                        },
+                        translate_sig:function(sig){
+                            axios({
+                                method:'post',
+                                url:'api/v1/translate_sig',
+                                data:
                                     {
-                                        document.getElementById("btn_file").click();
+                                        sig: sig,
+                                    },
+                                headers:
+                                    {
+                                        'Content-Type': 'application/x-www-form-urlencoded',
                                     }
+                            })
+                                .then(function(response){
+                                    result = response.data.payload
+                                    context.r = result["r"]
+                                    context.s = result["s"]
+                                    context.v = result["v"]
+                                })
+                                .catch(function(error){
+                                    console.log(error)
+                                })
+                        },
+                        generate_mock_data:function(mock_type){
+                            if(mock_type=="byte32"){
 
-                                    function btn_clear() {
-                                        localStorage.clear();
-                                        location.reload();
-                                    }
+                                axios({
+                                    method:'get',
+                                    url:'/api/v1/random_bytes32',
 
-                                    var context=new Vue({
-                                        el: "#context",
-                                        data:
-                                            {
-                                                DID: "",
-                                                key_type:"WeID",
-                                                result:"",
-                                                PrivKey:""
-
-                                            },
-                                        methods:
-                                            {
-
-                                                change_key_type:function (key_type){
-                                                    if (key_type == "ethereum") {
-                                                        IsBitcoin=false
-                                                        console.log(IsBitcoin)
-                                                    }else{
-                                                        IsBitcoin=true
-                                                        console.log(IsBitcoin)
-                                                    }
-                                                }   ,
-                                                DistinDID:function (){
-                                                    this.result="WeId"
-                                                },
-                                                get_addr:function() {
-
-                                                    axios(
-                                                        {
-                                                            method: 'get',
-                                                            url: '/did_engine/create_weid_local_func',
-                                                            headers: {
-                                                                'Content-Type': 'application/x-www-form-urlencoded',
-                                                            }
-                                                        })
-                                                        .then(function (response) {
-                                                            context.DID=response.data.data.weId
-                                                            context.PrivKey=response.data.data.privateKeyHex
-                                                            console.log(response.data.data.weId)
-                                                        })
-                                                        .catch(function (error) {
-                                                        })
-                                                    >>>>>>> Stashed changes
-
-
-                                                },
-                                                get_addr_by_priv:function(priv,key_type)
-                                                {
-                                                    if(key_type=="ethereum") {
-                                                        axios({
-                                                            method: 'post',
-                                                            url: 'api/v1/generate_addr',
-                                                            data:
-                                                                {
-                                                                    priv: priv,
-                                                                },
-                                                            headers:
-                                                                {
-                                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                                }
-                                                        })
-                                                            .then(function (response) {
-                                                                context.priv = response.data.payload.priv;
-                                                                context.addr = response.data.payload.addr;
-                                                                context.pubv = response.data.payload.pubv;
-                                                                console.log(context.pubv)
-                                                                localStorage.setItem(context.priv, context.addr);
-
-
-                                                            })
-                                                            .catch(function (error) {
-                                                                console.log(error)
-                                                            })
-                                                    }
-                                                    else{
-                                                        axios(
-                                                            {
-                                                                method: 'post',
-                                                                url: '/api/v1/generate_btcAddr',
-                                                                data:
-                                                                    {
-                                                                        priv: priv,
-                                                                    },
-                                                                headers: {
-                                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                                }
-                                                            })
-                                                            .then(function (response) {
-
-                                                                context.priv = response.data.payload.priv;
-                                                                context.addr = response.data.payload.addr;
-                                                                context.pubv = response.data.payload.pubv;
-                                                                localStorage.setItem(context.priv, context.addr);
-
-
-                                                            })
-                                                            .catch(function (error) {
-                                                            })
-                                                    }
-                                                },
-
-                                                get_sdk_config_w3:function(
-                                                    crypto_type,
-                                                    contract_info_file,
-                                                    account_keyfile_path,
-                                                    logdir,
-                                                    account_keyfile,
-                                                    account_password,
-                                                    gm_account_keyfile,
-                                                    gm_account_password,
-                                                    fiscoChainId,
-                                                    groupid,
-                                                    client_protocol,
-                                                    remote_rpcurl,
-                                                    channel_host,
-                                                    channel_port,
-                                                    channel_ca,
-                                                    channel_node_cert,
-                                                    channel_node_key,
-                                                    solc_path,
-                                                    gm_solc_path,
-                                                    solcjs_path,
-                                                )
-                                                {
-                                                    const link = document.createElement('a')
-                                                    axios({
-                                                        method:'post',
-                                                        url:'api/v1/get_sdk_config',
-                                                        data:
-                                                            {
-                                                                'crypto_type':crypto_type,
-                                                                'contract_info_file':contract_info_file,
-                                                                account_keyfile_path:account_keyfile_path,
-                                                                logdir:logdir,
-                                                                account_keyfile:account_keyfile,
-                                                                account_password:account_password,
-                                                                gm_account_keyfile:gm_account_keyfile,
-                                                                gm_account_password:gm_account_password,
-                                                                fiscoChainId:fiscoChainId,
-                                                                groupid:groupid,
-                                                                client_protocol:client_protocol,
-                                                                remote_rpcurl:remote_rpcurl,
-                                                                channel_host:channel_host,
-                                                                channel_port:channel_port,
-                                                                channel_ca:channel_ca,
-                                                                channel_node_cert:channel_node_cert,
-                                                                channel_node_key:channel_node_key,
-                                                                solc_path:solc_path,
-                                                                gm_solc_path:gm_solc_path,
-                                                                solcjs_path:solcjs_path,
-                                                            },
-                                                        headers:
-                                                            {
-                                                                'Content-Type': 'application/x-www-form-urlencoded',
-                                                            }
-                                                    })
-                                                        .then(function(response){
-                                                            console.log('[+]oh is ok!')
-                                                            let blob = new Blob([response.data], {type: "application/x-www-form-urlencoded"});  // res就是接口返回的文件流了
-                                                            let objectUrl = URL.createObjectURL(blob);
-                                                            link.href=objectUrl
-                                                            link.download='client_config.py'
-                                                            link.click()
-                                                            // window.location.href = objectUrl;
-                                                        })
-                                                        .catch(function(error){
-                                                            console.log(error)
-                                                        })
-                                                },
-                                                translate_sig:function(sig){
-                                                    axios({
-                                                        method:'post',
-                                                        url:'api/v1/translate_sig',
-                                                        data:
-                                                            {
-                                                                sig: sig,
-                                                            },
-                                                        headers:
-                                                            {
-                                                                'Content-Type': 'application/x-www-form-urlencoded',
-                                                            }
-                                                    })
-                                                        .then(function(response){
-                                                            result = response.data.payload
-                                                            context.r = result["r"]
-                                                            context.s = result["s"]
-                                                            context.v = result["v"]
-                                                        })
-                                                        .catch(function(error){
-                                                            console.log(error)
-                                                        })
-                                                },
-                                                generate_mock_data:function(mock_type){
-                                                    if(mock_type=="byte32"){
-
-                                                        axios({
-                                                            method:'get',
-                                                            url:'/api/v1/random_bytes32',
-
-                                                            headers:
-                                                                {
-                                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                                }
-                                                        })
-                                                            .then(function(response){
-                                                                context.mock_data=response.data.message
-
-                                                            })
-                                                            .catch(function(error){
-                                                                console.log(error)
-                                                            })
-                                                    }
-                                                    else if(mock_type=="int"){
-                                                        axios({
-                                                            method:'get',
-                                                            url:'/api/v1/random_int',
-
-                                                            headers:
-                                                                {
-                                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                                }
-                                                        })
-                                                            .then(function(response){
-                                                                context.mock_data=response.data.message
-
-                                                            })
-                                                            .catch(function(error){
-                                                                console.log(error)
-                                                            })
-                                                    }
-                                                    else if(mock_type=="bytes"){
-                                                        axios({
-                                                            method:'get',
-                                                            url:'/api/v1/random_bytes',
-
-                                                            headers:
-                                                                {
-                                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                                }
-                                                        })
-                                                            .then(function(response){
-                                                                context.mock_data=response.data.message
-
-                                                            })
-                                                            .catch(function(error){
-                                                                console.log(error)
-                                                            })
-
-                                                    }
-                                                },
-                                                translate_data: function(trans_type, trans_data){
-                                                    if(trans_type=="signature"){
-                                                        context.translate_sig(trans_data)
-                                                    }
-                                                },
-                                                get_sdk_config: function(){
-                                                    context.get_sdk_config_w3(
-                                                        window.crypto_type.value,
-                                                        window.contract_info_file.value,
-                                                        window.account_keyfile_path.value,
-                                                        window.logdir.value,
-                                                        window.account_keyfile.value,
-                                                        window.account_password.value,
-                                                        window.gm_account_keyfile.value,
-                                                        window.gm_account_password.value,
-                                                        window.fiscoChainId.value,
-                                                        window.groupid.value,
-                                                        window.client_protocol.value,
-                                                        window.remote_rpcurl.value,
-                                                        window.channel_host.value,
-                                                        window.channel_port.value,
-                                                        window.channel_ca.value,
-                                                        window.channel_node_cert.value,
-                                                        window.channel_node_key.value,
-                                                        window.solc_path.value,
-                                                        window.gm_solc_path.value,
-                                                        window.solcjs_path.value,
-                                                    )
-                                                },
-                                            }
+                                    headers:
+                                        {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        }
+                                })
+                                    .then(function(response){
+                                        context.mock_data=response.data.message
 
                                     })
-    </script>
-{% endblock %}
+                                    .catch(function(error){
+                                        console.log(error)
+                                    })
+                            }
+                            else if(mock_type=="int"){
+                                axios({
+                                    method:'get',
+                                    url:'/api/v1/random_int',
 
+                                    headers:
+                                        {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        }
+                                })
+                                    .then(function(response){
+                                        context.mock_data=response.data.message
+
+                                    })
+                                    .catch(function(error){
+                                        console.log(error)
+                                    })
+                            }
+                            else if(mock_type=="bytes"){
+                                axios({
+                                    method:'get',
+                                    url:'/api/v1/random_bytes',
+
+                                    headers:
+                                        {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        }
+                                })
+                                    .then(function(response){
+                                        context.mock_data=response.data.message
+
+                                    })
+                                    .catch(function(error){
+                                        console.log(error)
+                                    })
+
+                            }
+                        },
+                        translate_data: function(trans_type, trans_data){
+                            if(trans_type=="signature"){
+                                context.translate_sig(trans_data)
+                            }
+                        },
+                        get_sdk_config: function(){
+                            context.get_sdk_config_w3(
+                                window.crypto_type.value,
+                                window.contract_info_file.value,
+                                window.account_keyfile_path.value,
+                                window.logdir.value,
+                                window.account_keyfile.value,
+                                window.account_password.value,
+                                window.gm_account_keyfile.value,
+                                window.gm_account_password.value,
+                                window.fiscoChainId.value,
+                                window.groupid.value,
+                                window.client_protocol.value,
+                                window.remote_rpcurl.value,
+                                window.channel_host.value,
+                                window.channel_port.value,
+                                window.channel_ca.value,
+                                window.channel_node_cert.value,
+                                window.channel_node_key.value,
+                                window.solc_path.value,
+                                window.gm_solc_path.value,
+                                window.solcjs_path.value,
+                            )
+                        },
+                    }
+
+            })
+        </script>
+{% endblock %}
