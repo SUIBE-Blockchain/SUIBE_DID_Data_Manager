@@ -143,7 +143,9 @@ def list_to_binary(list):
     return bin
 
 def ecdsa_sign(encode_transaction, privkey):
-    signning_key = SigningKey.from_string(bytes.fromhex(privkey), curve=SECP256k1)
+    if isinstance(privkey, str):
+        privkey = bytes.fromhex(privkey)
+    signning_key = SigningKey.from_string(privkey, curve=SECP256k1)
     # encode_transaction = respBody['respBody']['encodedTransaction']
     # base64解密
     transaction = base64_decode(encode_transaction)

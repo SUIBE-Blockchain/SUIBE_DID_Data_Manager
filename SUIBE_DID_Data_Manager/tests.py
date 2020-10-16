@@ -19,6 +19,8 @@ weid = weidentityClient(Config.get("LOCAL_WEID_URL"))
 
 priv_key = "18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725"
 signning_key = SigningKey.from_string(bytes.fromhex(priv_key), curve=SECP256k1)
+
+# signning_key = SigningKey.generate(curve=SECP256k1)
 privkey = signning_key.to_string()
 # 创建公钥
 verifing_key = signning_key.get_verifying_key()
