@@ -5,25 +5,18 @@ from SUIBE_DID_Data_Manager.database import (
     Model,
     db,
 )
-from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
+from SUIBE_DID_Data_Manager.extensions import db
 
-
-class CredentialPojo(Model):
+class CredentialPojo(db.Model):
     __tablename__ = "credential_pojo"
 
-    id = db.Column(db.Integer, primary_key=True)
-    credentialID = db.Column(db.String(88), nullable=False)
+    # id = db.Column(db.Integer, primary_key=True)
+    credentialID = db.Column(db.String(88), primary_key=True,nullable=False)
     cptId = db.Column(db.Integer(), nullable=False)
     claim = db.Column(db.JSON, default={}, nullable=False)
     expirationDate = db.Column(db.Integer(), nullable=False)
-    # issuer = db.relationship(
-    #     "DID",
-    #     foreign_keys=[],
-    #     primaryjoin="CredentialPojo.issuer == DID.id",
-    #     backref="credential_pojo"
-    #
-    # )
-    issuer = db.Column(db.String(88), nullable=False)
     issuanceDate = db.Column(db.Integer(), nullable=False)
     proof = db.Column(db.JSON, default={}, nullable=False)
     type = db.Column(db.JSON, default=[], nullable=True)
+
+    issuer_id = db.Column(db.String(88), db.ForeignKey('did.did'))
