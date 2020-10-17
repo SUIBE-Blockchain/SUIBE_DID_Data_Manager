@@ -5,7 +5,7 @@ from SUIBE_DID_Data_Manager.weidentity.localweid import generate_addr, create_pr
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
 from SUIBE_DID_Data_Manager.weidentity.weidentityService import weidentityService
 from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
-from SUIBE_DID_Data_Manager.extensions import db
+from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 from SUIBE_DID_Data_Manager.config import Config
 
 import random
@@ -158,7 +158,8 @@ def hextoint():
     int_data = int(hex_data, 16)
     return jsonify({"intData": int_data, "hexData": hex_data})
 
-@did_engine.route("/delete_did/<string:weid>")
+@csrf_protect.exempt
+@did_engine.route("/delete_did/<string:weid>", methods=["POST"])
 def delete_did(weid):
     did = DID.query.filter_by(did=weid).first()
     if did:
@@ -167,6 +168,7 @@ def delete_did(weid):
         return jsonify({"result": "{} successfully deleted!".format(did.did), "code": "200"})
     return jsonify({"result": "We did not find the did", "code": "400"}), 400
 
+@csrf_protect.exempt
 @did_engine.route("/uplink_did/<string:weid>", methods=["POST"])
 def uplink_did(weid):
     print(weid)
