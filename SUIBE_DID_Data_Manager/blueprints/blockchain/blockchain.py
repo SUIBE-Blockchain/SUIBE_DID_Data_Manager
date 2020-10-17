@@ -210,7 +210,8 @@ def create_credential_pojo(credentialID):
     return jsonify(result_all)
 
 
-@blockchain.route("/delete_local_credential_pojo/<string:credentialID>", methods=["GET", "POST"])
+@csrf_protect.exempt
+@blockchain.route("/delete_local_credential_pojo/<string:credentialID>", methods=["POST"])
 def delete_local_credential_pojo(credentialID):
     credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
     if credential_pojo:
@@ -220,6 +221,7 @@ def delete_local_credential_pojo(credentialID):
     return jsonify({"result": "We did not find the certificate or the certificate is linked.", "code": "400"}), 400
 
 
+@csrf_protect.exempt
 @blockchain.route("/uplink_credential/<string:credentialID>", methods=["POST"])
 def uplink_credential(credentialID):
     credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID, is_cochain=False).first()
