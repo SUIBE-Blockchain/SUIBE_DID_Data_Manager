@@ -147,12 +147,7 @@ def get_credential_pojo_by_claim_id(claim_id):
     for credential_pojo in credentials_pojo:
         credential_pojo_dict = {}
         credential_pojo_dict["credentialID"] = credential_pojo.credentialID
-        credential_pojo_dict["claim"] = credential_pojo.claim
-        credential_pojo_dict["issuer"] = credential_pojo.issuer_id
         credential_pojo_dict["issuanceDate"] = credential_pojo.issuanceDate
-        credential_pojo_dict["cptId"] = credential_pojo.cptId
-        credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
-        credential_pojo_dict["proof"] = credential_pojo.proof
         credential_pojo_dict["type"] = credential_pojo.type
         credential_pojo_dict["is_cochain"] = credential_pojo.is_cochain
         credential_pojo_all["result"].append(credential_pojo_dict)
