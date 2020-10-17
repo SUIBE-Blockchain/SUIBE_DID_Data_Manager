@@ -95,7 +95,7 @@ def register_cpt(privkey):
 
 @csrf_protect.exempt
 @blockchain.route("/load_credential_pojo/", methods=["POST"])
-def import_credential_pojo():
+def load_credential_pojo():
     """
     导入credential pojo
     :return:
