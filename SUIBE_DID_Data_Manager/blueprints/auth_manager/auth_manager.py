@@ -70,7 +70,11 @@ def get_user_did():
         did_dict["username"] = did.username
         did_dict["did"] = did.did
         did_dict["type"] = did.type
-        did_dict["is_cochain"] = did.is_cochain
+        # did_dict["is_cochain"] = did.is_cochain
+        if did.is_cochain:
+            did_dict["is_cochain"] = "已上链"
+        else:
+            did_dict["is_cochain"] = "未上链"
         if did.privkey_int:
             did_dict["privkey_int"] = did.privkey_int
             did_dict["privkey_hex"] = did.privkey_hex
