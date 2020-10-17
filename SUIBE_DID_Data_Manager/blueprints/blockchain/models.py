@@ -17,7 +17,7 @@ class CredentialPojo(db.Model):
     expirationDate = db.Column(db.Integer(), nullable=False)
     issuanceDate = db.Column(db.Integer(), nullable=False)
     proof = db.Column(db.JSON, default={}, nullable=False)
-    type = db.Column(db.JSON, default=[], nullable=True)
+    type = db.Column(db.JSON, default=[], nullable=False)
     is_cochain = db.Column(db.Boolean, default=False, nullable=False)
     # 说明是否上链，True为上链了
 

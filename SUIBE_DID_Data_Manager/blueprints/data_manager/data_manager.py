@@ -35,7 +35,3 @@ def credential():
 
 
 
-@data_manager.route("/load_weid")
-@login_required
-def load_weid():
-    data_json = request.get_json()
