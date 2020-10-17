@@ -167,8 +167,6 @@ def delete_did(weid):
         return jsonify({"result": "{} successfully deleted!".format(did), "code": "200"})
     return jsonify({"result": "We did not find the did", "code": "400"}), 400
 
-
-
 @did_engine.route("/uplink_credential/<string:weid>", methods=["POST"])
 def uplink_did(weid):
     did = DID.query.filter_by(did=weid).first()

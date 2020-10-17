@@ -11,6 +11,7 @@ from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
 from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 
 import random
+import time
 
 blockchain = Blueprint('blockchain', __name__)
 
@@ -95,7 +96,7 @@ def register_cpt(privkey):
 
 @csrf_protect.exempt
 @blockchain.route("/load_credential_pojo/", methods=["POST"])
-def import_credential_pojo():
+def load_credential_pojo():
     """
     导入credential pojo
     :return:
@@ -113,6 +114,8 @@ def import_credential_pojo():
     proof = data_msg["result"]["proof"]
     type = data_msg["result"]["type"]
     try:
+        if not DID.query.filter_by(did=claim_id).first():
+            return jsonify({"result": "We don't have this chaim ID locally", "code": "400"}), 400
         if claim_id == issuer:
             return jsonify({"result": "The publisher cannot be the same person as the witness.", "code": "400"}), 400
         if CredentialPojo.query.filter_by(credentialID=credentialID).first():
@@ -147,14 +150,12 @@ def get_credential_pojo_by_claim_id(claim_id):
     for credential_pojo in credentials_pojo:
         credential_pojo_dict = {}
         credential_pojo_dict["credentialID"] = credential_pojo.credentialID
-        credential_pojo_dict["claim"] = credential_pojo.claim
-        credential_pojo_dict["issuer"] = credential_pojo.issuer_id
-        credential_pojo_dict["issuanceDate"] = credential_pojo.issuanceDate
-        credential_pojo_dict["cptId"] = credential_pojo.cptId
-        credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
-        credential_pojo_dict["proof"] = credential_pojo.proof
+        credential_pojo_dict["issuanceDate"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime(credential_pojo.issuanceDate))
         credential_pojo_dict["type"] = credential_pojo.type
-        credential_pojo_dict["is_cochain"] = credential_pojo.is_cochain
+        if credential_pojo.is_cochain:
+            credential_pojo_dict["is_cochain"] = "已上链"
+        else:
+            credential_pojo_dict["is_cochain"] = "未上链"
         credential_pojo_all["result"].append(credential_pojo_dict)
     credential_pojo_all["total"] = str(len(credentials_pojo))
     return jsonify(credential_pojo_all)
@@ -173,12 +174,17 @@ def get_credential_pojo_by_credential_id(credentialID):
     credential_pojo_dict["credentialID"] = credential_pojo.credentialID
     credential_pojo_dict["claim"] = credential_pojo.claim
     credential_pojo_dict["issuer"] = credential_pojo.issuer_id
-    credential_pojo_dict["issuanceDate"] = credential_pojo.issuanceDate
+    credential_pojo_dict["issuanceDate"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime(credential_pojo.issuanceDate))
     credential_pojo_dict["cptId"] = credential_pojo.cptId
-    credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
+    credential_pojo_dict["expirationDate"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime(credential_pojo.expirationDate))
+
     credential_pojo_dict["proof"] = credential_pojo.proof
     credential_pojo_dict["type"] = credential_pojo.type
-    credential_pojo_dict["is_cochain"] = credential_pojo.is_cochain
+    # credential_pojo_dict["is_cochain"] = credential_pojo.is_cochain
+    if credential_pojo.is_cochain:
+        credential_pojo_dict["is_cochain"] = "已上链"
+    else:
+        credential_pojo_dict["is_cochain"] = "未上链"
     return jsonify({"result": credential_pojo_dict})
 
 
