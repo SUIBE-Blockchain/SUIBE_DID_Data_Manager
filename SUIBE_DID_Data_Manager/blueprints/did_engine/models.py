@@ -24,5 +24,8 @@ class DID(db.Model):
     publickey_hex = db.Column(db.String(355), nullable=True)
     publickey_int = db.Column(db.String(355), nullable=True)
 
+    # 说明是否上链，如果已经上链，该值为True。
+    is_cochain = db.Column(db.Boolean, default=False, nullable=False)
+
     credential_pojo = db.relationship("CredentialPojo", backref="did")
     data_manager = db.relationship("DataManager", backref="did")

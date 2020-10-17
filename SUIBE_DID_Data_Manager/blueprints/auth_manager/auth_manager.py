@@ -70,6 +70,7 @@ def get_user_did():
         did_dict["username"] = did.username
         did_dict["did"] = did.did
         did_dict["type"] = did.type
+        did_dict["is_cochain"] = did.is_cochain
         if did.privkey_int:
             did_dict["privkey_int"] = did.privkey_int
             did_dict["privkey_hex"] = did.privkey_hex
@@ -79,3 +80,28 @@ def get_user_did():
         did_all["result"].append(did_dict)
     did_all["total"] = str(len(dids))
     return jsonify(did_all)
+
+@auth_manager.route("/auth_tree/")
+@login_required
+def auth_tree():
+    return_message = []
+    did_all = {"result": [], "total_did": ""}
+    dids = DID.query.filter_by(username=current_user.username).all()
+    if not dids:
+        return jsonify({"result": "We did not find did content under this user", "code":"400"}), 400
+
+    total_did = len(dids)
+    for did in dids:
+        did_dict = {}
+        did_dict[did.did] = {}
+        total_credential = 0
+
+        did_dict[did.did]["credential_cptid"] = []
+        for credential in did.credential_pojo:
+            did_dict[did.did]["credential_cpt_type"].append(str(credential.type))
+            total_credential += 1
+        did_dict[did.did]["total_credential"] = str(total_credential)
+        did_all["result"].append(did_dict)
+    did_all["total_did"] = str(total_did)
+    return jsonify(did_all)
+

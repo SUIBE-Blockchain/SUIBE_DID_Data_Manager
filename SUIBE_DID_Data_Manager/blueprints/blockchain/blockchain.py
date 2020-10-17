@@ -111,7 +111,7 @@ def import_credential_pojo():
     issuer = data_msg["result"]["issuer"]
     issuanceDate = data_msg["result"]["issuanceDate"]
     proof = data_msg["result"]["proof"]
-    type = data_msg["result"].get("type", None)
+    type = data_msg["result"]["type"]
     try:
         if claim_id == issuer:
             return jsonify({"result": "The publisher cannot be the same person as the witness.", "code": "400"}), 400
@@ -123,8 +123,7 @@ def import_credential_pojo():
                                          proof=proof, type=type)
         update_did = DID.query.filter_by(did=claim_id).first()
         # 添加did的链接
-
-        update_did.credential_pojo = [credential_pojo, ]
+        update_did.credential_pojo.append(credential_pojo)
         db.session.add(credential_pojo)
         try:
             db.session.commit()
@@ -154,8 +153,8 @@ def get_credential_pojo_by_claim_id(claim_id):
         credential_pojo_dict["cptId"] = credential_pojo.cptId
         credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
         credential_pojo_dict["proof"] = credential_pojo.proof
-        if credential_pojo.type is not None:
-            credential_pojo_dict["type"] = credential_pojo.type
+        credential_pojo_dict["type"] = credential_pojo.type
+        credential_pojo_dict["is_cochain"] = credential_pojo.is_cochain
         credential_pojo_all["result"].append(credential_pojo_dict)
     credential_pojo_all["total"] = str(len(credentials_pojo))
     return jsonify(credential_pojo_all)
@@ -178,8 +177,8 @@ def get_credential_pojo_by_credential_id(credentialID):
     credential_pojo_dict["cptId"] = credential_pojo.cptId
     credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
     credential_pojo_dict["proof"] = credential_pojo.proof
-    if credential_pojo.type is not None:
-        credential_pojo_dict["type"] = credential_pojo.type
+    credential_pojo_dict["type"] = credential_pojo.type
+    credential_pojo_dict["is_cochain"] = credential_pojo.is_cochain
     return jsonify({"result": credential_pojo_dict})
 
 
@@ -207,38 +206,19 @@ def create_credential_pojo(credentialID):
 
 @blockchain.route("/delete_local_credential_pojo/<string:credentialID>", methods=["GET", "POST"])
 def delete_local_credential_pojo(credentialID):
-    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID, is_cochain=False).first()
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
     if credential_pojo:
         db.session.delete(credential_pojo)
         db.session.commit()
         return jsonify({"result": "{} successfully deleted!".format(credentialID), "code": "200"})
     return jsonify({"result": "We did not find the certificate or the certificate is linked.", "code": "400"}), 400
 
-#
-# {
-#     "result":{
-#          "claim":{
-#              "age":18,
-#              "gender":"F",
-#              "name":"zhangsan",
-#              "weid":"did:weid:CHAIN_ID:0xA959DC5b4ebd4F5EE9938E711F48C2E6602C3ec2"
-#          },
-#          "context":"https://github.com/WeBankFinTech/WeIdentity/blob/master/context/v1",
-#          "cptId":2000082,
-#          "expirationDate":1588776752,
-#          "id":"0d633260-d31c-4155-b79d-a9eb67df7bab",
-#          "issuanceDate":1588065179,
-#          "issuer":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17",
-#          "proof":{
-#              "created":1588065179,
-#              "creator":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17#keys-0",
-#              "salt":{
-#                  "age":"exkEX",
-#                  "gender":"ya9jA",
-#                  "name":"Q4BDW"
-#              },
-#              "signatureValue":"G51huya0Q4Nz4HGa+dUju3GVrR0ng+atlXeouEKe60ImLMl6aihwZsSGExOgC8KwP3sUjeiggdba3xjVE9SSI/g=",
-#              "type":"Secp256k1"
-#          }
-#     }
-# }
+
+@blockchain.route("/uplink_credential/<string:credentialID>", methods=["POST"])
+def uplink_credential(credentialID):
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
+    if credential_pojo:
+        credential_pojo.is_cochain = True
+        db.session.commit()
+        return jsonify({"result": "{} successfully uplink!".format(credentialID), "code": "200"})
+    return jsonify({"result": "We did not find the certificate.", "code": "400"}), 400

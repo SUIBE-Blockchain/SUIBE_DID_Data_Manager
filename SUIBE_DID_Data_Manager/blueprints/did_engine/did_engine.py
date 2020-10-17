@@ -157,3 +157,23 @@ def hextoint():
     hex_data = request.args.get("hexdata")
     int_data = int(hex_data, 16)
     return jsonify({"intData": int_data, "hexData": hex_data})
+
+@did_engine.route("/delete_did/<string:weid>")
+def delete_did(weid):
+    did = DID.query.filter_by(did=weid).first()
+    if did:
+        db.session.delete(did)
+        db.session.commit()
+        return jsonify({"result": "{} successfully deleted!".format(did), "code": "200"})
+    return jsonify({"result": "We did not find the did", "code": "400"}), 400
+
+
+
+@did_engine.route("/uplink_credential/<string:weid>", methods=["POST"])
+def uplink_did(weid):
+    did = DID.query.filter_by(did=weid).first()
+    if did:
+        did.is_cochain = True
+        db.session.commit()
+        return jsonify({"result": "{} successfully uplink!".format(did), "code": "200"})
+    return jsonify({"result": "We did not find the did", "code": "400"}), 400
