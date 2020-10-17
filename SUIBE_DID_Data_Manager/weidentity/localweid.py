@@ -17,7 +17,6 @@ def create_random_weid():
     # 通过get的方式传送一个privkey data。
     privkey = create_privkey()
     account = generate_addr(priv=privkey.hex())
-
     addr = account["payload"]["addr"]
     # 拼接weid，这里CHAIN_ID是留给上链用的。
     weid = "did:weid:CHAIN_ID:{addr}".format(addr=addr)
@@ -29,6 +28,22 @@ def create_random_weid():
         "weId": weid,
     }
     return data
+
+def create_watting_weid(privkey):
+    # 通过get的方式传送一个privkey data。
+    account = generate_addr(priv=privkey)
+    addr = account["payload"]["addr"]
+    # 拼接weid，这里CHAIN_ID是留给上链用的。
+    weid = "did:weid:{addr}".format(addr=addr)
+    data = {
+        "privateKeyHex": account["payload"]["priv"],
+        "publicKeyHex": account["payload"]["pubv"],
+        "privateKeyInt": str(int(account["payload"]["priv"], 16)),
+        "publicKeyInt": str(int(account["payload"]["pubv"], 16)),
+        "weId": weid,
+    }
+    return data
+
 
 def create_weid_by_privkey(privkey, chain_id):
     if privkey[:2] == "0x":
@@ -71,8 +86,8 @@ def verify_did(did):
         return "请提供正确的did。"
     if verify_data[1] not in DID_TYPE:
         return "请提供正确的DID Type。"
-    if verify_data[2] == "CHAIN_ID":
-        return "请指定正确的chain id。"
+    # if verify_data[2] == "CHAIN_ID":
+    #     return "请指定正确的chain id。"
     if verify_data[3][:2] != "0x":
         return "请输入正确的did。"
     return True
@@ -108,12 +123,11 @@ def base64_decode(base_data):
 def base64_encode(bytes_data):
     """
     base64加密
-    :param str_data:
+    :param bytes_data:
     :return:
     """
     base_data = base64.b64encode(bytes_data)
     return bytes.decode(base_data)
-
 
 def binary_to_list(bin):
     list = []
@@ -127,3 +141,19 @@ def list_to_binary(list):
     for i in list:
         bin += bytes([i])
     return bin
+
+def ecdsa_sign(encode_transaction, privkey):
+    if isinstance(privkey, str):
+        privkey = bytes.fromhex(privkey)
+    signning_key = SigningKey.from_string(privkey, curve=SECP256k1)
+    # encode_transaction = respBody['respBody']['encodedTransaction']
+    # base64解密
+    transaction = base64_decode(encode_transaction)
+    # 获取hash
+    hashedMsg = Hash(transaction)
+    bytes_hashed = bytes(bytearray.fromhex(hashedMsg))
+    # 签名
+    signature = signning_key.sign(bytes_hashed, hashfunc=hashlib.sha256)
+    # base64加密
+    transaction_encode = base64_encode(signature)
+    return transaction_encode

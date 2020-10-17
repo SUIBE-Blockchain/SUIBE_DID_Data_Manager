@@ -16,13 +16,14 @@ from SUIBE_DID_Data_Manager.extensions import bcrypt
 
 class Authentication(Model):
     __tablename__ = "authentication"
+    id = db.Column(db.Integer, primary_key=True)
     publicKey = db.Column(db.String(88), nullable=False)
     revoked = db.Column(db.Boolean, nullable=False)
     type = db.Column(db.String(20), nullable=False)
 
 class PublicKey(Model):
     __tablename__ = "publickey"
-    id = db.Column(db.String(88), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(db.String(88), nullable=False)
     publicKey = db.Column(db.String(300), nullable=False)
     type = db.Column(db.String(20), nullable=False)
@@ -44,3 +45,11 @@ class DidDoc(Model):
     publickey_type = db.Column(db.String(20), nullable=False)
 
     service = db.Column(db.JSON)
+
+
+class DataManager(db.Model):
+    __tablename__ = "data_manager"
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.JSON, default={}, nullable=False)
+
+    data_id = db.Column(db.String(88), db.ForeignKey('did.did'))

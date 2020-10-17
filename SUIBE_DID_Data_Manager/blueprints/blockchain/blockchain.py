@@ -5,8 +5,9 @@ from flask_login import login_required
 
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
 from SUIBE_DID_Data_Manager.config import Config
-from SUIBE_DID_Data_Manager.weidentity.localweid import Hash, base64_decode, base64_encode, generate_addr
+from SUIBE_DID_Data_Manager.weidentity.localweid import Hash, base64_decode, base64_encode, generate_addr, ecdsa_sign
 from SUIBE_DID_Data_Manager.blueprints.blockchain.models import CredentialPojo
+from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
 from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 
 import random
@@ -25,64 +26,55 @@ def register_did(privkey):
     nonce = str(random.randint(1, 999999999999999999999999999999))
     respBody = weidentity.create_weidentity_did_first(publicKey, nonce)
 
-
     ################ 签名过程 ##################
-    encode_transaction = respBody['respBody']['encodedTransaction']
-    # base64解密
-    transaction = base64_decode(encode_transaction)
-    # 获取hash
-    hashedMsg = Hash(transaction)
-    bytes_hashed = bytes(bytearray.fromhex(hashedMsg))
-    signature = signning_key.sign(bytes_hashed)
-    transaction_encode = base64_encode(signature)
-    ###############################################3
-
+    signedMessage = ecdsa_sign(respBody['respBody']['encodedTransaction'], privkey)
+    ###########################################
 
     weid_second = weidentity.create_weidentity_did_second(nonce, data=respBody['respBody']['data'],
-                                                    signedMessage=transaction_encode)
+                                                    signedMessage=signedMessage)
     return jsonify(weid_second)
 
 
-
-@blockchain.route("/register_authority_issuer/<string:weId>")
+@csrf_protect.exempt
+@blockchain.route("/register_authority_issuer/<string:privkey>", methods=["GET", "POST"])
 @login_required
-def register_authority_issuer(weId):
-    name = request.args.get("name", None)
+def register_authority_issuer(privkey):
+    weId = request.args.values("weId", None)
+    if weId is None:
+        return jsonify({"result": "please input weId. need args [weid, name]"})
+
+    name = request.args.values("name", None)
     if name is None:
-        return jsonify({"result": "please input name."})
+        return jsonify({"result": "please input name. need args [weid, name]"})
     nonce = str(random.randint(1, 9999999999999999999999999999999))
     weidentity = weidentityClient(Config.get("SERVER_WEID_URL"))
 
     respBody = weidentity.register_authority_issuer_first(name, weId, nonce)
 
-
     ################ 签名过程 ##################
-    encode_transaction = respBody['respBody']['encodedTransaction']
-    # base64解密
-    transaction = base64_decode(encode_transaction)
-    # 获取hash
-    hashedMsg = Hash(transaction)
-    bytes_hashed = bytes(bytearray.fromhex(hashedMsg))
-    signature = signning_key.sign(bytes_hashed)
-    transaction_encode = base64_encode(signature)
-    ###############################################3
-
+    signedMessage = ecdsa_sign(respBody['respBody']['encodedTransaction'], privkey)
+    ###########################################
 
     weid_second = weidentity.register_authority_issuer_second(nonce, data=respBody['respBody']['data'],
-                                                    signedMessage=transaction_encode)
+                                                    signedMessage=signedMessage)
     return jsonify(weid_second)
 
 
-@blockchain.route("/register_cpt/<string:weId>", methods=["GET", "POST"])
+@csrf_protect.exempt
+@blockchain.route("/register_cpt/<string:privkey>", methods=["POST"])
 @login_required
-def register_cpt(weId):
+def register_cpt(privkey):
+    weId = request.args.values("weId", None)
+    if weId is None:
+        return jsonify({"result": "please input weId. need args [weid, cptJsonSchema, cptSignature]"})
+
     cptJsonSchema = request.args.values("cptJsonSchema", None)
     if cptJsonSchema is None:
-        return jsonify({"result": "please input cptJsonSchema. need args [cptJsonSchema, cptSignature]"})
+        return jsonify({"result": "please input cptJsonSchema. need args [weId, cptJsonSchema, cptSignature]"})
 
     cptSignature = request.args.values("cptSignature", None)
     if cptSignature is None:
-        return jsonify({"result": "please input cptSignature. need args [cptJsonSchema, cptSignature]"})
+        return jsonify({"result": "please input cptSignature. need args [weId, cptJsonSchema, cptSignature]"})
 
 
     nonce = str(random.randint(1, 9999999999999999999999999999999))
@@ -92,81 +84,161 @@ def register_cpt(weId):
 
 
     ################ 签名过程 ##################
-    encode_transaction = respBody['respBody']['encodedTransaction']
-    # base64解密
-    transaction = base64_decode(encode_transaction)
-    # 获取hash
-    hashedMsg = Hash(transaction)
-    bytes_hashed = bytes(bytearray.fromhex(hashedMsg))
-    signature = signning_key.sign(bytes_hashed)
-    transaction_encode = base64_encode(signature)
-    ###############################################3
+    signedMessage = ecdsa_sign(respBody['respBody']['encodedTransaction'], privkey)
+    ###########################################
 
 
     weid_second = weidentity.create_cpt_second(nonce, data=respBody['respBody']['data'],
-                                                    signedMessage=transaction_encode)
+                                                    signedMessage=signedMessage)
     return jsonify(weid_second)
 
 
 @csrf_protect.exempt
 @blockchain.route("/load_credential_pojo/", methods=["POST"])
-def load_credential_pojo():
+def import_credential_pojo():
+    """
+    导入credential pojo
+    :return:
+    """
     data_msg = request.get_json()
     if data_msg is None:
         return jsonify({"result": "load credential pojo failed!", "code": "400"}), 400
     claim = data_msg["result"]["claim"]
+    claim_id = data_msg["result"]["claim"]["weid"]
     cptId = data_msg["result"]["cptId"]
     expirationDate = data_msg["result"]["expirationDate"]
     credentialID = data_msg["result"]["id"]
     issuer = data_msg["result"]["issuer"]
     issuanceDate = data_msg["result"]["issuanceDate"]
     proof = data_msg["result"]["proof"]
-    type = data_msg["result"].get("type", [])
+    type = data_msg["result"].get("type", None)
     try:
-        credential_pojo = CredentialPojo(credentialID=credentialID, cptId=cptId, claim=claim,
-                                         expirationDate=expirationDate, issuer=issuer, issuanceDate=issuanceDate,
+        if claim_id == issuer:
+            return jsonify({"result": "The publisher cannot be the same person as the witness.", "code": "400"}), 400
+        if CredentialPojo.query.filter_by(credentialID=credentialID).first():
+            return jsonify({"result": "this credentialID already have, please change this id.", "code": "400"}), 400
+
+        credential_pojo = CredentialPojo(credentialID=credentialID, cptId=cptId, claim=claim, claim_id=claim_id,
+                                         expirationDate=expirationDate, issuer_id=issuer, issuanceDate=issuanceDate,
                                          proof=proof, type=type)
+        update_did = DID.query.filter_by(did=claim_id).first()
+        # 添加did的链接
+
+        update_did.credential_pojo = [credential_pojo, ]
         db.session.add(credential_pojo)
-        db.session.commit()
-        return jsonify({"result": "load credential pojo success!", "code": "200"})
-    except:
-        return jsonify({"result": "load credential pojo failed!", "code": "400"}), 400
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            db.session.commit()
+        return jsonify({"result": "load credential pojo success!", "code": "200", "data": data_msg})
+    except Exception as e:
+        return jsonify({"result": "load credential pojo failed!", "errorMessage":e, "code": "400"}), 400
 
 
-@blockchain.route("/get_credential_pojo/<int:cptId>")
-def get_credential_pojo(cptId):
+@blockchain.route("/get_credential_pojo_by_claim_id/<string:claim_id>")
+def get_credential_pojo_by_claim_id(claim_id):
     """
     获取本地数据库存储的credential pojo信息
     :param cptId: 通过cpt指定credential pojo
     :return:
     """
-    credentials_pojo = CredentialPojo.query.filter_by(cptId=cptId).all()
-    credential_pojo_all = []
+    credentials_pojo = CredentialPojo.query.filter_by(claim_id=claim_id).all()
+    credential_pojo_all = {"result": [], "total": ""}
     for credential_pojo in credentials_pojo:
         credential_pojo_dict = {}
         credential_pojo_dict["credentialID"] = credential_pojo.credentialID
         credential_pojo_dict["claim"] = credential_pojo.claim
-        credential_pojo_dict["issuer"] = credential_pojo.issuer
+        credential_pojo_dict["issuer"] = credential_pojo.issuer_id
         credential_pojo_dict["issuanceDate"] = credential_pojo.issuanceDate
-        credential_pojo_dict["id"] = credential_pojo.id
         credential_pojo_dict["cptId"] = credential_pojo.cptId
         credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
         credential_pojo_dict["proof"] = credential_pojo.proof
         if credential_pojo.type is not None:
             credential_pojo_dict["type"] = credential_pojo.type
-        credential_pojo_all.append(credential_pojo_dict)
-    return jsonify({"result": credential_pojo_all})
+        credential_pojo_all["result"].append(credential_pojo_dict)
+    credential_pojo_all["total"] = str(len(credentials_pojo))
+    return jsonify(credential_pojo_all)
+
+@blockchain.route("/get_credential_pojo_by_credential_id/<string:credentialID>")
+def get_credential_pojo_by_credential_id(credentialID):
+    """
+    获取本地数据库存储的credential pojo信息
+    :param cptId: 通过cpt指定credential pojo
+    :return:
+    """
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
+    if credential_pojo is None:
+        return jsonify({"errorMessage": "We didn't find the specific information through this ID, Please enter the correct credentialID.", "code": "400"}), 400
+    credential_pojo_dict = {}
+    credential_pojo_dict["credentialID"] = credential_pojo.credentialID
+    credential_pojo_dict["claim"] = credential_pojo.claim
+    credential_pojo_dict["issuer"] = credential_pojo.issuer_id
+    credential_pojo_dict["issuanceDate"] = credential_pojo.issuanceDate
+    credential_pojo_dict["cptId"] = credential_pojo.cptId
+    credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
+    credential_pojo_dict["proof"] = credential_pojo.proof
+    if credential_pojo.type is not None:
+        credential_pojo_dict["type"] = credential_pojo.type
+    return jsonify({"result": credential_pojo_dict})
 
 
-@blockchain.route("/create_credential_pojo/<int:cptId>")
+@blockchain.route("/create_credential_pojo/<string:credentialID>")
 @login_required
-def create_credential_pojo(cptId):
-    credentials_pojo = CredentialPojo.query.filter_by(cptId=cptId).all()
+def create_credential_pojo(credentialID):
+    """
+    将本地credential pojo上链
+    :param cptId:
+    :return:
+    """
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
     weidentity = weidentityClient(Config.get("SERVER_WEID_URL"))
-    result_all = []
-    for credential_pojo in credentials_pojo:
-        respBody = weidentity.create_credential_pojo(cptId=cptId, issuer_weid=credential_pojo.issuer,
-                                                     expirationDate=credential_pojo.expirationDate,
-                                                     claim=credential_pojo.claim)
-        result_all.append(respBody)
+    result_all = {"result": []}
+
+    respBody = weidentity.create_credential_pojo(cptId=credential_pojo.cptId, issuer_weid=credential_pojo.issuer_id,
+                                                 expirationDate=credential_pojo.expirationDate,
+                                                 claim=credential_pojo.claim)
+
+    credential_pojo.is_cochain = True
+    result_all["result"].append(respBody)
+    db.session.commit()
     return jsonify(result_all)
+
+
+@blockchain.route("/delete_local_credential_pojo/<string:credentialID>", methods=["GET", "POST"])
+def delete_local_credential_pojo(credentialID):
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID, is_cochain=False).first()
+    if credential_pojo:
+        db.session.delete(credential_pojo)
+        db.session.commit()
+        return jsonify({"result": "{} successfully deleted!".format(credentialID), "code": "200"})
+    return jsonify({"result": "We did not find the certificate or the certificate is linked.", "code": "400"}), 400
+
+#
+# {
+#     "result":{
+#          "claim":{
+#              "age":18,
+#              "gender":"F",
+#              "name":"zhangsan",
+#              "weid":"did:weid:CHAIN_ID:0xA959DC5b4ebd4F5EE9938E711F48C2E6602C3ec2"
+#          },
+#          "context":"https://github.com/WeBankFinTech/WeIdentity/blob/master/context/v1",
+#          "cptId":2000082,
+#          "expirationDate":1588776752,
+#          "id":"0d633260-d31c-4155-b79d-a9eb67df7bab",
+#          "issuanceDate":1588065179,
+#          "issuer":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17",
+#          "proof":{
+#              "created":1588065179,
+#              "creator":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17#keys-0",
+#              "salt":{
+#                  "age":"exkEX",
+#                  "gender":"ya9jA",
+#                  "name":"Q4BDW"
+#              },
+#              "signatureValue":"G51huya0Q4Nz4HGa+dUju3GVrR0ng+atlXeouEKe60ImLMl6aihwZsSGExOgC8KwP3sUjeiggdba3xjVE9SSI/g=",
+#              "type":"Secp256k1"
+#          }
+#     }
+# }

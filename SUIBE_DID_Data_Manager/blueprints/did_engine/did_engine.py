@@ -4,6 +4,8 @@ from flask_login import login_required, current_user, login_user, logout_user
 from SUIBE_DID_Data_Manager.weidentity.localweid import generate_addr, create_privkey, base64_decode, base64_encode, Hash
 from SUIBE_DID_Data_Manager.weidentity.weidentityClient import weidentityClient
 from SUIBE_DID_Data_Manager.weidentity.weidentityService import weidentityService
+from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
+from SUIBE_DID_Data_Manager.extensions import db
 from SUIBE_DID_Data_Manager.config import Config
 
 import random
@@ -41,6 +43,12 @@ def create_weid_local_func():
             "weId": weid,
         }
     }
+    weid = DID(username=current_user.username, did=weid, type="weid", privkey_hex=account["payload"]["priv"],
+               privkey_int=str(int(account["payload"]["priv"], 16)),
+                publickey_hex=account["payload"]["pubv"],
+                publickey_int=str(int(account["payload"]["pubv"], 16)))
+    db.session.add(weid)
+    db.session.commit()
     return jsonify(data)
 
 
@@ -51,6 +59,9 @@ def create_weid_server():
     item = weid_result["respBody"].split(":")
     item[2] = "CHAIN_ID"
     weid_return = ":".join(item)
+    weid = DID(username=current_user.username, did=weid_return, type="weid")
+    db.session.add(weid)
+    db.session.commit()
     return jsonify({"weid": weid_return})
 
 
