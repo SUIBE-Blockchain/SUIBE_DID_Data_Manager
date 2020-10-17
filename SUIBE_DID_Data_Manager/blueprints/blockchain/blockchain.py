@@ -123,8 +123,7 @@ def import_credential_pojo():
                                          proof=proof, type=type)
         update_did = DID.query.filter_by(did=claim_id).first()
         # 添加did的链接
-
-        update_did.credential_pojo = [credential_pojo, ]
+        update_did.credential_pojo.append(credential_pojo)
         db.session.add(credential_pojo)
         try:
             db.session.commit()
@@ -213,32 +212,3 @@ def delete_local_credential_pojo(credentialID):
         db.session.commit()
         return jsonify({"result": "{} successfully deleted!".format(credentialID), "code": "200"})
     return jsonify({"result": "We did not find the certificate or the certificate is linked.", "code": "400"}), 400
-
-#
-# {
-#     "result":{
-#          "claim":{
-#              "age":18,
-#              "gender":"F",
-#              "name":"zhangsan",
-#              "weid":"did:weid:CHAIN_ID:0xA959DC5b4ebd4F5EE9938E711F48C2E6602C3ec2"
-#          },
-#          "context":"https://github.com/WeBankFinTech/WeIdentity/blob/master/context/v1",
-#          "cptId":2000082,
-#          "expirationDate":1588776752,
-#          "id":"0d633260-d31c-4155-b79d-a9eb67df7bab",
-#          "issuanceDate":1588065179,
-#          "issuer":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17",
-#          "proof":{
-#              "created":1588065179,
-#              "creator":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17#keys-0",
-#              "salt":{
-#                  "age":"exkEX",
-#                  "gender":"ya9jA",
-#                  "name":"Q4BDW"
-#              },
-#              "signatureValue":"G51huya0Q4Nz4HGa+dUju3GVrR0ng+atlXeouEKe60ImLMl6aihwZsSGExOgC8KwP3sUjeiggdba3xjVE9SSI/g=",
-#              "type":"Secp256k1"
-#          }
-#     }
-# }

@@ -11,12 +11,3 @@ user_bp = Blueprint("user", __name__, url_prefix="/users", static_folder="../sta
 def members():
     """List members."""
     return render_template("users/members.html")
-
-
-
-#
-# @user_bp.route("/sdk_config")
-# @login_required
-# def sdk_config():
-#     """List members."""
-#     return render_template("users/members.html")
