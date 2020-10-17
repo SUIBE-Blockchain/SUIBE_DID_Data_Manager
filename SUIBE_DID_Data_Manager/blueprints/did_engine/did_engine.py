@@ -164,14 +164,15 @@ def delete_did(weid):
     if did:
         db.session.delete(did)
         db.session.commit()
-        return jsonify({"result": "{} successfully deleted!".format(did), "code": "200"})
+        return jsonify({"result": "{} successfully deleted!".format(did.did), "code": "200"})
     return jsonify({"result": "We did not find the did", "code": "400"}), 400
 
-@did_engine.route("/uplink_credential/<string:weid>", methods=["POST"])
+@did_engine.route("/uplink_did/<string:weid>", methods=["POST"])
 def uplink_did(weid):
-    did = DID.query.filter_by(did=weid).first()
+    print(weid)
+    did = DID.query.filter_by(did=weid, is_cochain=False).first()
     if did:
         did.is_cochain = True
         db.session.commit()
-        return jsonify({"result": "{} successfully uplink!".format(did), "code": "200"})
-    return jsonify({"result": "We did not find the did", "code": "400"}), 400
+        return jsonify({"result": "{} successfully uplink!".format(did.did), "code": "200"})
+    return jsonify({"result": "We did not find the did or already uplinked.", "code": "400"}), 400
