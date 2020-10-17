@@ -104,6 +104,7 @@ def import_credential_pojo():
     if data_msg is None:
         return jsonify({"result": "load credential pojo failed!", "code": "400"}), 400
     claim = data_msg["result"]["claim"]
+    claim_id = data_msg["result"]["claim"]["weid"]
     cptId = data_msg["result"]["cptId"]
     expirationDate = data_msg["result"]["expirationDate"]
     credentialID = data_msg["result"]["id"]
@@ -112,17 +113,17 @@ def import_credential_pojo():
     proof = data_msg["result"]["proof"]
     type = data_msg["result"].get("type", None)
     try:
+        if claim_id == issuer:
+            return jsonify({"result": "The publisher cannot be the same person as the witness.", "code": "400"}), 400
         if CredentialPojo.query.filter_by(credentialID=credentialID).first():
-            return jsonify({"result": "this credentialID already have, please change this id."})
+            return jsonify({"result": "this credentialID already have, please change this id.", "code": "400"}), 400
 
-        if not DID.query.filter_by(did=issuer).first():
-            return jsonify({"result": "you have not this issuer id, please change this issuer id."})
-
-        credential_pojo = CredentialPojo(credentialID=credentialID, cptId=cptId, claim=claim,
+        credential_pojo = CredentialPojo(credentialID=credentialID, cptId=cptId, claim=claim, claim_id=claim_id,
                                          expirationDate=expirationDate, issuer_id=issuer, issuanceDate=issuanceDate,
                                          proof=proof, type=type)
-        update_did = DID.query.filter_by(did=issuer).first()
+        update_did = DID.query.filter_by(did=claim_id).first()
         # 添加did的链接
+
         update_did.credential_pojo = [credential_pojo, ]
         db.session.add(credential_pojo)
         try:
@@ -130,21 +131,20 @@ def import_credential_pojo():
         except Exception as e:
             db.session.rollback()
             db.session.commit()
-            print(e)
         return jsonify({"result": "load credential pojo success!", "code": "200", "data": data_msg})
-    except:
-        return jsonify({"result": "load credential pojo failed!", "code": "400"}), 400
+    except Exception as e:
+        return jsonify({"result": "load credential pojo failed!", "errorMessage":e, "code": "400"}), 400
 
 
-@blockchain.route("/get_credential_pojo/<string:issuer_id>")
-def get_credential_pojo(issuer_id):
+@blockchain.route("/get_credential_pojo_by_claim_id/<string:claim_id>")
+def get_credential_pojo_by_claim_id(claim_id):
     """
     获取本地数据库存储的credential pojo信息
     :param cptId: 通过cpt指定credential pojo
     :return:
     """
-    credentials_pojo = CredentialPojo.query.filter_by(issuer_id=issuer_id).all()
-    credential_pojo_all = []
+    credentials_pojo = CredentialPojo.query.filter_by(claim_id=claim_id).all()
+    credential_pojo_all = {"result": [], "total": ""}
     for credential_pojo in credentials_pojo:
         credential_pojo_dict = {}
         credential_pojo_dict["credentialID"] = credential_pojo.credentialID
@@ -156,11 +156,34 @@ def get_credential_pojo(issuer_id):
         credential_pojo_dict["proof"] = credential_pojo.proof
         if credential_pojo.type is not None:
             credential_pojo_dict["type"] = credential_pojo.type
-        credential_pojo_all.append(credential_pojo_dict)
-    return jsonify({"result": credential_pojo_all})
+        credential_pojo_all["result"].append(credential_pojo_dict)
+    credential_pojo_all["total"] = str(len(credentials_pojo))
+    return jsonify(credential_pojo_all)
+
+@blockchain.route("/get_credential_pojo_by_credential_id/<string:credentialID>")
+def get_credential_pojo_by_credential_id(credentialID):
+    """
+    获取本地数据库存储的credential pojo信息
+    :param cptId: 通过cpt指定credential pojo
+    :return:
+    """
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
+    if credential_pojo is None:
+        return jsonify({"errorMessage": "We didn't find the specific information through this ID, Please enter the correct credentialID.", "code": "400"}), 400
+    credential_pojo_dict = {}
+    credential_pojo_dict["credentialID"] = credential_pojo.credentialID
+    credential_pojo_dict["claim"] = credential_pojo.claim
+    credential_pojo_dict["issuer"] = credential_pojo.issuer_id
+    credential_pojo_dict["issuanceDate"] = credential_pojo.issuanceDate
+    credential_pojo_dict["cptId"] = credential_pojo.cptId
+    credential_pojo_dict["expirationDate"] = credential_pojo.expirationDate
+    credential_pojo_dict["proof"] = credential_pojo.proof
+    if credential_pojo.type is not None:
+        credential_pojo_dict["type"] = credential_pojo.type
+    return jsonify({"result": credential_pojo_dict})
 
 
-@blockchain.route("/create_credential_pojo/<int:credentialID>")
+@blockchain.route("/create_credential_pojo/<string:credentialID>")
 @login_required
 def create_credential_pojo(credentialID):
     """
@@ -168,12 +191,54 @@ def create_credential_pojo(credentialID):
     :param cptId:
     :return:
     """
-    credentials_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).all()
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
     weidentity = weidentityClient(Config.get("SERVER_WEID_URL"))
-    result_all = []
-    for credential_pojo in credentials_pojo:
-        respBody = weidentity.create_credential_pojo(cptId=credential_pojo.cptId, issuer_weid=credential_pojo.issuer,
-                                                     expirationDate=credential_pojo.expirationDate,
-                                                     claim=credential_pojo.claim)
-        result_all.append(respBody)
+    result_all = {"result": []}
+
+    respBody = weidentity.create_credential_pojo(cptId=credential_pojo.cptId, issuer_weid=credential_pojo.issuer_id,
+                                                 expirationDate=credential_pojo.expirationDate,
+                                                 claim=credential_pojo.claim)
+
+    credential_pojo.is_cochain = True
+    result_all["result"].append(respBody)
+    db.session.commit()
     return jsonify(result_all)
+
+
+@blockchain.route("/delete_local_credential_pojo/<string:credentialID>", methods=["GET", "POST"])
+def delete_local_credential_pojo(credentialID):
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID, is_cochain=False).first()
+    if credential_pojo:
+        db.session.delete(credential_pojo)
+        db.session.commit()
+        return jsonify({"result": "{} successfully deleted!".format(credentialID), "code": "200"})
+    return jsonify({"result": "We did not find the certificate or the certificate is linked.", "code": "400"}), 400
+
+#
+# {
+#     "result":{
+#          "claim":{
+#              "age":18,
+#              "gender":"F",
+#              "name":"zhangsan",
+#              "weid":"did:weid:CHAIN_ID:0xA959DC5b4ebd4F5EE9938E711F48C2E6602C3ec2"
+#          },
+#          "context":"https://github.com/WeBankFinTech/WeIdentity/blob/master/context/v1",
+#          "cptId":2000082,
+#          "expirationDate":1588776752,
+#          "id":"0d633260-d31c-4155-b79d-a9eb67df7bab",
+#          "issuanceDate":1588065179,
+#          "issuer":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17",
+#          "proof":{
+#              "created":1588065179,
+#              "creator":"did:weid:101:0x9bd9897fcdb98428f7b152ce8a06cb16758ccd17#keys-0",
+#              "salt":{
+#                  "age":"exkEX",
+#                  "gender":"ya9jA",
+#                  "name":"Q4BDW"
+#              },
+#              "signatureValue":"G51huya0Q4Nz4HGa+dUju3GVrR0ng+atlXeouEKe60ImLMl6aihwZsSGExOgC8KwP3sUjeiggdba3xjVE9SSI/g=",
+#              "type":"Secp256k1"
+#          }
+#     }
+# }

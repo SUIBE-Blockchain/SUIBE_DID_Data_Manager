@@ -64,12 +64,8 @@ def export_did(weId):
 @login_required
 def get_user_did():
     dids = DID.query.filter_by(username=current_user.username).all()
-    did_all = []
+    did_all = {"result": [], "total": ""}
     for did in dids:
-        try:
-            print(did.credential_pojo[0].proof)
-        except Exception as e:
-            print(e)
         did_dict = {}
         did_dict["username"] = did.username
         did_dict["did"] = did.did
@@ -80,5 +76,6 @@ def get_user_did():
         if did.publickey_int:
             did_dict["publickey_int"] = did.publickey_int
             did_dict["publickey_hex"] = did.publickey_hex
-        did_all.append(did_dict)
-    return jsonify({"data": did_all})
+        did_all["result"].append(did_dict)
+    did_all["total"] = str(len(dids))
+    return jsonify(did_all)

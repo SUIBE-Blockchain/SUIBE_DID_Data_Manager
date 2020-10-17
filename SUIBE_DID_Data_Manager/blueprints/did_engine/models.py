@@ -7,6 +7,7 @@ from SUIBE_DID_Data_Manager.database import (
 )
 
 from SUIBE_DID_Data_Manager.blueprints.blockchain.models import CredentialPojo
+from SUIBE_DID_Data_Manager.blueprints.auth_manager.models import DataManager
 from SUIBE_DID_Data_Manager.extensions import db
 
 
@@ -24,3 +25,4 @@ class DID(db.Model):
     publickey_int = db.Column(db.String(355), nullable=True)
 
     credential_pojo = db.relationship("CredentialPojo", backref="did")
+    data_manager = db.relationship("DataManager", backref="did")
