@@ -222,9 +222,9 @@ def delete_local_credential_pojo(credentialID):
 
 @blockchain.route("/uplink_credential/<string:credentialID>", methods=["POST"])
 def uplink_credential(credentialID):
-    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID).first()
+    credential_pojo = CredentialPojo.query.filter_by(credentialID=credentialID, is_cochain=False).first()
     if credential_pojo:
         credential_pojo.is_cochain = True
         db.session.commit()
         return jsonify({"result": "{} successfully uplink!".format(credentialID), "code": "200"})
-    return jsonify({"result": "We did not find the certificate.", "code": "400"}), 400
+    return jsonify({"result": "We did not find the certificate or already uplinked.", "code": "400"}), 400
