@@ -40,7 +40,7 @@ class Base(object):
             return None
         return response.json()
 
-    def ecdsa_sign(self, encode_transaction, privkey):
+    def ecdsa_sign(self, encode_transaction, privkey, hashfunc=hashlib.sha256):
         signning_key = SigningKey.from_string(bytes.fromhex(privkey), curve=SECP256k1)
         # encode_transaction = respBody['respBody']['encodedTransaction']
         # base64解密
@@ -49,7 +49,7 @@ class Base(object):
         hashedMsg = self.Hash(transaction)
         bytes_hashed = bytes(bytearray.fromhex(hashedMsg))
         # 签名
-        signature = signning_key.sign(bytes_hashed, hashfunc=hashlib.sha256)
+        signature = signning_key.sign(bytes_hashed, hashfunc=hashfunc)
         # base64加密
         transaction_encode = self.base64_encode(signature)
         return transaction_encode

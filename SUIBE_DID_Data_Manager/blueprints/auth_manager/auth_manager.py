@@ -100,7 +100,7 @@ def auth_tree():
         did_dict[did.did] = {}
         total_credential = 0
 
-        did_dict[did.did]["credential_cptid"] = []
+        did_dict[did.did]["credential_cpt_type"] = []
         for credential in did.credential_pojo:
             did_dict[did.did]["credential_cpt_type"].append(str(credential.type))
             total_credential += 1
