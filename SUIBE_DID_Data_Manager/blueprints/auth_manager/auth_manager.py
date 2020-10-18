@@ -97,14 +97,14 @@ def auth_tree():
     total_did = len(dids)
     for did in dids:
         did_dict = {}
-        did_dict[did.did] = {}
+        did_dict["id"] = did.did
+        did_dict["credential"] = {}
         total_credential = 0
-
-        did_dict[did.did]["credential_cpt_type"] = []
+        did_dict["credential"]["credential_cpt_type"] = []
         for credential in did.credential_pojo:
-            did_dict[did.did]["credential_cpt_type"].append(str(credential.type))
+            did_dict["credential"]["credential_cpt_type"].append(str(credential.type))
             total_credential += 1
-        did_dict[did.did]["total_credential"] = str(total_credential)
+        did_dict["credential"]["total_credential"] = str(total_credential)
         did_all["result"].append(did_dict)
     did_all["total_did"] = str(total_did)
     return jsonify(did_all)
