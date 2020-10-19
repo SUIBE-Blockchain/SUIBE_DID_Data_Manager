@@ -5,7 +5,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Editable Tables | Okler Themes | Porto-Admin</title>
+    <title>DID身份数据管理</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="Porto Admin - Responsive HTML5 Template">
     <meta name="author" content="okler.net">
@@ -275,14 +275,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">DID工具</a>
+                <a class="nav-link" href="/">主面板</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/about/">DID身份数据管理</a>
                 <span class="sr-only">(current)</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">可视化功能</a>
+                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">身份/数据/凭证可视化查看</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/about/">数据共享</a>
@@ -362,6 +362,7 @@
                         <thead>
                         <tr>
                             <th>DID</th>
+                            <th>链名称</th>
                             <th>PublicKey</th>
                             <th>State</th>
                             <th>Actions</th>
@@ -372,6 +373,7 @@
 
                         <tr class="gradeA">
                             <td>weid:0xF0311be2...</td>
+                            <td>超级教育链</td>
                             <td>0xae578789...</td>
                             <td>已上链</td>
                             <td class="actions">
@@ -389,6 +391,7 @@
                         </tr>
                         <tr class="gradeA">
                             <td>weid:0xJ0213bf2...</td>
+                            <td>周杰伦个人链</td>
                             <td>0x4fabbff2...</td>
                             <td>已上链</td>
                             <td class="actions">

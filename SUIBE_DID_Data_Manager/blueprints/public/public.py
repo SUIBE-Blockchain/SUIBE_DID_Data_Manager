@@ -130,4 +130,4 @@ def certificate():
 def Visualization_tools():
     """Visualization_tools page."""
     form = LoginForm(request.form)
-    return render_template("public/Visualization_tools.html", form=form)
+    return render_template("public/visualization_tools.html", form=form)
