@@ -57,7 +57,7 @@ def create_weid_server():
     weid = weidentityService(Config.get("LOCAL_WEID_URL"))
     weid_result = weid.create_weidentity_did()
     item = weid_result["respBody"].split(":")
-    item[2] = "CHAIN_ID"
+    item[2] = "1"
     weid_return = ":".join(item)
     weid = DID(username=current_user.username, did=weid_return, type="weid")
     db.session.add(weid)

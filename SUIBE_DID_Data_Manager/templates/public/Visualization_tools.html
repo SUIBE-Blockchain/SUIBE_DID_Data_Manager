@@ -5,11 +5,6 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Editable Tables | Okler Themes | Porto-Admin</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
-
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -23,7 +18,7 @@
 
 
     <meta charset="UTF-8">
-    <title>CodePen - I think</title>
+    <title>身份/数据/凭证可视化查看</title>
     <style type="text/css">
         @import url(https://fonts.googleapis.com/css?family=Abel);
         html {
@@ -44,9 +39,6 @@
         }
     </style>
 
-</head>
-<body>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
     <a class="navbar-brand" href="/">
         SUIBE DID Data Manager
@@ -59,13 +51,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">DID工具</a>
+                <a class="nav-link" href="/">主面板</a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link" href="{{ url_for('public.Identity_manager') }}">DID身份数据管理</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">可视化功能</a>
+                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">身份/数据/凭证可视化查看</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('public.about') }}">数据共享</a>
@@ -90,17 +82,16 @@
 
     <div id="screen"></div>
     <q id="tree">admin
-        <q>weid:0xF0311be2...
-            <q>金融比赛证书</q>
-            <q>创新大赛证书</q>
-            <q>教员认证证书</q>
-            <q>英语六级证书</q>
-            <q>奥林匹克竞赛证书</q>
-            <q>教师资格证书</q>
+        <q>weid:超级教育链
+            <a href="../certificate">金融比赛证书</a>
+            <a href="../certificate">创新大赛证书</a>
+            <a href="../certificate">英语六级证书</a>
         </q>
-        <q>weid:0xJ0213bf2...
+        <q>weid:超级银行链
+            <a href="../certificate">资产凭证</a>
         </q>
-        <q>weid:0xCH921bg2...
+        <q>fabric:周杰伦个人链
+            <a href="../certificate">粉丝证明</a>
         </q>
 
     </q>
@@ -145,7 +136,7 @@
             length: 300,
             reduction: 1.33,
             dotSize: 20,
-            rotationSpeed: 0.002,
+            rotationSpeed: 0.0,
             collapsedNodeColor: "#fff",
             defaultNodeColor: "#f00",
             expandedNodeColor: "#666",
@@ -283,7 +274,7 @@
             for (var i = 0; i < this.children.length; i++) {
 
                 var c = this.children[i];
-                c.visible = false;
+                c.visible = true;
                 c.lex = 0;
                 c.line.move(-1, -1, -1, -2);
                 c.plot.move(-1000, -1, 0);
