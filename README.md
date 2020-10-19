@@ -1,5 +1,5 @@
 # SUIBE_DID_Data_Manager
-上贸大去中心化数字身份管理工具（网页端）
+上贸大身份数据统一管理平台
 
 ## 运行 SUIBE DID Data Manager
 
