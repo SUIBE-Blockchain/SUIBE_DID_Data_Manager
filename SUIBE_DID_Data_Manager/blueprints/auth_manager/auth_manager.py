@@ -12,6 +12,7 @@ auth_manager = Blueprint('auth_manager', __name__)
 @auth_manager.route("/import_did/<string:privkey>")
 def import_did(privkey):
     chain_id = request.args.get("chain_id", "CHAIN_ID")
+    chain_name = request.args.get("chain_name")
     if not privkey:
         return jsonify({"result": "请提供正确的privkey。"})
     data_msg = create_weid_by_privkey(privkey, chain_id)
@@ -30,6 +31,7 @@ def import_did(privkey):
             }
         }
     weid = DID(username=current_user.username,
+                chain_id=chain_id, chain_name=chain_name,
                did=data_msg["weid"], type="weid",
                privkey_hex=data_msg["privateKeyHex"],
                privkey_int=data_msg["privateKeyInt"],
@@ -98,6 +100,8 @@ def auth_tree():
     for did in dids:
         did_dict = {}
         did_dict["id"] = did.did
+        did_dict["chain_name"] = did.chain_name
+        did_dict["chain_id"] = did.chain_id
         did_dict["credential"] = {}
         total_credential = 0
         did_dict["credential"]["credential_cpt_type"] = []
