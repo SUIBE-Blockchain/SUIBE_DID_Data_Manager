@@ -68,7 +68,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">DID：</span>
                             </div>
-                            <input  type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
+                            <input  v-model="vdid" type="text" class="form-control"   aria-describedby="basic-addon1" placeholder="请输入您要识别的DID">
                         </div>
 
                         <div class="input-group mb-3">
@@ -109,14 +109,22 @@
                         DID: "",
                         key_type:"WeID",
                         result:"",
-                        PrivKey:""
+                        PrivKey:"",
+                        vdid:""
 
                     },
                 methods:
                     {
 
                         DistinDID:function (){
-                            this.result="WeId"
+                            console.log(this.vdid)
+                            if(this.vdid.search("weid")&&this.vdid!=""){
+                                this.result="WeId"
+                            }else{
+                                this.result="不在识别库"
+                            }
+
+
                         },
                         get_addr:function() {
 

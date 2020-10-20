@@ -105,7 +105,7 @@
                         </el-table-column>
                         <el-table-column prop="did" label="DID" width="420">
                         </el-table-column>
-                        <el-table-column prop="chainname" label="chainname" width="150">
+                        <el-table-column prop="chain_name" label="chain_name" width="150">
                         </el-table-column>
 
                         <el-table-column prop="type" label="type" width="100" >
@@ -289,7 +289,7 @@
                         type: 'warning'
                     }).then(() => {
                         console.log(val)
-                        this.$http.post('http://127.0.0.1:5000/did_engine/delete_did/'+val).then(result =>{
+                        this.$http.post('http://127.0.0.1:5000/auth_manager/delete_did/'+val).then(result =>{
                             this.getUsers();
                         })
                     }).catch(() => {
@@ -321,7 +321,10 @@
             },
             upSubmit: function () {
                 this.upFormVisible=false;
-                this.$http.post('http://127.0.0.1:5000/did_engine/uplink_did/' + val).then(result => {
+                this.$http.post('http://127.0.0.1:5000/auth_manager/uplink_did/'+this.upForm.did,
+                    JSON.stringify({"chain_id":this.upForm.chainID,"chain_name":this.upForm.chainName}),{
+                        emulateJSON:true
+                    }).then(result => {
                     alert("上链成功")
                     this.getUsers();
                 })
@@ -334,7 +337,7 @@
                             let para = Object.assign({}, this.addForm);
                             let priv ={"privkey":para.privkey}
                             console.log(priv)
-                            this.$http.get('http://0.0.0.0:5000/did_engine/create_weid_local_func',{params:priv}).then(result =>{
+                            this.$http.get('http://127.0.0.1:5000/did_engine/create_weid_local_func',{params:priv}).then(result =>{
                                 this.addLoading=false;
                                 this.addFormVisible=false;
                                 this.addForm={};
