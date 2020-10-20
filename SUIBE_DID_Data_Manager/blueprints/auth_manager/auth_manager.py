@@ -100,16 +100,18 @@ def auth_tree():
 
     total_did = len(dids)
     for did in dids:
-        did_dict = {}
-        did_dict["chain_name"] = did.chain_name
-        did_dict["credential"] = {}
-        total_credential = 0
-        did_dict["credential"]["credential_cpt_type"] = []
-        for credential in did.credential_pojo:
-            did_dict["credential"]["credential_cpt_type"].append(str(credential.type))
-            total_credential += 1
-        did_dict["credential"]["total_credential"] = str(total_credential)
-        did_all["result"].append(did_dict)
+        if did.is_cochain:
+            # 判断是否上链，返回上链了的数据
+            did_dict = {}
+            did_dict["chain_name"] = did.chain_name
+            did_dict["credential"] = {}
+            total_credential = 0
+            did_dict["credential"]["credential_cpt_type"] = []
+            for credential in did.credential_pojo:
+                did_dict["credential"]["credential_cpt_type"].append(str(credential.type))
+                total_credential += 1
+            did_dict["credential"]["total_credential"] = str(total_credential)
+            did_all["result"].append(did_dict)
     did_all["total_did"] = str(total_did)
     return jsonify(did_all)
 
