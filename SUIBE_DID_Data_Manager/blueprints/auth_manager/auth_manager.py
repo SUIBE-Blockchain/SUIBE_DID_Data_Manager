@@ -4,18 +4,19 @@ from flask import Blueprint, render_template, jsonify, request, g
 from flask_login import login_required, current_user
 import os
 from SUIBE_DID_Data_Manager.weidentity.localweid import create_weid_by_privkey, create_random_weid, verify_did
-from SUIBE_DID_Data_Manager.extensions import db
+from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
+import time
 
 auth_manager = Blueprint('auth_manager', __name__)
 
 @auth_manager.route("/import_did/<string:privkey>")
 def import_did(privkey):
-    chain_id = request.args.get("chain_id", "CHAIN_ID")
-    chain_name = request.args.get("chain_name")
+    # chain_id = request.args.get("chain_id", "CHAIN_ID")
+    # chain_name = request.args.get("chain_name")
     if not privkey:
         return jsonify({"result": "请提供正确的privkey。"})
-    data_msg = create_weid_by_privkey(privkey, chain_id)
+    data_msg = create_weid_by_privkey(privkey, chain_id="CHAIN_ID")
     data_dict = {
         "data": {
             "privateKeyHex": data_msg["privateKeyHex"],
@@ -31,7 +32,7 @@ def import_did(privkey):
             }
         }
     weid = DID(username=current_user.username,
-                chain_id=chain_id, chain_name=chain_name,
+               created_at=time.time(),
                did=data_msg["weid"], type="weid",
                privkey_hex=data_msg["privateKeyHex"],
                privkey_int=data_msg["privateKeyInt"],
@@ -72,6 +73,8 @@ def get_user_did():
         did_dict["username"] = did.username
         did_dict["did"] = did.did
         did_dict["type"] = did.type
+        did_dict["chain_id"] = did.chain_id
+        did_dict["chain_name"] = did.chain_name
         # did_dict["is_cochain"] = did.is_cochain
         if did.is_cochain:
             did_dict["is_cochain"] = "已上链"
@@ -90,7 +93,6 @@ def get_user_did():
 @auth_manager.route("/auth_tree/")
 @login_required
 def auth_tree():
-    return_message = []
     did_all = {"result": [], "total_did": ""}
     dids = DID.query.filter_by(username=current_user.username).all()
     if not dids:
@@ -99,9 +101,7 @@ def auth_tree():
     total_did = len(dids)
     for did in dids:
         did_dict = {}
-        did_dict["id"] = did.did
         did_dict["chain_name"] = did.chain_name
-        did_dict["chain_id"] = did.chain_id
         did_dict["credential"] = {}
         total_credential = 0
         did_dict["credential"]["credential_cpt_type"] = []
@@ -113,3 +113,31 @@ def auth_tree():
     did_all["total_did"] = str(total_did)
     return jsonify(did_all)
 
+
+@csrf_protect.exempt
+@auth_manager.route("/delete_did/<string:weid>", methods=["POST"])
+def delete_did(weid):
+    did = DID.query.filter_by(did=weid).first()
+    if did:
+        db.session.delete(did)
+        db.session.commit()
+        return jsonify({"result": "{} successfully deleted!".format(did.did), "code": "200"})
+    return jsonify({"result": "We did not find the did", "code": "400"}), 400
+
+@csrf_protect.exempt
+@auth_manager.route("/uplink_did/<string:weid>", methods=["POST"])
+def uplink_did(weid):
+    chain_id = request.args.get("chain_id", None)
+    chain_name = request.args.get("chain_name", None)
+    if not chain_id or not chain_name:
+        return jsonify({"result": "Please enter chain ID and chain name.[chain_id, chain_name]", "code": "400"}), 400
+
+    did = DID.query.filter_by(did=weid, is_cochain=False).first()
+    if did:
+        did.is_cochain = True
+        did.chain_id = chain_id
+        did.chain_name = chain_name
+        did.uplinked_at = time.time()
+        db.session.commit()
+        return jsonify({"result": "{} successfully uplink!".format(did.did), "code": "200"})
+    return jsonify({"result": "We did not find the did or already uplinked.", "code": "400"}), 400

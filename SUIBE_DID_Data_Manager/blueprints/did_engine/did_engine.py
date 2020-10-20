@@ -9,6 +9,7 @@ from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 from SUIBE_DID_Data_Manager.config import Config
 
 import random
+import time
 from ecdsa import SigningKey, SECP256k1
 from pprint import pprint
 
@@ -43,7 +44,10 @@ def create_weid_local_func():
             "weId": weid,
         }
     }
-    weid = DID(username=current_user.username, did=weid, type="weid", privkey_hex=account["payload"]["priv"],
+    weid = DID(username=current_user.username,
+               created_at=time.time(),
+               did=weid, type="weid",
+               privkey_hex=account["payload"]["priv"],
                privkey_int=str(int(account["payload"]["priv"], 16)),
                 publickey_hex=account["payload"]["pubv"],
                 publickey_int=str(int(account["payload"]["pubv"], 16)))
@@ -157,24 +161,3 @@ def hextoint():
     hex_data = request.args.get("hexdata")
     int_data = int(hex_data, 16)
     return jsonify({"intData": int_data, "hexData": hex_data})
-
-@csrf_protect.exempt
-@did_engine.route("/delete_did/<string:weid>", methods=["POST"])
-def delete_did(weid):
-    did = DID.query.filter_by(did=weid).first()
-    if did:
-        db.session.delete(did)
-        db.session.commit()
-        return jsonify({"result": "{} successfully deleted!".format(did.did), "code": "200"})
-    return jsonify({"result": "We did not find the did", "code": "400"}), 400
-
-@csrf_protect.exempt
-@did_engine.route("/uplink_did/<string:weid>", methods=["POST"])
-def uplink_did(weid):
-    print(weid)
-    did = DID.query.filter_by(did=weid, is_cochain=False).first()
-    if did:
-        did.is_cochain = True
-        db.session.commit()
-        return jsonify({"result": "{} successfully uplink!".format(did.did), "code": "200"})
-    return jsonify({"result": "We did not find the did or already uplinked.", "code": "400"}), 400

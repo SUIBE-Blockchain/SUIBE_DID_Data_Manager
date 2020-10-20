@@ -49,6 +49,10 @@ class DidDoc(Model):
 
 class DataManager(db.Model):
     __tablename__ = "data_manager"
+
+    created_at = db.Column(db.Integer, nullable=True)
+    updated_at = db.Column(db.Integer, nullable=True)
+
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.JSON, default={}, nullable=False)
 

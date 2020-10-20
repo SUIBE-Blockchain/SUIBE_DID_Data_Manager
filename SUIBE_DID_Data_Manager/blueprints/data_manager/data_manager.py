@@ -33,5 +33,26 @@ def credential():
 
     return jsonify(data_dict)
 
+@data_manager.route("/list_data")
+def list_data():
+    return_msg = [{
+        "id": "0x931fe3032b84b426cd57ec47aec2a126",
+        "addr": "b17ab4dcc3ea1eafd2c97b610a893326",
+        "record": "贡献github代码",
+        "owner": "队长",
+        "datetime": "2020-06-05",
+        "link_credential": "创新大赛证书"
+    },{
+        "id": "0x78b268ee3859885e104b423d7a54768",
+        "addr": "f82ad4015e0770aed1ac2c636a563d26",
+        "record": "撰写比赛ppt",
+        "owner": "队长",
+        "datetime": "2020-06-04",
+        "link_credential": "创新大赛证书"
+    },
+    ]
+    return jsonify(return_msg)
+
+
 
 

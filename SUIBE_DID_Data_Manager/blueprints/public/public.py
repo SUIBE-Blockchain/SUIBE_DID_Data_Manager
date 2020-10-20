@@ -23,6 +23,7 @@ from SUIBE_DID_Data_Manager.weidentity.weidentityService import weidentityServic
 public_bp = Blueprint("public", __name__, static_folder="../static")
 
 @public_bp.route("/", methods=["GET", "POST"])
+@login_required
 def home():
     """Home page."""
     return render_template("public/home.html")
