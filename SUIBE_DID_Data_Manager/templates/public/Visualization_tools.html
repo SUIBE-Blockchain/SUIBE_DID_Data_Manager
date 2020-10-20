@@ -142,7 +142,7 @@
             var content="admin\n";
 
             for (let i=0;i<datajson.total_did;i++){
-                content=content+"<q>"+datajson.result[i].id+"\n"
+                content=content+"<q>"+datajson.result[i].chain_name+"\n"
                 for(let j=0;j<datajson.result[i].credential.total_credential;j++){
                     content=content+"<q>"+datajson.result[i].credential.credential_cpt_type[j]+"</q>\n"
                 }

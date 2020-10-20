@@ -229,13 +229,13 @@
 
                         <el-table-column type="index" label="序号" width="60">
                         </el-table-column>
-                        <el-table-column prop="address" label="链上地址" width="420">
+                        <el-table-column prop="addr" label="链上地址" width="420">
                         </el-table-column>
-                        <el-table-column prop="value" label="记录值" width="100">
+                        <el-table-column prop="record" label="记录值" width="400">
                         </el-table-column>
-                        <el-table-column prop="people" label="记录人" width="100" >
+                        <el-table-column prop="owner" label="记录人" width="100" >
                         </el-table-column>
-                        <el-table-column prop="time" label="时间戳" width="220" >
+                        <el-table-column prop="datetime" label="时间戳" width="220" >
                         </el-table-column>
 
                     </el-table>
@@ -336,6 +336,7 @@
                     addr: ''
                 },
                 arrID:[],
+                data:[],
 
 
             }
@@ -373,6 +374,13 @@
             },
             checkData: function(val){
                 this.addFormVisible=true
+                this.$http.get('http://127.0.0.1:5000/data_manager/list_data').then(result =>{
+                    console.log(result.data)
+                    this.data=result.data
+
+                }).catch(() => {
+
+                });
             },
             //获取用户列表
             getUsers() {
@@ -427,9 +435,7 @@
                 this.resetForm(".userform");
             },
             //新增
-            btnNew(){
-                this.addFormVisible = true;
-            },
+
 
             deleteUser: function (val){
                 var ids = val;

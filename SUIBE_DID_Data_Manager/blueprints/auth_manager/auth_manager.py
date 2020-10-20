@@ -98,10 +98,11 @@ def auth_tree():
     if not dids:
         return jsonify({"result": "We did not find did content under this user", "code":"400"}), 400
 
-    total_did = len(dids)
+    total_did = 0
     for did in dids:
         if did.is_cochain:
             # 判断是否上链，返回上链了的数据
+            total_did=total_did+1
             did_dict = {}
             did_dict["chain_name"] = did.chain_name
             did_dict["credential"] = {}
