@@ -20,7 +20,7 @@ class DID(db.Model):
     username = db.Column(db.String(22), nullable=False)
     did = db.Column(db.String(88), unique=True, nullable=False)
     chain_id = db.Column(db.Integer, nullable=True)
-    chain_name = db.Column(db.String(88), nullable=True)
+    chain_name = db.Column(db.String(88), default="无", nullable=True)
     type = db.Column(db.String(22), nullable=False)
 
     privkey_hex = db.Column(db.String(355), nullable=True)
