@@ -146,6 +146,26 @@
                         </div>
                     </el-dialog>
 
+                    <el-dialog title="DID上链" :visible.sync="upFormVisible">
+                        <el-form :model="upForm" label-width="80px"  ref="upForm">
+                            <el-form-item label="DID" >
+                                <el-input v-model="upForm.did" auto-complete="off" readonly="readonly"></el-input>
+                            </el-form-item>
+                            <el-form-item label="chainID" >
+                                <el-input v-model="upForm.chainID" auto-complete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="链备注" >
+                                <el-input v-model="upForm.chainName" auto-complete="off"></el-input>
+                            </el-form-item>
+
+
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click.native="addFormVisible = false">取消</el-button>
+                            <el-button type="primary" @click.native="upSubmit" :loading="addLoading">提交</el-button>
+                        </div>
+                    </el-dialog>
+
 
                 </div>
 
@@ -188,6 +208,7 @@
                 },
 
                 addFormVisible: false,//新增界面是否显示
+                upFormVisible:false,
                 addLoading: false,
                 addFormRules: {
                     name: [{ required: true, message: '请输入姓名', trigger: 'blur' },],
@@ -197,6 +218,11 @@
                 addForm: {
                     privkey: '',
                     sex: -1,
+                },
+                upForm:{
+                    chainID:'',
+                    chainName:'',
+                    did:''
                 },
                 arrID:[],
 
@@ -285,18 +311,21 @@
             },
             toChain:function (val){
                 console.log(val)
+                this.upForm.did=val;
+                this.upFormVisible=true;
 
-                this.$http.post('http://127.0.0.1:5000/did_engine/uplink_did/'+val).then(result =>{
-                    alert("上链成功")
-                    this.getUsers();
-
-                })
             },
             //新增
             btnNew(){
                 this.addFormVisible = true;
             },
-
+            upSubmit: function () {
+                this.upFormVisible=false;
+                this.$http.post('http://127.0.0.1:5000/did_engine/uplink_did/' + val).then(result => {
+                    alert("上链成功")
+                    this.getUsers();
+                })
+            },
             addSubmit: function () {
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
