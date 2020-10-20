@@ -1,268 +1,22 @@
-<!doctype html>
-<html class="fixed">
+<!DOCTYPE html>
+<html>
 <head>
-
-    <!-- Basic -->
-    <meta charset="UTF-8">
-
-    <title>DID身份数据管理</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
-
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+    <meta charset="utf-8">
+    <title>ViewUI example</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link
             rel="stylesheet"
             type="text/css"
             href="../../static/build/main_css.bundle.css"
     />
 
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
-    <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
-
-    <!-- Vendor CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
-
-    <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/vendor/select2/select2.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/stylesheets/theme.css" />
-
-    <!--	 Skin CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/stylesheets/skins/default.css" />
-
-    <!--	 Theme Custom CSS-->
-    <link rel="stylesheet" href="../../static/build/assets/stylesheets/theme-custom.css">
-
-    <!-- Head Libs -->
-    <script src="../../static/build/assets/vendor/modernizr/modernizr.js"></script>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #212529;
-            text-align: left;
-            background-color: #fff;
-        }
-
-        .bg-dark {
-            background-color: #343a40 !important;
-        }
-
-        .navbar {
-            position: relative;
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            -ms-flex-align: center;
-            align-items: center;
-            -ms-flex-pack: justify;
-            justify-content: space-between;
-            padding: 0.5rem 1rem;
-        }
-        .navbar-expand-lg {
-
-            flex-flow: row nowrap;
-
-            justify-content: flex-start;
-        }
-        .fixed-top {
-            position: fixed;
-            top: 0;
-            right: 0;
-            left: 0;
-            z-index: 1030;
-        }
-        .navbar-nav {
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            padding-left: 0;
-            margin-bottom: 0;
-            list-style: none;
-        }
-
-    </style>
-
-    <script src="../../static/build/jquery.min.js"></script>
-    <script>
-        jQuery(document).ready(function($) {
-            $('.theme-login').click(function(){
-                $('.theme-popover-mask').fadeIn(100);
-                $('.theme-popover').slideDown(200);
-            })
-            $('.theme-poptit .close').click(function(){
-                $('.theme-popover-mask').fadeOut(100);
-                $('.theme-popover').slideUp(200);
-            })
-
-        })
-    </script>
 </head>
 <body>
-<script>
-    function download() {
-        let blob = new Blob([], {type: ''}),
-            fileName = 'did.json'; // 文件名称
-        const link = document.createElement('a'); // 创建a标签
-        link.href = window.URL.createObjectURL(blob);
-        link.download = fileName;
-        link.click(); // 模拟点击a标签
-        window.URL.revokeObjectURL(link.href);
-    }
-    function uploadChain() {
-        alert("上链成功！\n" +
-            "交易详情：\n"+
-            " \"errorCode\": 0, \n" +
-            " \"errorMessage\": \"success\", \n" +
-            " \"privateKeyHex\": \"0x4fabbf5e596f3d37fb5b589c77d523aa62f3d7500efd95ad07a7dbd7b839c9dd\", \n" +
-            " \"privateKeyInt\": \"36036166663360927196286692907073039830942617245923719975690185900868029237725\", \n" +
-            " \"publicKeyHex\": \"0xae578789ef877204698ae57878f816f9d66d0eb379faef35e85b2a764e2d3f0c9708770f4f3d5b3f5c90413175114fed237b2af7b8b61f0d0c9d6604d503093\", \n" +
-            " \"publicKeyInt\": \"10867231154130152278048993979276314526467708307382395206027382754637955719744174758071986682320327192984916588173144660038140617813327289829167584980775059\", \n" +
-            " \"weId\": \"did:weid:CHAIN_ID:0xF0311be2437672e42190767A8Dc53e5E88a03767\"")
-        document.getElementById("target").click()
-        document.getElementById("demo").innerHTML = "<tr class=\"gradeA\">\n" +
-            "                            <td>weid:0xF0311be2...</td>\n" +
-            "                            <td>0xae578789...</td>\n" +
-            "                            <td>已上链</td>\n" +
-            "                            <td class=\"actions\">\n" +
-            "                                <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.tables_data') }}\">详情</a>\n" +
-            "                                <!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
-            "                                <!-- <a class=\"btn btn-outline-secondary\" onclick=\"uploadChain()\">上链</a>-->\n" +
-            "                                 <a class=\"btn btn-outline-secondary theme-login\" href=\"javascript:;\">上链</a>\n" +
-            "                                 <div class=\"theme-popover\">\n" +
-            "                                     <div class=\"theme-poptit\">\n" +
-            "                                         <a id=\"target\" href=\"javascript:;\" title=\"关闭\" class=\"close\">×</a>\n" +
-            "                                         <h3>DID导入</h3>\n" +
-            "                                     </div>\n" +
-            "                                     <div class=\"theme-popbod dform\">\n" +
-            "                                         <div class=\"theme-signin\" name=\"daoru\"  >\n" +
-            "                                             <ol>\n" +
-            "\n" +
-            "                                                 <li>\n" +
-            "\n" +
-            "                                                     <select class=\"ipt\" >\n" +
-            "                                                         <option>WeIdentity：ChainID：1</option>\n" +
-            "                                                     </select>\n" +
-            "                                                 </li>\n" +
-            "                                                 <li><strong>PrivateKey:</strong><input class=\"ipt\" type=\"password\" name=\"pwd\" value=\"\" size=\"20\" /></li>\n" +
-            "                                                 <li><button class=\"btn btn-primary\"  onclick=\"uploadChain()\"  />确认</li>\n" +
-            "                                             </ol>\n" +
-            "                                         </div>\n" +
-            "                                     </div>\n" +
-            "                                 </div>\n" +
-            "                                 <button class=\"btn btn-outline-secondary\" onclick=\"download()\">导出</button>\n" +
-            "\n" +
-            "                                 <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-            "                                 <!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
-            "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-            "                            </td>\n" +
-            "                        </tr>\n" +
-            "                        <tr class=\"gradeA\">\n" +
-            "                            <td>weid:0xJ0213bf2...</td>\n" +
-            "                            <td>0x4fabbff2...</td>\n" +
-            "                            <td>已上链</td>\n" +
-            "                            <td class=\"actions\">\n" +
-            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-            "                                <!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
-            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-            "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-            "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-            "                                <!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
-            "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-            "                            </td>\n" +
-            "                        </tr>\n"
-
-
-    }
-    function daoru() {
-        setTimeout(function () {
-            if (confirm("DID数据正确，是否确认添加!")) {
-                document.getElementById("target").click()
-                document.getElementById("demo").innerHTML = "<tr class=\"gradeA\">\n" +
-                    "                            <td>weid:0xF0311be2...</td>\n" +
-                    "                            <td>0xae578789...</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "                            <td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.tables_data') }}\">详情</a>\n" +
-                    "                                <!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
-                    "                                <!-- <a class=\"btn btn-outline-secondary\" onclick=\"uploadChain()\">上链</a>-->\n" +
-                    "                                 <a class=\"btn btn-outline-secondary theme-login\" href=\"javascript:;\">上链</a>\n" +
-                    "                                 <div class=\"theme-popover\">\n" +
-                    "                                     <div class=\"theme-poptit\">\n" +
-                    "                                         <a id=\"target\" href=\"javascript:;\" title=\"关闭\" class=\"close\">×</a>\n" +
-                    "                                         <h3>DID导入</h3>\n" +
-                    "                                     </div>\n" +
-                    "                                     <div class=\"theme-popbod dform\">\n" +
-                    "                                         <div class=\"theme-signin\" name=\"daoru\"  >\n" +
-                    "                                             <ol>\n" +
-                    "\n" +
-                    "                                                 <li>\n" +
-                    "\n" +
-                    "                                                     <select class=\"ipt\" >\n" +
-                    "                                                         <option>WeIdentity：ChainID：1</option>\n" +
-                    "                                                     </select>\n" +
-                    "                                                 </li>\n" +
-                    "                                                 <li><strong>PrivateKey:</strong><input class=\"ipt\" type=\"password\" name=\"pwd\" value=\"\" size=\"20\" /></li>\n" +
-                    "                                                 <li><button class=\"btn btn-primary\"  onclick=\"uploadChain()\"  />确认</li>\n" +
-                    "                                             </ol>\n" +
-                    "                                         </div>\n" +
-                    "                                     </div>\n" +
-                    "                                 </div>\n" +
-                    "                                 <button class=\"btn btn-outline-secondary\" onclick=\"download()\">导出</button>\n" +
-                    "\n" +
-                    "                                 <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "                                 <!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
-                    "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "                            </td>\n" +
-                    "                        </tr>\n" +
-                    "                        <tr class=\"gradeA\">\n" +
-                    "                            <td>weid:0xJ0213bf2...</td>\n" +
-                    "                            <td>0x4fabbff2...</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "                            <td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "                                <!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
-                    "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "                            </td>\n" +
-                    "                        </tr>\n" +
-                    "                        <tr class=\"gradeA\">\n" +
-                    "                            <td>weid:0xCH921bg2...</td>\n" +
-                    "                            <td>0x3fjksd2j...</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "                            <td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <!--\t<a href=\"#\" class=\"hidden on-editing save-row\" ><i class=\"fa fa-save\"></i></a>-->\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "                                <!--\t<a href=\"#\" class=\"on-default edit-row\" ><i class=\"fa fa-pencil\"></i></a>-->\n" +
-                    "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "                            </td>\n" +
-                    "                        </tr>"
-            }
-        }, 100);
-
-    }
-</script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
     <a class="navbar-brand" href="/">
         SUIBE DID Data Manager
@@ -274,19 +28,26 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/">主面板</a>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ url_for('public.home') }}">主面板
+                    <span class="sr-only">(current)</span>
+                </a>
             </li>
+            {% if current_user and current_user.is_authenticated %}
+
+            {% endif %}
+
             <li class="nav-item active">
-                <a class="nav-link" href="/about/">DID身份数据管理</a>
-                <span class="sr-only">(current)</span>
+                <a class="nav-link" href="{{ url_for('public.Identity_manager') }}">DID身份数据管理</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">身份/数据/凭证可视化查看</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/about/">数据共享</a>
+                <a class="nav-link" href="{{ url_for('public.about') }}">数据共享</a>
             </li>
+
+
         </ul>
         <ul class="navbar-nav my-auto">
             <li class="nav-item active">
@@ -301,7 +62,6 @@
 
     </div><!-- /.navbar-collapse -->
 </nav>
-<header></header>
 <main role="main">
     <div class="jumbotron">
         <div class="container">
@@ -313,162 +73,263 @@
     </div><!-- /.jumbotron -->
     <section class="body">
 
-        <div class="container">
+        <div class="container" id="app">
 
             <!-- start: page -->
             <section class="panel">
                 <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                    </div>
 
                     <h2 class="panel-title">DID身份管理</h2>
                 </header>
+                <br>
+                <el-divider></el-divider>
+                <br>
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="mb-md">
 
-                                <a class="btn btn-primary btn-large theme-login" href="javascript:;">导入DID</a>
 
-                                <div class="theme-popover">
-                                    <div class="theme-poptit">
-                                        <a id="target" href="javascript:;" title="关闭" class="close">×</a>
-                                        <h3>DID导入</h3>
-                                    </div>
-                                    <div class="theme-popbod dform">
-                                        <div class="theme-signin" name="daoru"  >
-                                            <ol>
+                    <el-col :span="24"  height="900"
+                            style="width: 1200px">
+                        <el-form :inline="true" :model="filters" class="userform" label-width="50px">
 
-                                                <li>
 
-                                                    <select class="ipt" >
-                                                        <option>WeID</option>
-                                                        <option>MicrosoftDID</option>
-                                                        <option>uPort</option>
-                                                    </select>
-                                                </li>
-                                                <li><strong>PrivateKey:</strong><input class="ipt" type="password" name="pwd" value="" size="20" /></li>
-                                                <li><button class="btn btn-primary"  onclick="daoru()"  />导入</li>
+                            <el-button split-button type="primary" @click="btnNew" trigger="click">
+                                导入DID
 
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </el-button>
+                        </el-form>
+                    </el-col>
+                    <!--列表-->
+                    <el-table :data="users.slice((page-1)*pagesize,page*pagesize)"  highlight-current-row v-loading="listLoading"  style="width: 100%;"   class="userTableJs"   ref="table">
+
+                        <el-table-column type="index" label="序号" width="60">
+                        </el-table-column>
+                        <el-table-column prop="did" label="DID" width="420">
+                        </el-table-column>
+                        <el-table-column prop="chainname" label="chainname" width="150">
+                        </el-table-column>
+
+                        <el-table-column prop="type" label="type" width="100" >
+                        </el-table-column>
+                        <el-table-column prop="is_cochain" label="ChainState" width="100" >
+                        </el-table-column>
+
+                        <el-table-column label="操作" align="center" min-width="100">
+                            　　　　<template slot-scope="scope">
+                            　　　　　　<el-button  type="text" @click="checkdetail(scope.row.did)" style="margin-left: 10px;" >DID详情</el-button>
+                            　　　　　　<el-button class="btn btn-outline-secondary" style="margin-top: 5px" type="info" @click="deleteUser(scope.row.did)">删除</el-button>
+                            <el-button class="btn btn-outline-secondary" style="margin-top: 5px" type="info" @click="toChain(scope.row.did)">上链</el-button>
+                            　　　　</template>
+                        </el-table-column>
+
+                    </el-table>
+                    <!--工具条-->
+                    <el-col :span="24" class="el-table_footertoolbar">
+                        <el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="pagesize" :total="users.length" style="float:right;">
+                        </el-pagination>
+                    </el-col>
+                    <!--新增界面-->
+                    <el-dialog title="导入DID" :visible.sync="addFormVisible">
+                        <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+                            <el-form-item label="私钥" prop="privKey">
+                                <el-input v-model="addForm.privkey" auto-complete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="DID类型">
+                                <el-radio-group v-model="addForm.sex">
+                                    <el-radio class="radio" :label="-1">WeID</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click.native="addFormVisible = false">取消</el-button>
+                            <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
                         </div>
-                    </div>
-                    <table class="table table-bordered table-striped mb-none" id="datatable-editable">
-                        <thead>
-                        <tr>
-                            <th>DID</th>
-                            <th>链名称</th>
-                            <th>PublicKey</th>
-                            <th>State</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody id="demo">
+                    </el-dialog>
 
 
-                        <tr class="gradeA">
-                            <td>weid:0xF0311be2...</td>
-                            <td>超级教育链</td>
-                            <td>0xae578789...</td>
-                            <td>已上链</td>
-                            <td class="actions">
-                                <a class="btn btn-outline-secondary" href="{{ url_for('public.tables_data') }}">详情</a>
-                                <!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-                                <!-- <a class="btn btn-outline-secondary" onclick="uploadChain()">上链</a>-->
-                                <a class="btn btn-outline-secondary theme-login" href="javascript:;">上链</a>
-
-                                <button class="btn btn-outline-secondary" onclick="download()">导出</button>
-
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>weid:0xJ0213bf2...</td>
-                            <td>周杰伦个人链</td>
-                            <td>0x4fabbff2...</td>
-                            <td>已上链</td>
-                            <td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-                                <!--	<a href="#" class="hidden on-editing save-row" ><i class="fa fa-save"></i></a>-->
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <!--	<a href="#" class="on-default edit-row" ><i class="fa fa-pencil"></i></a>-->
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-
-
-
-
-                        </tbody>
-                    </table>
                 </div>
 
             </section>
             <!-- end: page -->
 
         </div>
-
     </section>
+
 </main>
 
-<div id="dialog" class="modal-block mfp-hide">
-    <section class="panel">
-        <header class="panel-heading">
-            <h2 class="panel-title">Are you sure?</h2>
-        </header>
-        <div class="panel-body">
-            <div class="modal-wrapper">
-                <div class="modal-text">
-                    <p>Are you sure that you want to delete this row?</p>
-                </div>
-            </div>
-        </div>
-        <footer class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <button id="dialogConfirm" class="btn btn-primary">Confirm</button>
-                    <button id="dialogCancel" class="btn btn-default">Cancel</button>
-                </div>
-            </div>
-        </footer>
-    </section>
-</div>
-
-
-<!-- Vendor -->
-<script src="../../static/build/assets/vendor/jquery/jquery.js"></script>
-<script src="../../static/build/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="../../static/build/assets/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="../../static/build/assets/vendor/nanoscroller/nanoscroller.js"></script>
-<script src="../../static/build/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="../../static/build/assets/vendor/magnific-popup/magnific-popup.js"></script>
-<script src="../../static/build/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
-
-<!-- Specific Page Vendor -->
-<script src="../../static/build/assets/vendor/select2/select2.js"></script>
-<script src="../../static/build/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-<script src="../../static/build/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-
-<!-- Theme Base, Components and Settings -->
-<script src="../../static/build/assets/javascripts/theme.js"></script>
-
-<!-- Theme Custom -->
-<script src="../../static/build/assets/javascripts/theme.custom.js"></script>
-
-<!-- Theme Initialization Files -->
-<script src="../../static/build/assets/javascripts/theme.init.js"></script>
-
-
-<!-- Examples -->
-<script src="../../static/build/assets/javascripts/tables/examples.datatables.editable.js"></script>
 </body>
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                filters: {
+                    name: ''
+                },
+                users: [],//表格数据
+                page: 1,//当前页数
+                pagesize: 10,//一页显示几条
+                listLoading: false,
+                sels: [],//列表选中列
+                total: 0,
+                editFormVisible: false,//编辑界面是否显示
+                editLoading: false,
+                editFormRules: {
+                    name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+                    birth: [{type: 'date', required: true, message: '日期必须填写', trigger: 'change'}]
+                },
+                editForm: {
+                    id:undefined,
+                    name: '',
+                    sex:-1,
+                    age: 0,
+                    birth:new Date(),
+                    addr: ''
+                },
+
+                addFormVisible: false,//新增界面是否显示
+                addLoading: false,
+                addFormRules: {
+                    name: [{ required: true, message: '请输入姓名', trigger: 'blur' },],
+                    birth: [{ type: 'date', required: true, message: '日期必须填写', trigger: 'change' }]
+                },
+                //新增界面数据
+                addForm: {
+                    privkey: '',
+                    sex: -1,
+                },
+                arrID:[],
+
+
+            }
+
+        },
+
+        methods: {
+            handleSizeChange(size){
+                this.pagesize = size;
+            },
+            handleCurrentChange(val) {
+                this.page = val;
+                this.getUsers();
+            },
+            handleRowChange(row, event, column){
+                var same=false;
+                if(this.arrID.length > 0){
+                    for(var i=0; i<this.arrID.length ;i++){
+                        if(this.arrID[i]==row.id){
+                            same=true;
+                            this.removeByValue(this.arrID, row.id);
+                            break;
+                        }
+                    }
+                    if(same==true){
+                        this.$refs.table.toggleRowSelection(row,false);
+                    }else{
+                        this.$refs.table.toggleRowSelection(row,true);
+                        this.arrID.push(row.id);
+                    }
+                }else{
+                    this.$refs.table.toggleRowSelection(row,true);
+                    this.arrID.push(row.id);
+                }
+            },
+
+
+            //获取用户列表
+            getUsers() {
+
+                this.$http.get('http://127.0.0.1:5000/auth_manager/get_user_did/').then(function(res){
+                    this.users=res.data.result;
+
+                },function(){
+                    console.log('请求失败处理');
+                });
+
+
+
+            },
+
+
+
+            deleteUser: function (val){
+                var ids = val;
+                if(ids ==''){
+                    this.$alert('请选择要删除的记录', '提示', {
+                        dangerouslyUseHTMLString: true
+                    });
+                }else{
+                    this.$confirm('确认删除选中记录吗？', '提示', {
+                        type: 'warning'
+                    }).then(() => {
+                        console.log(val)
+                        this.$http.post('http://127.0.0.1:5000/did_engine/delete_did/'+val).then(result =>{
+                            this.getUsers();
+                        })
+                    }).catch(() => {
+
+                    });
+                }
+            },
+            checkdetail:function (val){
+                localStorage.setItem("did", val);
+                var a = document.createElement('a');
+                a.setAttribute('href', "{{ url_for('public.tables_data') }}");
+                a.setAttribute('id', 'js_a');
+                //防止反复添加
+                if(document.getElementById('js_a')) {
+                    document.body.removeChild(document.getElementById('js_a'));
+                }
+                document.body.appendChild(a);
+                a.click();
+            },
+            toChain:function (val){
+                console.log(val)
+
+                this.$http.post('http://127.0.0.1:5000/did_engine/uplink_did/'+val).then(result =>{
+                    alert("上链成功")
+                    this.getUsers();
+
+                })
+            },
+            //新增
+            btnNew(){
+                this.addFormVisible = true;
+            },
+
+            addSubmit: function () {
+                this.$refs.addForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            this.addLoading = true;
+                            let para = Object.assign({}, this.addForm);
+                            let priv ={"privkey":para.privkey}
+                            console.log(priv)
+                            this.$http.get('http://0.0.0.0:5000/did_engine/create_weid_local_func',{params:priv}).then(result =>{
+                                this.addLoading=false;
+                                this.addFormVisible=false;
+                                this.addForm={};
+                                alert("导入成功")
+                                this.getUsers();
+                            }).catch(() => {
+                                alert("导入失败")
+                                this.addLoading=false;
+                            });
+
+
+
+                        });
+                    }
+                });
+            },
+
+        },
+        mounted() {
+            this.getUsers();
+
+
+        }
+
+    })
+</script>
 </html>
