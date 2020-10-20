@@ -13,6 +13,9 @@ from SUIBE_DID_Data_Manager.extensions import db
 
 class DID(db.Model):
     __tablename__ = "did"
+    created_at = db.Column(db.Integer, nullable=True)
+    uplinked_at = db.Column(db.Integer, nullable=True)
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(22), nullable=False)
     did = db.Column(db.String(88), unique=True, nullable=False)
