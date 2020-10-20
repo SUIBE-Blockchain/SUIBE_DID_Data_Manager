@@ -129,8 +129,9 @@ def delete_did(weid):
 @csrf_protect.exempt
 @auth_manager.route("/uplink_did/<string:weid>", methods=["POST"])
 def uplink_did(weid):
-    chain_id = request.args.get("chain_id", None)
-    chain_name = request.args.get("chain_name", None)
+    data_msg = request.get_json()
+    chain_id = data_msg.get("chain_id", None)
+    chain_name = data_msg.get("chain_name", None)
     if not chain_id or not chain_name:
         return jsonify({"result": "Please enter chain ID and chain name.[chain_id, chain_name]", "code": "400"}), 400
 
