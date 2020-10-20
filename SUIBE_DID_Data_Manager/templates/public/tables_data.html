@@ -1,51 +1,20 @@
-<!doctype html>
-<html class="fixed">
+<!DOCTYPE html>
+<html>
 <head>
-
-    <!-- Basic -->
-    <meta charset="UTF-8">
-
-    <title>Editable Tables | Okler Themes | Porto-Admin</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
-
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+    <meta charset="utf-8">
+    <title>ViewUI example</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link
             rel="stylesheet"
             type="text/css"
             href="../../static/build/main_css.bundle.css"
     />
 
-    <!--	<link rel="stylesheet" href="../../static/build/index.css" />-->
-
-    <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
-
-    <!-- Vendor CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
-
-    <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/vendor/select2/select2.css" />
-    <link rel="stylesheet" href="../../static/build/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/stylesheets/theme.css" />
-
-    <!--	 Skin CSS -->
-    <link rel="stylesheet" href="../../static/build/assets/stylesheets/skins/default.css" />
-
-    <!--	 Theme Custom CSS-->
-    <link rel="stylesheet" href="../../static/build/assets/stylesheets/theme-custom.css">
-
-    <!-- Head Libs -->
-    <script src="../../static/build/assets/vendor/modernizr/modernizr.js"></script>
-
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="../../static/build/assets/vendor/jquery/jquery.js"></script>
     <style>
         body {
             margin: 0;
@@ -97,6 +66,44 @@
             list-style: none;
         }
 
+        /*a  upload */
+        .a-upload {
+            padding: 12px 12px;
+
+            line-height: 20px;
+            position: relative;
+            cursor: pointer;
+            color: #888;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+
+            display: inline-block;
+            *display: inline;
+            *zoom: 1
+
+
+
+        }
+
+        .a-upload  input {
+            position: absolute;
+            right: 0;
+            top:0;
+            height: 45px;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer;
+
+
+        }
+
+        .a-upload:hover {
+            color: #444;
+            background: #eee;
+            border-color: #ccc;
+            text-decoration: none
+        }
     </style>
 </head>
 <body>
@@ -112,20 +119,23 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
-                <a class="nav-link" href="/">DID引擎</a>
+                <a class="nav-link" href="{{ url_for('public.home') }}">主面板
+                    <span class="sr-only">(current)</span>
+                </a>
             </li>
+            {% if current_user and current_user.is_authenticated %}
+
+            {% endif %}
+
             <li class="nav-item active">
-                <a class="nav-link" href="/about/">DID身份数据管理</a>
-                <span class="sr-only">(current)</span>
+                <a class="nav-link" href="{{ url_for('public.Identity_manager') }}">DID身份数据管理</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">可视化功能</a>
+                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">身份/数据/凭证可视化查看</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/about/">数据共享</a>
+                <a class="nav-link" href="{{ url_for('public.about') }}">数据共享</a>
             </li>
-
-
 
 
         </ul>
@@ -142,8 +152,6 @@
 
     </div><!-- /.navbar-collapse -->
 </nav>
-
-<header></header>
 <main role="main">
     <div class="jumbotron">
         <div class="container">
@@ -155,401 +163,339 @@
     </div><!-- /.jumbotron -->
     <section class="body">
 
-
-
-
-        <div class="container">
+        <div class="container" id="app">
 
             <!-- start: page -->
             <section class="panel">
                 <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                        <a href="#" class="fa fa-times"></a>
-                    </div>
 
-                    <h2 class="panel-title">Weid:0xF0311be2ccE44a9430AD6d86c6AAB97D5d1058bD 所管理数据</h2>
+                    <h2 class="panel-title">DID身份管理</h2>
                 </header>
+                <br>
+                <el-divider></el-divider>
+                <br>
                 <div class="panel-body">
+
+
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="mb-md">
-                                <input type="file" id="btn_file" style="display:none">
-                                <button  type="button" class="btn btn-primary" onclick="F_Open_dialog()">导入数据 <i class="fa fa-plus"></i></button>
-                                <!-- <button  class="btn btn-primary" onclick="downloadDoc()">导出 Document<i class="fa fa-inbox "></i></button>-->
-                                <a  class="btn btn-primary" href="{{ url_for('public.Identity_manager') }}">返回 <i class="fa fa-forward"></i></a>
-                            </div>
 
+
+                            <!-- <button  class="btn btn-primary" onclick="downloadDoc()">导出 Document<i class="fa fa-inbox "></i></button>-->
+                            <a href="javascript:;" class="a-upload">
+                                <input type="file"  onchange="upload(this)" />导入凭证
+                            </a>
+
+                            {#                                <button  type="button" class="btn btn-primary" @click="daoru()" > <i class="fa fa-plus"></i>导入</button>#}
+                            <a  class="btn btn-primary" href="{{ url_for('public.Identity_manager') }}">返回 <i class="fa fa-forward"></i></a>
                         </div>
 
                     </div>
-                    <table class="table table-bordered table-striped mb-none" id="datatable-editable">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>State</th>
-                            <th>Issue Time</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody id="demo">
-                        <tr class="gradeX" >
-                            <td>1</td>
-                            <td>金融比赛证书</td>
-                            <td>未上链</td>
-                            <td>2020-06-09</td>
 
-                            <td class="actions">
-
-                                <a class="btn btn-outline-secondary" href="{{ url_for('public.certificate') }}" target="_blank">详情</a>
-                                <a class="btn btn-outline-secondary" onclick="uploadChain()">上链</a>
-                                <button class="btn btn-outline-secondary" onclick="download()">导出</button>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>2</td>
-                            <td>创新大赛证书</td>
-                            <td>已上链</td>
-                            <td>2020-07-10</td>
-                            <td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>3</td>
-                            <td>教员认证证书
-                            </td>
-                            <td>已上链</td>
-                            <td>2020-01-03</td>
-                            <td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>4</td>
-                            <td>英语六级证书
-                            </td>
-                            <td>未上链</td>
-                            <td>2020-06-08</td>
-                            <td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>5</td>
-                            <td>奥林匹克竞赛证书</td>
-                            <td>未上链</td>
-                            <td>2020-07-08</td>
-                            <td class="actions">
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">详情</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">上链</a>
-                                <a class="btn btn-outline-secondary" v-on:click="get_addr(key_type)">导出</a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-
-
-
-                        </tbody>
-                    </table>
                 </div>
+                <!--列表-->
+                <el-table :data="users.slice((page-1)*pagesize,page*pagesize)"  highlight-current-row v-loading="listLoading"  style="width: 100%;"   class="userTableJs"   ref="table">
+
+                    <el-table-column type="index" label="序号" width="60">
+                    </el-table-column>
+                    <el-table-column prop="credentialID" label="ID" width="420">
+                    </el-table-column>
+                    <el-table-column prop="is_cochain" label="ChainState" width="100">
+                    </el-table-column>
+                    <el-table-column prop="type" label="type" width="100" >
+                    </el-table-column>
+                    <el-table-column prop="issuanceDate" label="Issue Time" width="220" >
+                    </el-table-column>
+                    <el-table-column label="操作" align="center" width="200">
+                        　　　　<template slot-scope="scope">
+                        　　　　　　<el-button class="btn btn-outline-secondary" style="margin-left: 10px;margin-top: 5px" type="info"  @click="checkdetail(scope.row.credentialID)" >详情</el-button>
+                        　　　　　　<el-button class="btn btn-outline-secondary" style="margin-left: 2px;margin-top: 2px" type="info" @click="deleteUser(scope.row.credentialID)">删除</el-button>
+                                  <el-button class="btn btn-outline-secondary" style="margin-top: 5px" type="info" @click="exportCre(scope.row.credentialID)">导出</el-button>
+                                  <el-button class="btn btn-outline-secondary" style="margin-left: 2px;margin-top: 2px" type="info" @click="uploadCre(scope.row.credentialID)">上链</el-button>
+                                  <el-button class="btn btn-outline-secondary" style="margin-left: 2px;margin-top: 2px;" type="info" @click="checkData(scope.row.credentialID)">查看数据</el-button>
+                        　　　　</template>
+                    </el-table-column>
+
+
+                </el-table>
+                <!--工具条-->
+                <el-col :span="24" class="el-table_footertoolbar">
+                    <el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="pagesize" :total="users.length" style="float:right;">
+                    </el-pagination>
+                </el-col>
+
+                <el-dialog title="凭证所关联数据" :visible.sync="addFormVisible">
+                    <el-table :data="data"  highlight-current-row v-loading="listLoading"  style="width: 100%;"   class="userTableJs"   ref="table">
+
+                        <el-table-column type="index" label="序号" width="60">
+                        </el-table-column>
+                        <el-table-column prop="address" label="链上地址" width="420">
+                        </el-table-column>
+                        <el-table-column prop="value" label="记录值" width="100">
+                        </el-table-column>
+                        <el-table-column prop="people" label="记录人" width="100" >
+                        </el-table-column>
+                        <el-table-column prop="time" label="时间戳" width="220" >
+                        </el-table-column>
+
+                    </el-table>
+
+                </el-dialog>
+
+
+
             </section>
             <!-- end: page -->
 
         </div>
-        <script>
-            function uploadChain() {
-
-                alert("上链成功！\n" +
-                    "交易详情：\n"+
-                    "      \"@context\": \"https://weidentity.webank.com/vc/v1\",\n" +
-                    "      \"id\": \"dsfewr23sdcsdfeqeddadfd\",\n" +
-                    "      \"type\": [\"Credential\", \"cpt100\"],\n" +
-                    "      \"issuer\": \"did:weid:1:0x2323e3e3dweweewew2www124151251\",\n" +
-                    "      \"issued\": \"2010-01-01T21:19:10Z\",\n" +
-                    "      \"claim\": {\n" +
-                    "        \"primeNumberIdx\":\"1234\"\n" +
-                    "      },\n" +
-                    "      \"revocation\": {\n" +
-                    "        \"id\": \"did:weid:1:0xF0311be2ccE44a9430AD6d86c6AAB97D5d1058bD\",\n" +
-                    "        \"type\": \"SimpleRevocationList2017\"\n" +
-                    "      },\n" +
-                    "      \"signature\": [{\n" +
-                    "        \"type\": \"LinkedDataSignature2015\",\n" +
-                    "        \"created\": \"2016-06-18T21:19:10Z\",\n" +
-                    "        \"creator\": \"did:weid:1:2323e3e3dweweewew2\",\n" +
-                    "        \"domain\": \"www.diriving_card.com\",\n" +
-                    "        \"nonce\": \"598c63d6\",\n" +
-                    "        \"signatureValue\": \"BavEll0/I1zpYw8XNi1bgVg/sCneO4Jugez8RwDg/+MCRVpjOboDoe4SxxKjkCOvKiCHGDvc4krqi6Z1n0UfqzxGfmatCuFibcC1wpsPRdW+gGsutPTLzvueMWmFhwYmfIFpbBu95t501+rSLHIEuujM/+PXr9Cky6Ed+W3JT24=\""
-                )
-                document.getElementById("demo").innerHTML ="<tr class=\"gradeX\" >\n" +
-                    "\t\t\t\t\t\t\t<td>1</td>\n" +
-                    "\t\t\t\t\t\t\t<td>金融比赛证书</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-06-09</td>\n" +
-                    "\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "\n" +
-                    "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.certificate') }}\" target=\"_blank\">详情</a>\n" +
-                    "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" onclick=\"uploadChain()\">上链</a>\n" +
-                    "                                <button class=\"btn btn-outline-secondary\" onclick=\"download()\">导出</button>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeC\">\n" +
-                    "\t\t\t\t\t\t\t<td>2</td>\n" +
-                    "\t\t\t\t\t\t\t<td>创新大赛证书</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-07-10</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
-                    "\t\t\t\t\t\t\t<td>3</td>\n" +
-                    "\t\t\t\t\t\t\t<td>教员认证证书\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-01-03</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
-                    "\t\t\t\t\t\t\t<td>4</td>\n" +
-                    "\t\t\t\t\t\t\t<td>英语六级证书\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-06-08</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
-                    "\t\t\t\t\t\t\t<td>5</td>\n" +
-                    "\t\t\t\t\t\t\t<td>奥林匹克竞赛证书</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-07-08</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "                        <tr class=\"gradeA\">\n" +
-                    "                            <td>6</td>\n" +
-                    "                            <td>教师资格证书</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "                            <td>2020-01-05</td>\n" +
-                    "                            <td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "                            </td>\n" +
-                    "                        </tr>"
-
-            }
-        </script>
-
-
     </section>
+
 </main>
 
-<div id="dialog" class="modal-block mfp-hide">
-    <section class="panel">
-        <header class="panel-heading">
-            <h2 class="panel-title">Are you sure?</h2>
-        </header>
-        <div class="panel-body">
-            <div class="modal-wrapper">
-                <div class="modal-text">
-                    <p>Are you sure that you want to delete this row?</p>
-                </div>
-            </div>
-        </div>
-        <footer class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <button id="dialogConfirm" class="btn btn-primary">Confirm</button>
-                    <button id="dialogCancel" class="btn btn-default">Cancel</button>
-                </div>
-            </div>
-        </footer>
-    </section>
-</div>
-<script>
-    function F_Open_dialog()
-    {
-        document.getElementById("btn_file").click();
-
-        setTimeout(function () {
-            if (confirm("数据验签正确，是否确认添加!")) {
-                document.getElementById("demo").innerHTML ="<tr class=\"gradeX\" >\n" +
-                    "\t\t\t\t\t\t\t<td>1</td>\n" +
-                    "\t\t\t\t\t\t\t<td>金融比赛证书</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-06-09</td>\n" +
-                    "\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "\n" +
-                    "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" href=\"{{ url_for('public.certificate') }}\" target=\"_blank\">详情</a>\n" +
-                    "\t\t\t\t\t\t\t\t <a class=\"btn btn-outline-secondary\" onclick=\"uploadChain()\">上链</a>\n" +
-                    "                                <button class=\"btn btn-outline-secondary\" onclick=\"download()\">导出</button>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeC\">\n" +
-                    "\t\t\t\t\t\t\t<td>2</td>\n" +
-                    "\t\t\t\t\t\t\t<td>创新大赛证书</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-07-10</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
-                    "\t\t\t\t\t\t\t<td>3</td>\n" +
-                    "\t\t\t\t\t\t\t<td>教员认证证书\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "                            <td>已上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-01-03</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
-                    "\t\t\t\t\t\t\t<td>4</td>\n" +
-                    "\t\t\t\t\t\t\t<td>英语六级证书\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-06-08</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "\t\t\t\t\t\t<tr class=\"gradeA\">\n" +
-                    "\t\t\t\t\t\t\t<td>5</td>\n" +
-                    "\t\t\t\t\t\t\t<td>奥林匹克竞赛证书</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "\t\t\t\t\t\t\t<td>2020-07-08</td>\n" +
-                    "\t\t\t\t\t\t\t<td class=\"actions\">\n" +
-                    "\t\t\t\t\t\t\t    <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "\t\t\t\t\t\t\t</td>\n" +
-                    "\t\t\t\t\t\t</tr>\n" +
-                    "                        <tr class=\"gradeA\">\n" +
-                    "                            <td>6</td>\n" +
-                    "                            <td>教师资格证书</td>\n" +
-                    "                            <td>未上链</td>\n" +
-                    "                            <td>2020-01-05</td>\n" +
-                    "                            <td class=\"actions\">\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">详情</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">上链</a>\n" +
-                    "                                <a class=\"btn btn-outline-secondary\" v-on:click=\"get_addr(key_type)\">导出</a>\n" +
-                    "                                <a href=\"#\" class=\"hidden on-editing cancel-row\"><i class=\"fa fa-times\"></i></a>\n" +
-                    "                                <a href=\"#\" class=\"on-default remove-row\"><i class=\"fa fa-trash-o\"></i></a>\n" +
-                    "                            </td>\n" +
-                    "                        </tr>"
-            }
-        }, 5000);
-    }
-
-
-    function download() {
-        let blob = new Blob([], {type: ''}),
-            fileName = 'credential.json'; // 文件名称
-        const link = document.createElement('a'); // 创建a标签
-        link.href = window.URL.createObjectURL(blob);
-        link.download = fileName;
-        link.click(); // 模拟点击a标签
-        window.URL.revokeObjectURL(link.href);
-    }
-    function downloadDoc() {
-        let blob = new Blob([], {type: ''}),
-            fileName = 'Document.json'; // 文件名称
-        const link = document.createElement('a'); // 创建a标签
-        link.href = window.URL.createObjectURL(blob);
-        link.download = fileName;
-        link.click(); // 模拟点击a标签
-        window.URL.revokeObjectURL(link.href);
-    }
-
-
-</script>
-<!-- Vendor -->
-<script src="../../static/build/assets/vendor/jquery/jquery.js"></script>
-<script src="../../static/build/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="../../static/build/assets/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="../../static/build/assets/vendor/nanoscroller/nanoscroller.js"></script>
-<script src="../../static/build/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="../../static/build/assets/vendor/magnific-popup/magnific-popup.js"></script>
-<script src="../../static/build/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
-
-<!-- Specific Page Vendor -->
-<script src="../../static/build/assets/vendor/select2/select2.js"></script>
-<script src="../../static/build/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-<script src="../../static/build/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-
-<!-- Theme Base, Components and Settings -->
-<script src="../../static/build/assets/javascripts/theme.js"></script>
-
-<!-- Theme Custom -->
-<script src="../../static/build/assets/javascripts/theme.custom.js"></script>
-
-<!-- Theme Initialization Files -->
-<script src="../../static/build/assets/javascripts/theme.init.js"></script>
-
-
-<!-- Examples -->
-<script src="../../static/build/assets/javascripts/tables/examples.datatables.editable.js"></script>
 </body>
+<script>
+    function upload(input) {
+        //支持chrome IE10
+        if (window.FileReader) {
+            var file = input.files[0];
+            filename = file.name.split(".")[0];
+            var reader = new FileReader();
+            reader.onload = function() {
+                var credential=this.result;
+                console.log(JSON.stringify(credential))
+                $.ajax({
+                    type:"post",
+                    url:"http://127.0.0.1:5000/blockchain/load_credential_pojo/",
+                    dataType:'json',
+                    contentType : "application/json",
+                    data:credential,
+                    async:true,
+                    timeout:3000,  //timeout:响应超时时间，非必须参数
+                    beforeSend:function(){
+                        //这里是发送请求之前所要进行的操作
+                    },
+                    success:function(){
+                        //请求成功
+
+                        location.reload();
+                        alert("success!")
+                    },
+                    error:function(){
+                        alert("数据存在问题!")
+                    }
+                });
+
+            }
+            reader.readAsText(file);
+        }
+        else {
+            alert('error');
+        }
+    }
+
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                filters: {
+                    name: ''
+                },
+                users: [],//表格数据
+                page: 1,//当前页数
+                pagesize: 10,//一页显示几条
+                listLoading: false,
+                sels: [],//列表选中列
+                total: 0,
+                editFormVisible: false,//编辑界面是否显示
+                editLoading: false,
+                editFormRules: {
+                    name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+                    birth: [{type: 'date', required: true, message: '日期必须填写', trigger: 'change'}]
+                },
+                editForm: {
+                    id:undefined,
+                    name: '',
+                    sex:-1,
+                    age: 0,
+                    birth:new Date(),
+                    addr: ''
+                },
+
+                addFormVisible: false,//新增界面是否显示
+                addLoading: false,
+                addFormRules: {
+                    name: [{ required: true, message: '请输入姓名', trigger: 'blur' },],
+                    birth: [{ type: 'date', required: true, message: '日期必须填写', trigger: 'change' }]
+                },
+                //新增界面数据
+                addForm: {
+                    name: '',
+                    sex: -1,
+                    age: 0,
+                    birth: new Date(),
+                    addr: ''
+                },
+                arrID:[],
+
+
+            }
+
+        },
+
+        methods: {
+            handleSizeChange(size){
+                this.pagesize = size;
+            },
+            handleCurrentChange(val) {
+                this.page = val;
+                this.getUsers();
+            },
+            handleRowChange(row, event, column){
+                var same=false;
+                if(this.arrID.length > 0){
+                    for(var i=0; i<this.arrID.length ;i++){
+                        if(this.arrID[i]==row.id){
+                            same=true;
+                            this.removeByValue(this.arrID, row.id);
+                            break;
+                        }
+                    }
+                    if(same==true){
+                        this.$refs.table.toggleRowSelection(row,false);
+                    }else{
+                        this.$refs.table.toggleRowSelection(row,true);
+                        this.arrID.push(row.id);
+                    }
+                }else{
+                    this.$refs.table.toggleRowSelection(row,true);
+                    this.arrID.push(row.id);
+                }
+            },
+            checkData: function(val){
+                this.addFormVisible=true
+            },
+            //获取用户列表
+            getUsers() {
+                var did = localStorage.getItem("did");
+
+                this.$http.get('http://127.0.0.1:5000/blockchain/get_credential_pojo_by_claim_id/'+did).then(function(res){
+                    this.users=res.data.result;
+
+                },function(){
+                    console.log('请求失败处理');
+                });
+
+
+
+            },
+
+            exportCre:function(val) {
+
+                //调接口获取后台json数据
+                this.$http.get("http://127.0.0.1:5000/blockchain/get_credential_pojo_by_credential_id/"+val).then((res)=>{
+                    let data =JSON.stringify(res.data.result);
+                    console.log(data)
+                    let blob = new Blob([data],{type: 'text/plain;charset=UTF-8'}),
+                        fileName = 'credential.json';
+                    const link = document.createElement('a'); // 创建a标签
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = fileName;
+                    link.click(); // 模拟点击a标签
+                    window.URL.revokeObjectURL(link.href);
+                }).catch((err)=>{
+                })
+            },
+            uploadCre:function(val){
+                this.$http.post('http://127.0.0.1:5000/blockchain/uplink_credential/'+val).then(result =>{
+                    alert("上链成功")
+                    this.getUsers();
+
+                })
+            },
+
+            //检索
+            btnSearch(){
+                console.log('检索')
+                var searchParams = { name: this.filters.name, sex: this.filters.sex };
+
+                //searchUser(searchParams).then(data => {
+
+                //});
+            },
+            //重置
+            btnReset(){
+                this.resetForm(".userform");
+            },
+            //新增
+            btnNew(){
+                this.addFormVisible = true;
+            },
+
+            deleteUser: function (val){
+                var ids = val;
+                if(ids ==''){
+                    this.$alert('请选择要删除的记录', '提示', {
+                        dangerouslyUseHTMLString: true
+                    });
+                }else{
+                    this.$confirm('确认删除选中记录吗？', '提示', {
+                        type: 'warning'
+                    }).then(() => {
+                        console.log(this.page)
+                        this.$http.post('http://127.0.0.1:5000/blockchain/delete_local_credential_pojo/'+ids).then(result =>{
+                            this.getUsers();
+                        })
+                    }).catch(() => {
+
+                    });
+                }
+            },
+            checkdetail:function (val){
+                console.log(val)
+                localStorage.setItem("creid", val);
+                var a = document.createElement('a');
+                a.setAttribute('href', "{{ url_for('public.certificate') }}");
+                a.setAttribute('id', 'js_a');
+                //防止反复添加
+                if(document.getElementById('js_a')) {
+                    document.body.removeChild(document.getElementById('js_a'));
+                }
+                document.body.appendChild(a);
+                a.click();
+            },
+            //新增
+            addSubmit: function () {
+                this.$refs.addForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            this.addLoading = true;
+                            //NProgress.start();
+                            let para = Object.assign({}, this.addForm);
+                            para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+                            addUser(para).then((res) => {
+                                this.addLoading = false;
+                                //NProgress.done();
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.$refs['addForm'].resetFields();
+                                this.addFormVisible = false;
+                                this.getUsers();
+                            });
+                        });
+                    }
+                });
+            },
+
+        },
+        mounted() {
+            this.getUsers();
+            window.getUsers = this.getUsers();
+            console.log("结果3"+this.users.length)
+
+        }
+
+    })
+</script>
 </html>

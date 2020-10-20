@@ -5,11 +5,6 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Editable Tables | Okler Themes | Porto-Admin</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
-
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -23,7 +18,7 @@
 
 
     <meta charset="UTF-8">
-    <title>CodePen - I think</title>
+    <title>身份/数据/凭证可视化查看</title>
     <style type="text/css">
         @import url(https://fonts.googleapis.com/css?family=Abel);
         html {
@@ -44,9 +39,6 @@
         }
     </style>
 
-</head>
-<body>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
     <a class="navbar-brand" href="/">
         SUIBE DID Data Manager
@@ -59,13 +51,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">DID工具</a>
+                <a class="nav-link" href="/">主面板</a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link" href="{{ url_for('public.Identity_manager') }}">DID身份数据管理</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">可视化功能</a>
+                <a class="nav-link" href="{{ url_for('public.Visualization_tools') }}">身份/数据/凭证可视化查看</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('public.about') }}">数据共享</a>
@@ -89,19 +81,7 @@
 <div class="container">
 
     <div id="screen"></div>
-    <q id="tree">admin
-        <q>weid:0xF0311be2...
-            <q>金融比赛证书</q>
-            <q>创新大赛证书</q>
-            <q>教员认证证书</q>
-            <q>英语六级证书</q>
-            <q>奥林匹克竞赛证书</q>
-            <q>教师资格证书</q>
-        </q>
-        <q>weid:0xJ0213bf2...
-        </q>
-        <q>weid:0xCH921bg2...
-        </q>
+    <q id="tree">
 
     </q>
 </div>
@@ -133,10 +113,43 @@
 <!-- partial -->
 <script src='https://codepen.io/ge1doot/pen/0f649ed229638b2f7e87d8a46e7fcf1e.js'></script>
 <script src='https://codepen.io/ge1doot/pen/aeba69f8d2bb0b72737b9b178de11a86.js'></script>
+    <script src="../../static/build/assets/vendor/jquery/jquery.js"></script>
 <script>
-    ! function () {
+    var datajson;
 
-        "use strict";
+    $.ajax({
+        type:"get",
+        url:"http://127.0.0.1:5000/auth_manager/auth_tree/",
+        async:true,
+        timeout:3000,  //timeout:响应超时时间，非必须参数
+        beforeSend:function(){
+            //这里是发送请求之前所要进行的操作
+        },
+        success:function(res){
+
+            datajson=res
+            console.log(datajson)
+            init();
+            //请求成功
+        },
+        error:function(){
+            //请求失败
+        }
+    });
+
+    function init() {
+
+         var content="admin\n";
+
+         for (let i=0;i<datajson.total_did;i++){
+             content=content+"<q>"+datajson.result[i].id+"\n"
+             for(let j=0;j<datajson.result[i].credential.total_credential;j++){
+                 content=content+"<q>"+datajson.result[i].credential.credential_cpt_type[j]+"</q>\n"
+             }
+             content=content+"</q>\n"
+         }
+         console.log(content)
+         document.getElementById("tree").innerHTML =content
 
         var setup = {
 
@@ -145,7 +158,7 @@
             length: 300,
             reduction: 1.33,
             dotSize: 20,
-            rotationSpeed: 0.002,
+            rotationSpeed: 0.0,
             collapsedNodeColor: "#fff",
             defaultNodeColor: "#f00",
             expandedNodeColor: "#666",
@@ -283,7 +296,7 @@
             for (var i = 0; i < this.children.length; i++) {
 
                 var c = this.children[i];
-                c.visible = false;
+                c.visible = true;
                 c.lex = 0;
                 c.line.move(-1, -1, -1, -2);
                 c.plot.move(-1000, -1, 0);
@@ -567,7 +580,7 @@
 
         }
 
-    }();
+    }
 </script>
 </body>
 </html>
