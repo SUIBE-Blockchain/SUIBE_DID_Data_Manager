@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, jsonify, request, g
 from flask_login import login_required, current_user
 import os
-from SUIBE_DID_Data_Manager.weidentity.localweid import create_weid_by_privkey, create_random_weid, verify_did
+from SUIBE_DID_Data_Manager.weidentity.localweid import create_weid_by_privkey, create_random_weid, verify_did, update_did_chain_id
 from SUIBE_DID_Data_Manager.extensions import db, csrf_protect
 from SUIBE_DID_Data_Manager.blueprints.did_engine.models import DID
 import time
@@ -138,6 +138,7 @@ def uplink_did(weid):
 
     did = DID.query.filter_by(did=weid, is_cochain=False).first()
     if did:
+        did.did = update_did_chain_id(did.did, chain_id)
         did.is_cochain = True
         did.chain_id = chain_id
         did.chain_name = chain_name

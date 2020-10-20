@@ -78,6 +78,13 @@ def generate_addr(priv=None):
                  "pubv": str(account._key_obj.public_key).lower()
                  }}
 
+def update_did_chain_id(did, chain_id):
+    split_did = did.split("CHAIN_ID")
+    split_did.append(split_did[1])
+    split_did[1] = chain_id
+    uplink_did = "".join(i for i in split_did)
+    return uplink_did
+
 
 def verify_did(did):
     verify_data = did.split(":")
