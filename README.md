@@ -14,7 +14,7 @@ git clone git@github.com:SUIBE-Blockchain/SUIBE_DID_Data_Manager.git
 
 cd SUIBE_DID_Data_Manager/
 
-mv .envrc SUIBE_DID_Data_Manager/.env
+cp .envrc SUIBE_DID_Data_Manager/.env
 
 pip install -r requirements.txt
 
